@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from 'next/image'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -18,17 +19,11 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
       <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">RegiLax</h2>
-          <div className="mt-2">
-            <svg viewBox="0 0 100 20" className="w-full">
-              <path d="M0,10 Q25,20 50,10 T100,10" fill="none" stroke="currentColor" strokeWidth="2" />
-              <path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="currentColor" strokeWidth="2" />
-            </svg>
+          <div className="logo">
+            <Image src="/logo.svg" alt="Logo" width={400} height={400} className="mx-auto"/>
           </div>
-        </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <Input
             type="email"
@@ -36,6 +31,7 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="bg-[#EBF4FA]"
           />
           <Input
             type="password"
@@ -43,11 +39,12 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="bg-[#EBF4FA]"
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full bg-[#BAC8F4] text-black font-bold">
             Log In
           </Button>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full bg-[#BAC8F4] text-black font-bold">
             Sign in with SSO
           </Button>
         </form>
