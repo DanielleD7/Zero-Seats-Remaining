@@ -1,5 +1,8 @@
+import LayoutClient from './layout-client';
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { AnimatePresence } from 'framer-motion';
 import "./globals.css";
 
 const geistSans = localFont({
@@ -28,7 +31,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <LayoutClient>
         {children}
+        </LayoutClient>
       </body>
     </html>
   );

@@ -3,6 +3,10 @@
 import { useState } from 'react'
 import { ChevronLeft, ShoppingCart, Search, ChevronDown } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import React from 'react';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import PageTransition from '../../components/meta/page-transition'
+import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom';
 
 export default function FindClasses() {
   const router = useRouter()
@@ -12,6 +16,7 @@ export default function FindClasses() {
   const [courseNumber, setCourseNumber] = useState('')
   const [crn, setCrn] = useState('')
   const [selectedSemester, setSelectedSemester] = useState('Spring 2025')
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
 
   const semesters = [
     "Spring 2025", "Fall 2024", "Spring 2024", "Fall 2023", "Spring 2023", "Fall 2022"
@@ -22,8 +27,8 @@ export default function FindClasses() {
   }
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-blue-100 flex flex-col">
-
 
       <main className="flex-grow flex flex-col">
         <div className="bg-white p-6 shadow-md">
@@ -96,12 +101,22 @@ export default function FindClasses() {
           </div>
 
           <div className="mt-auto">
-            <button className="w-full bg-blue-200 text-blue-800 hover:bg-blue-300 text-lg py-6 rounded-full font-semibold transition-colors duration-200">
+            <button onClick={() => setIsOverlayOpen(true)} className="w-full bg-blue-200 text-blue-800 hover:bg-blue-300 text-lg py-6 rounded-full font-semibold transition-colors duration-200">
               GO!
             </button>
           </div>
         </div>
       </main>
+      <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+
+          <button 
+            onClick={() => setIsOverlayOpen(false)}
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
+          >
+            Close
+          </button>
+        </SlideInOverlay>
     </div>
+    </PageTransition>
   )
 }
