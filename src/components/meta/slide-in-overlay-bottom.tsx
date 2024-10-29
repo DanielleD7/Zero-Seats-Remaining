@@ -1,3 +1,26 @@
+
+/*
+TO USE:
+
+1. place this import at the top of your page
+import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom';
+
+2. place this variable definition at the top of your page method:
+const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+
+3. Add this template (feel free to remove the button):
+<SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+
+    <button 
+        onClick={() => setIsOverlayOpen(false)}
+        className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
+    >
+        Close
+    </button>
+</SlideInOverlay>
+
+*/
+
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
