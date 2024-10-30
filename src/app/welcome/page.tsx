@@ -35,7 +35,7 @@ export default function Welcome() {
         </Button>
       </div>
       {/* Move slide in overlay into  */}
-      <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+      <SlideInOverlay isOpen={isOverlayOpen} title="Student Profile" onClose={() => setIsOverlayOpen(false)}>
           <StudentProfileCard name="Regilax" studentId="346143" classLevel="Junior" avatarUrl="https://cdn.fusiondex.org/m1XLkOnsVAUmxs_kNT4PylnQ/dn/pif/346.143.png" programOfStudy="Computer Science B.S."></StudentProfileCard>
       </SlideInOverlay>
     </div>

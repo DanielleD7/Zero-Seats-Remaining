@@ -107,7 +107,7 @@ export default function FindClasses() {
           </div>
         </div>
       </main>
-      <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+      <SlideInOverlay isOpen={isOverlayOpen} title="TEST TITLE" onClose={() => setIsOverlayOpen(false)}>
 
           <button 
             onClick={() => setIsOverlayOpen(false)}
