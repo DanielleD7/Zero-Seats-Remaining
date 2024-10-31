@@ -93,8 +93,8 @@ export default function FindClasses() {
             <input
               type="text"
               placeholder="Subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              value={courseSubject}
+              onChange={(e) => setCourseSubject(e.target.value)}
               className="w-full bg-white border border-gray-300 rounded-md py-2 px-4"
             />
             <input
