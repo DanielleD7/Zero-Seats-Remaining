@@ -60,7 +60,7 @@ export default function SlideInOverlay({ isOpen, onClose, title, children }: Sli
             className="fixed inset-x-0 bottom-0 bg-white rounded-t-3xl shadow-lg z-50 max-h-[80vh] overflow-y-auto"
           >
             <div className="p-6">
-            {title && <CardHeader className="flex flex-row items-center justify-between pb-5 pt-1">
+            {title && <CardHeader className="flex flex-row items-center justify-between pb-1 pt-1 bg-transparent">
             <CardTitle className="text-xl font-bold">{title}</CardTitle>
               <button className="text-gray-500 hover:text-gray-700" aria-label="Close" onClick={onClose}>
                 <X className="h-6 w-6"/>
