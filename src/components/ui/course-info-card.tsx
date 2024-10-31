@@ -1,8 +1,6 @@
 import { X } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-
-
 export default function CourseInfoCard({classNumber='Class 101', className='ClassName', crn='11111', description='Test Description', prerequisites='None', corequisites='None'}) {
   return (
     <Card className="w-full max-w-md bg-blue-100">
