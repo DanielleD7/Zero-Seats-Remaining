@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button"
 import CourseCard from "@/components/ui/course-card"
 import { Course, Section, Courses } from "@/components/ui/data"
 import searchParams from "@/components/ui/global"
+import PageTransition from '@/components/meta/page-transition'
+import Header from '@/components/ui/header'
 
 export default function CourseList() {
-  const [myCourses, setMyCourses] = useState([]);
-
   return (
+    <PageTransition>
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
+      <Header showShoppingCart={true} title="My Courses"/>
       {/* <header className="flex justify-between items-center p-4 bg-white">
         <Button variant="ghost" size="icon">
           <ChevronLeft className="h-6 w-6" />
@@ -39,5 +41,6 @@ export default function CourseList() {
         })))}
       </main>
     </div>
+    </PageTransition>
   );
 }

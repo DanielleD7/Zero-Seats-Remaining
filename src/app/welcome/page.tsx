@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { UserCircle } from "lucide-react"
 import { useState } from "react"
 import Image from 'next/image'
+import PageTransition from '../../components/meta/page-transition'
 import SlideInOverlay from "@/components/meta/slide-in-overlay-bottom"
 import StudentProfileCard from "@/components/ui/student-profile-card"
 import OpeningDatesCard from "@/components/ui/opening-dates-card"
@@ -14,6 +15,7 @@ export default function Welcome() {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
   return (
+    <PageTransition>
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
         <style jsx>{` @font-face {
               font-family: 'Playwrite US Trad';
@@ -89,5 +91,6 @@ export default function Welcome() {
               { creditHours: "0", date: "November 14", day: "Thursday" },]}></OpeningDatesCard>
       </SlideInOverlay>
     </div>
+    </PageTransition>
   )
 }

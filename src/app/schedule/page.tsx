@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronDown } from 'lucide-react'
+import Header from '@/components/ui/header'
+import PageTransition from '@/components/meta/page-transition'
 
 type Class = {
   name: string
@@ -34,12 +36,11 @@ export default function Schedule() {
   }
 
   return (
-  <div className="bg-[#E2E4EB]">
+    <PageTransition>
+    <div> <Header showShoppingCart={false} title="My Schedule" />
+
     <div className="max-w-4xl mx-auto p-4 bg-blue-100">
-      <div className="flex items-center mb-4">
-        <ChevronLeft className="w-6 h-6 mr-4 cursor-pointer" />
-        <h1 className="text-2xl font-bold flex-grow">Schedule</h1>
-      </div>
+      
       <div className="relative mb-4">
         <button
           className="w-full bg-white p-2 rounded-md flex justify-between items-center"
@@ -109,6 +110,8 @@ export default function Schedule() {
         </table>
       </div>
     </div>
-  </div>
+    </div>
+    </PageTransition>
+
   )
 }
