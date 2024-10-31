@@ -56,9 +56,9 @@ function CourseDropdown({ course }: { course: Course }) {
 }
 
 export default function Results() {
-  const searchParams = useSearchParams()
-  const subject = searchParams.get('subject')
-  const number = searchParams.get('number')
+  // const searchParams = useSearchParams()
+  // const subject = searchParams.get('subject')
+  // const number = searchParams.get('number')
 
   return (
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
@@ -72,11 +72,11 @@ export default function Results() {
         </Button>
       </header> */}
       <main className="p-4">
-      { Courses.filter(
+      {/* { Courses.filter(
           (course : Course) => ((course.subject == subject || course.subject == '') && (course.number == number || course.number == ''))
         ).map(
           (course : Course) => (<CourseDropdown course={course}/>)
-        )}
+        )} */}
       </main>
     </div>
   );
