@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useSearchParams } from 'react'
 import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Course, Section, Courses } from "@/components/ui/data"
@@ -9,6 +9,14 @@ import CourseCard from "@/components/ui/course-card"
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // const [courseFilter, setCourseFilter] = useState(Courses);
+  
+  // useEffect(() => {
+  //   Courses.filter((course) => (
+  //     (course.subject == subject) && (course.number == number || course.number == '')
+  //   ))
+  // }, [])
 
   const AddCourse = () => {}
 
@@ -47,7 +55,11 @@ function CourseDropdown({ course }: { course: Course }) {
   )
 }
 
-export default function CourseList() {
+export default function Results() {
+  const searchParams = useSearchParams()
+  const subject = searchParams.get('subject')
+  const number = searchParams.get('number')
+
   return (
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
       {/* <header className="flex justify-between items-center p-4 bg-white">
@@ -60,7 +72,11 @@ export default function CourseList() {
         </Button>
       </header> */}
       <main className="p-4">
-        {Courses.map((course : Course) => (<CourseDropdown course={course}/>)) }
+      { Courses.filter(
+          (course : Course) => ((course.subject == subject || course.subject == '') && (course.number == number || course.number == ''))
+        ).map(
+          (course : Course) => (<CourseDropdown course={course}/>)
+        )}
       </main>
     </div>
   );

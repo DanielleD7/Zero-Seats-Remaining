@@ -1,5 +1,7 @@
 export type Course = {
     id: string
+    subject: string
+    number: string
     title: string
     description: string
     prereqs: string[]
@@ -17,9 +19,18 @@ export type Section = {
     seats: number
 }
 
+export type Enroll = {
+    course: string
+    section: string
+}
+
+export const Enrollment: Enroll[] = []
+
 export const Courses: Course[] = [
     {
         id: "CSCI 220",
+        subject: "CSCI",
+        number: "220",
         title: "Computer Programming I",
         description: "An introduction to programming and problem solving.",
         prereqs: [],
@@ -56,6 +67,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSCI 220L",
+        subject: "CSCI",
+        number: "220L",
         title: "Programming I Laboratory",
         description: "This course is designed to apply the concepts being covered in CSCI 220.",
         prereqs: [],
@@ -101,6 +114,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSIS 601",
+        subject: "CSIS",
+        number: "601",
         title: "Model Data/Database Design",
         description: "A database design project is part of the requirement and includes hands-on data modeling, design, development, and implementation.",
         prereqs: [],
@@ -117,6 +132,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSIS 605",
+        subject: "CSIS",
+        number: "605",
         title: "Applied Algorithms",
         description: "A course that covers algorithms.",
         prereqs: [],
@@ -133,6 +150,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSIS 614",
+        subject: "CSIS",
+        number: "614",
         title: "Advanced Operating Systems",
         description: "This course covers a broad range of advanced operating systems concepts.",
         prereqs: [],
@@ -149,6 +168,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSIS 635",
+        subject: "CSIS",
+        number: "635",
         title: "Fundamentals/ Agile Project Mgmt",
         description: "This course explores agile-related practices, methodologies, and applications in development and operational project environments.",
         prereqs: [],
@@ -165,6 +186,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSIS 641",
+        subject: "CSIS",
+        number: "641",
         title: "Advanced Cybersecurity",
         description: "This course will cover the techniques used to secure cybersystems.",
         prereqs: [],
@@ -181,6 +204,8 @@ export const Courses: Course[] = [
     },
     {
         id: "CSIS 690",
+        subject: "CSIS",
+        number: "690",
         title: "ST: Data Dependent Digital Forensics",
         description: "A course in the special study of an advanced or new topic in computer science, information science or software engineering.",
         prereqs: [],
