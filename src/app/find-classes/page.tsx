@@ -112,8 +112,7 @@ export default function FindClasses() {
           </div>
         </div>
       </main>
-      {/* <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
-
+      <SlideInOverlay isOpen={isOverlayOpen} title="TEST TITLE" onClose={() => setIsOverlayOpen(false)}>
           <button 
             onClick={() => setIsOverlayOpen(false)}
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
