@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Course, Section, Courses } from "@/components/ui/data"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import CourseCard from "@/components/ui/course-card"
+import Header from '@/components/ui/header'
+import PageTransition from '@/components/meta/page-transition'
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -13,6 +15,7 @@ function CourseDropdown({ course }: { course: Course }) {
   const AddCourse = () => {}
 
   return (
+    
     <Card className="mb-4 bg-white">
       <CardHeader className="p-4 flex flex-row items-center justify-between">
         <div className="flex flex-col">
@@ -50,7 +53,9 @@ function CourseDropdown({ course }: { course: Course }) {
 export default function Results() {
 
   return (
+    <PageTransition>
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
+      <Header showShoppingCart={true} title="My Courses"/>
       {/* <header className="flex justify-between items-center p-4 bg-white">
         <Button variant="ghost" size="icon">
           <ChevronLeft className="h-6 w-6" />
@@ -64,5 +69,6 @@ export default function Results() {
         {Courses.map((course : Course) => (<CourseDropdown course={course}/>)) }
       </main>
     </div>
+    </PageTransition>
   );
 }
