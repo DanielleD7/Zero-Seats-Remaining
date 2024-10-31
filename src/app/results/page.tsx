@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { Course, Section, Courses } from "@/components/ui/data"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import CourseCard from "@/components/ui/course-card"
+import { Course, Section, Courses } from "@/components/ui/data"
 import searchParams from "@/components/ui/global"
 import Header from "@/components/ui/header"
 import PageTransition from '@/components/meta/page-transition'
