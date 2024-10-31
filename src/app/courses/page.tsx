@@ -22,7 +22,7 @@ export default function CourseList() {
         </Button>
       </header> */}
       <main className="p-4">
-        {Courses.map((course : Course) => {course.sections.map((section, index) => {
+        {Courses.map((course) => (course.sections.map((section) => {
           if (section.enrolled) {
             return <CourseCard
               section={section.id}
@@ -36,7 +36,7 @@ export default function CourseList() {
               title={course.title}
             </CourseCard>
           }
-        })})}
+        })))}
       </main>
     </div>
   );
