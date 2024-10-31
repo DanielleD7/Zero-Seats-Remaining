@@ -7,10 +7,12 @@ import { useState } from "react"
 import Image from 'next/image'
 import SlideInOverlay from "@/components/meta/slide-in-overlay-bottom"
 import StudentProfileCard from "@/components/ui/student-profile-card"
+import OpeningDatesCard from "@/components/ui/opening-dates-card"
 
 export default function Welcome() {
   const router = useRouter()
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+  const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
         <style jsx>{` @font-face {
@@ -25,12 +27,13 @@ export default function Welcome() {
         } `}</style>
 
       <div className="w-full max-w-md space-y-8">
+        
           <h1 className="text-5xl text-center playwrite-font">Welcome</h1>
           <div className="text-center mt-6 bg-[#ECECEC] p-1 rounded-xl">
               <p className="text-gray-600 text-base">You can register for classes on</p>
               <p className="text-black font-bold text-xl">OCTOBER 29</p>
           </div>
-
+        
         <div className="space-y-4">
             <Button variant="default" className="w-full flex items-center justify-center font-bold text-black bg-[#BAC8F4] hover:bg-[#AABCF4]"
                     onClick={() => router.push('/find-classes')}>
@@ -67,6 +70,18 @@ export default function Welcome() {
       {/* Move slide in overlay into  */}
       <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
           <StudentProfileCard name="Regilax" studentId="346143" classLevel="Junior" avatarUrl="https://cdn.fusiondex.org/m1XLkOnsVAUmxs_kNT4PylnQ/dn/pif/346.143.png" programOfStudy="Computer Science B.S."></StudentProfileCard>
+      </SlideInOverlay>
+      <SlideInOverlay isOpen={isOverlayOpenRegistrationDates} onClose={() => setIsOverlayOpenRegistrationDates(false)}>
+          <OpeningDatesCard openTime={"7:30AM"} timezone={"EST"} registrationDates={[
+              { creditHours: "90+", date: "October 29", day: "Tuesday" },
+              { creditHours: "75-89", date: "October 31", day: "Friday" },
+              { creditHours: "60-74", date: "November 1", day: "Friday" },
+              { creditHours: "50-59", date: "November 7", day: "Thursday" },
+              { creditHours: "40-49", date: "November 8", day: "Friday" },
+              { creditHours: "30-39", date: "November 11", day: "Monday" },
+              { creditHours: "20-29", date: "November 12", day: "Tuesday" },
+              { creditHours: "1-19", date: "November 13", day: "Wednesday" },
+              { creditHours: "0", date: "November 14", day: "Thursday" },]}></OpeningDatesCard>
       </SlideInOverlay>
     </div>
   )
