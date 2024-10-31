@@ -14,12 +14,13 @@ type Class = {
 
 const semesters = ['2025 Spring', '2025 Fall', '2026 Spring', '2026 Fall']
 
+// The class blocks do not work right. Try to change it to allow 5-minute intervals.
 const classes: Class[] = [
   { name: 'CSCI 220', room: 'HWEA 302', day: 'T', startTime: 10, endTime: 11, isWaitlisted: false },
   { name: 'CSCI 220', room: 'HWEA 302', day: 'H', startTime: 10, endTime: 11, isWaitlisted: false },
   { name: 'CSIS 690', room: 'HWEA 300', day: 'T', startTime: 17, endTime: 20, isWaitlisted: false },
-  { name: 'MATH 101', room: 'MATH 201', day: 'M', startTime: 14, endTime: 15, isWaitlisted: true },
 ]
+//   { name: 'MATH 101', room: 'MATH 201', day: 'M', startTime: 14, endTime: 15, isWaitlisted: true },
 
 export default function Schedule() {
   const [selectedSemester, setSelectedSemester] = useState(semesters[0])
