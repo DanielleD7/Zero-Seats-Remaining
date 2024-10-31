@@ -1,4 +1,4 @@
-type Course = {
+export type Course = {
     id: string
     title: string
     description: string
@@ -7,7 +7,7 @@ type Course = {
     sections: Section[]
 }
 
-type Section = {
+export type Section = {
     id: string
     days: string[]
     time: string
@@ -17,7 +17,7 @@ type Section = {
     seats: number
 }
 
-const Courses: Course[] = [
+export const Courses: Course[] = [
     {
         id: "CSCI 220",
         title: "Computer Programming I",
@@ -196,5 +196,3 @@ const Courses: Course[] = [
         }],
     },
 ]
-
-export default { Courses }

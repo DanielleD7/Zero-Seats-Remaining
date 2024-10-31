@@ -30,17 +30,14 @@ export default function CourseCard({section, days, time, location, professor, se
                 
                 <div className="flex-1 flex flex-col">
                     <div className="flex justify-between items-start mb-2">
-                        <div className="flex flex-col">
-                            <div className="flex gap-2 text-sm mb-1">
-                                { days.map((day, index) => (<span key={index} className="font-medium"> {day} </span>)) }
-                            </div>
-                            
-                            <div className="text-sm text-muted-foreground">{time} </div>
+                        <div className="flex gap-2 text-sm mb-1">
+                            { days.map((day, index) => (<span key={index} className="font-medium"> {day} </span>)) }
                         </div>
                     
-                        <div className="font-medium">{location} </div>
+                        <div className="font-medium"> {location} </div>
                     </div>
                     
+                    <div className="text-sm text-muted-foreground"> {time} </div>
                     <div className="text-sm text-muted-foreground">{professor} </div>
                 </div>
 
