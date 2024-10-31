@@ -10,14 +10,6 @@ import CourseCard from "@/components/ui/course-card"
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // const [courseFilter, setCourseFilter] = useState(Courses);
-  
-  // useEffect(() => {
-  //   Courses.filter((course) => (
-  //     (course.subject == subject) && (course.number == number || course.number == '')
-  //   ))
-  // }, [])
-
   const AddCourse = () => {}
 
   return (
@@ -56,9 +48,6 @@ function CourseDropdown({ course }: { course: Course }) {
 }
 
 export default function Results() {
-  // const searchParams = useSearchParams()
-  // const subject = searchParams.get('subject')
-  // const number = searchParams.get('number')
 
   return (
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
@@ -72,11 +61,11 @@ export default function Results() {
         </Button>
       </header> */}
       <main className="p-4">
-      {/* { Courses.filter(
-          (course : Course) => ((course.subject == subject || course.subject == '') && (course.number == number || course.number == ''))
+        { Courses.filter(
+          (course : Course) => ((course.subject == searchParams.subject || searchParams.subject == '') && (course.number == searchParams.number || searchParams.number == ''))
         ).map(
           (course : Course) => (<CourseDropdown course={course}/>)
-        )} */}
+        )}
       </main>
     </div>
   );

@@ -7,12 +7,13 @@ import React from 'react';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import PageTransition from '../../components/meta/page-transition'
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom';
+import searchParams from "@/components/ui/global"
 
 export default function FindClasses() {
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [showMoreOptions, setShowMoreOptions] = useState(false)
-  const [subject, setSubject] = useState('')
+  const [courseSubject, setCourseSubject] = useState('')
   const [courseNumber, setCourseNumber] = useState('')
   const [crn, setCrn] = useState('')
   const [selectedSemester, setSelectedSemester] = useState('Spring 2025')
@@ -27,8 +28,15 @@ export default function FindClasses() {
   }
 
   const toResults = () => {
-    // router.push('/results', { query: { subject: subject, number: courseNumber } })
-    // setIsOverlayOpen(true)
+    if (searchTerm != '') {
+      searchParams.subject = searchTerm.split(' ')[0]
+      searchParams.number = searchTerm.split(' ')[1]
+    }
+    else {
+      searchParams.subject = courseSubject
+      searchParams.number = courseNumber
+    }
+    router.push(`/results`)
   }
 
   return (
