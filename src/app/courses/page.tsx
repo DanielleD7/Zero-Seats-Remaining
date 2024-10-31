@@ -1,32 +1,68 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useSearchParams } from 'react'
+import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Course, Section, Courses } from "@/components/ui/data"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import CourseCard from "@/components/ui/course-card"
 
-export default function Courses() {
-    const router = useRouter()
-  
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div className="w-full max-w-md space-y-8">
-          <h1 className="text-3xl font-bold text-center">Welcome</h1>
-          <p className="text-center text-gray-600">
-            You can register for classes on OCTOBER 29
-          </p>
-          <div className="space-y-4">
-            <Button variant="outline" className="w-full flex items-center justify-center">
-              <span className="mr-2">🔍</span> Testing
-            </Button>
-            <Button variant="outline" className="w-full flex items-center justify-center">
-              <span className="mr-2">📚</span> 1, 2, 3
-            </Button>
-            <Button variant="outline" className="w-full flex items-center justify-center">
-              <span className="mr-2">📅</span> Success
-            </Button>
-          </div>
+function CourseDropdown({ course }: { course: Course }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const AddCourse = () => {}
+
+  return (
+    <Card className="mb-4 bg-white">
+      <CardHeader className="p-4 flex flex-row items-center justify-between">
+        <div className="flex flex-col">
+          <CardTitle className="text-lg font-bold"> {course.id} </CardTitle>
+          <div className="text-sm text-muted-foreground"> {course.title} </div>
         </div>
-      </div>
-    )
-  }
+        
+        <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded)}>
+          <ChevronDown className={ `h-5 w-5 transition-transform ${isExpanded ? 'transform rotate-180' : ''}` }/>
+        </Button>
+      </CardHeader>
+
+      <CardContent className="px-4 pb-4">
+        {isExpanded && (
+          <div className="mt-4 space-y-4">
+            {course.sections.map((section : Section) => (
+              <CourseCard
+                section={section.id}
+                days={section.days}
+                time={section.time}
+                location={section.location}
+                professor={section.professor}
+                seatsOpen={section.seatsOpen}
+                seats={section.seats}
+                onAdd={AddCourse}>
+              </CourseCard>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export default function Results() {
+
+  return (
+    <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
+      {/* <header className="flex justify-between items-center p-4 bg-white">
+        <Button variant="ghost" size="icon">
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
+        <h1 className="text-xl font-semibold">Search Results</h1>
+        <Button variant="ghost" size="icon">
+          <ShoppingCart className="h-6 w-6" />
+        </Button>
+      </header> */}
+      <main className="p-4">
+        {Courses.map((course : Course) => (<CourseDropdown course={course}/>)) }
+      </main>
+    </div>
+  );
+}

@@ -26,8 +26,13 @@ export default function FindClasses() {
     router.push('/welcome')
   }
 
+  const toResults = () => {
+    // router.push('/results', { query: { subject: subject, number: courseNumber } })
+    // setIsOverlayOpen(true)
+  }
+
   return (
-    <PageTransition>
+    // <PageTransition>
     <div className="min-h-screen bg-blue-100 flex flex-col">
 
       <main className="flex-grow flex flex-col">
@@ -101,22 +106,21 @@ export default function FindClasses() {
           </div>
 
           <div className="mt-auto">
-            <button onClick={() => setIsOverlayOpen(true)} className="w-full bg-blue-200 text-blue-800 hover:bg-blue-300 text-lg py-6 rounded-full font-semibold transition-colors duration-200">
+            <button onClick={toResults} className="w-full bg-blue-200 text-blue-800 hover:bg-blue-300 text-lg py-6 rounded-full font-semibold transition-colors duration-200">
               GO!
             </button>
           </div>
         </div>
       </main>
       <SlideInOverlay isOpen={isOverlayOpen} title="TEST TITLE" onClose={() => setIsOverlayOpen(false)}>
-
           <button 
             onClick={() => setIsOverlayOpen(false)}
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
           >
             Close
           </button>
-        </SlideInOverlay>
+        </SlideInOverlay> */}
     </div>
-    </PageTransition>
+    // </PageTransition>
   )
 }
