@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useSearchParams } from 'react'
+import { useState } from 'react'
 import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Course, Section, Courses } from "@/components/ui/data"
