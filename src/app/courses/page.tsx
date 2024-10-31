@@ -32,8 +32,8 @@ export default function CourseList() {
               professor={section.professor}
               seatsOpen={section.seatsOpen}
               seats={section.seats}
-              code={course.id}>
-              title={course.title}
+              code={course.id}
+              title={course.title}>
             </CourseCard>
           }
         })))}
