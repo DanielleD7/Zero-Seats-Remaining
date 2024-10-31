@@ -24,6 +24,7 @@ export default function Login() {
           <div className="logo">
             <Image src="/logo.svg" alt="Logo" width={400} height={400} className="mx-auto"/>
           </div>
+
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <Input
             type="email"
@@ -41,13 +42,16 @@ export default function Login() {
             required
             className="bg-[#EBF4FA]"
           />
-          <Button type="submit" className="w-full bg-[#BAC8F4] text-black font-bold">
+
+          <Button type="submit" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold">
             Log In
           </Button>
-          <Button variant="outline" className="w-full bg-[#BAC8F4] text-black font-bold">
-            Sign in with SSO
-          </Button>
         </form>
+        {/*This button is outside the form tag to prevent that you need email and password pop up*/}
+        <Button variant="default" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold"
+                onClick={() => router.push('/welcome')}>
+          Sign in with SSO
+        </Button>
       </div>
     </div>
   )
