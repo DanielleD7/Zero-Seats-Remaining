@@ -17,6 +17,7 @@ export type Section = {
     professor: string
     seatsOpen: number
     seats: number
+    enrolled?: boolean
 }
 
 export type Enroll = {
@@ -81,7 +82,8 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Instructor Not Available",
                 seatsOpen: 14,
-                seats: 22
+                seats: 22,
+                enrolled: true
             },
             {
                 id: "02",
@@ -145,7 +147,8 @@ export const Courses: Course[] = [
             location: "HWEA 300",
             professor: "Ghosh, Kris",
             seatsOpen: 7,
-            seats: 12
+            seats: 12,
+            enrolled: true
         }],
     },
     {
