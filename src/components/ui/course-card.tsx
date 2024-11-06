@@ -13,11 +13,12 @@ interface CourseCardProps {
     onAdd?: () => void
     code?: string
     title?: string
+    openFunction?: () => void
 }
 
-export default function CourseCard({section, days, time, location, professor, seatsOpen, seats, onAdd = () => {}, code, title}: CourseCardProps) {
+export default function CourseCard({section, days, time, location, professor, seatsOpen, seats, onAdd = () => {}, code, title, openFunction = () => {}}: CourseCardProps) {
     return (
-        <Card className="w-full max-w-xl bg-white overflow-hidden">
+        <Card className="w-full max-w-xl bg-white overflow-hidden" onClick={openFunction}>
             {(code || title) && (
                 <CardHeader className="bg-slate-100 p-3 pb-2">
                     { code && (<div className="font-semibold text-primary">{code}</div>) }
