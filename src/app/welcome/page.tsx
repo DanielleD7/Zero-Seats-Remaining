@@ -9,13 +9,36 @@ import PageTransition from '../../components/meta/page-transition'
 import SlideInOverlay from "@/components/meta/slide-in-overlay-bottom"
 import StudentProfileCard from "@/components/ui/student-profile-card"
 import OpeningDatesCard from "@/components/ui/opening-dates-card"
+import Modal from "@/components/meta/modal"
+import HoldBanner from "@/components/ui/hold-banner"
+import { AlertTriangle } from 'lucide-react'
+
+const handleBannerClick = () => {}
 
 export default function Welcome() {
   const router = useRouter()
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
+  const [hasRegistrationHold] = useState(true)
+
   return (
     <PageTransition>
+
+
+
+    {hasRegistrationHold && <Modal
+        trigger={<a><HoldBanner onClick={handleBannerClick} subheading="Academic Advising - Tap for more info"/></a>}
+        title="REGISTRATION HOLD"
+        variant = "destructive"
+      > 
+      <div className = "pb-0 pl-3 pr-3" style={{textAlign: "center"}}>
+        <b>Academic Advising</b>
+      </div>
+      <div className = "pb-5 pl-3 pr-5" style={{textAlign: "center"}}>
+        You have an advisory hold placed on your account. This hold must be lifted before you can register. To have your hold lifted, please contact your advisor or department.
+      </div>
+    </Modal>}
+
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
         <style jsx>{` @font-face {
               font-family: 'Playwrite US Trad';
@@ -91,6 +114,8 @@ export default function Welcome() {
               { creditHours: "0", date: "November 14", day: "Thursday" },]}></OpeningDatesCard>
       </SlideInOverlay>
     </div>
+
+
     </PageTransition>
   )
 }
