@@ -1,11 +1,6 @@
+import neo4j from "neo4j-driver"
 //Code copied from https://dev.to/adamcowley/using-neo4j-in-your-next-nextjs-project-77
-const driver = neo4j.driver(
-    process.env.NEO4J_URI,
-    neo4j.auth.basic(
-      process.env.NEO4J_USERNAME,
-      process.env.NEO4J_PASSWORD
-    )
-  )
+const driver = neo4j.driver(process.env.NEXT_PUBLIC_NEO4J_URI, neo4j.auth.basic(process.env.NEXT_PUBLIC_NEO4J_USERNAME, process.env.NEXT_PUBLIC_NEO4J_PASSWORD))
 
 export async function read(cypher, params = {}) {
   // 1. Open a session
