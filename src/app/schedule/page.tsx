@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronDown } from 'lucide-react'
+import Header from '@/components/ui/header'
+import PageTransition from '@/components/meta/page-transition'
 
 type Class = {
   name: string
@@ -14,12 +16,13 @@ type Class = {
 
 const semesters = ['2025 Spring', '2025 Fall', '2026 Spring', '2026 Fall']
 
+// The class blocks do not work right. Try to change it to allow 5-minute intervals.
 const classes: Class[] = [
   { name: 'CSCI 220', room: 'HWEA 302', day: 'T', startTime: 10, endTime: 11, isWaitlisted: false },
   { name: 'CSCI 220', room: 'HWEA 302', day: 'H', startTime: 10, endTime: 11, isWaitlisted: false },
   { name: 'CSIS 690', room: 'HWEA 300', day: 'T', startTime: 17, endTime: 20, isWaitlisted: false },
-  { name: 'MATH 101', room: 'MATH 201', day: 'M', startTime: 14, endTime: 15, isWaitlisted: true },
 ]
+//   { name: 'MATH 101', room: 'MATH 201', day: 'M', startTime: 14, endTime: 15, isWaitlisted: true },
 
 export default function Schedule() {
   const [selectedSemester, setSelectedSemester] = useState(semesters[0])
@@ -33,11 +36,11 @@ export default function Schedule() {
   }
 
   return (
+    <PageTransition>
+    <div> <Header showShoppingCart={false} title="My Schedule" />
+
     <div className="max-w-4xl mx-auto p-4 bg-blue-100">
-      <div className="flex items-center mb-4">
-        <ChevronLeft className="w-6 h-6 mr-4 cursor-pointer" />
-        <h1 className="text-2xl font-bold flex-grow">Schedule</h1>
-      </div>
+      
       <div className="relative mb-4">
         <button
           className="w-full bg-white p-2 rounded-md flex justify-between items-center"
@@ -107,5 +110,8 @@ export default function Schedule() {
         </table>
       </div>
     </div>
+    </div>
+    </PageTransition>
+
   )
 }

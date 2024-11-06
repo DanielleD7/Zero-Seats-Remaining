@@ -7,12 +7,14 @@ import React from 'react';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import PageTransition from '../../components/meta/page-transition'
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom';
+import Header from '@/components/ui/header'
+import searchParams from "@/components/ui/global"
 
 export default function FindClasses() {
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [showMoreOptions, setShowMoreOptions] = useState(false)
-  const [subject, setSubject] = useState('')
+  const [courseSubject, setCourseSubject] = useState('')
   const [courseNumber, setCourseNumber] = useState('')
   const [crn, setCrn] = useState('')
   const [selectedSemester, setSelectedSemester] = useState('Spring 2025')
@@ -27,17 +29,24 @@ export default function FindClasses() {
   }
 
   const toResults = () => {
-    router.push('/results', { query: { subject: subject, number: courseNumber } })
-    // setIsOverlayOpen(true)
+    if (searchTerm != '') {
+      searchParams.subject = searchTerm.split(' ')[0]
+      searchParams.number = searchTerm.split(' ')[1]
+    }
+    else {
+      searchParams.subject = courseSubject
+      searchParams.number = courseNumber
+    }
+    router.push(`/results`)
   }
 
   return (
     <PageTransition>
+      
     <div className="min-h-screen bg-blue-100 flex flex-col">
-
+    <Header showShoppingCart={true} title="Find Classes"/>
       <main className="flex-grow flex flex-col">
         <div className="bg-white p-6 shadow-md">
-          <h1 className="text-2xl font-bold text-center mb-6">Find Classes</h1>
 
           <div className="relative mb-4">
             <select
@@ -85,8 +94,8 @@ export default function FindClasses() {
             <input
               type="text"
               placeholder="Subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              value={courseSubject}
+              onChange={(e) => setCourseSubject(e.target.value)}
               className="w-full bg-white border border-gray-300 rounded-md py-2 px-4"
             />
             <input
@@ -112,15 +121,14 @@ export default function FindClasses() {
           </div>
         </div>
       </main>
-      <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
-
+      <SlideInOverlay isOpen={isOverlayOpen} title="TEST TITLE" onClose={() => setIsOverlayOpen(false)}>
           <button 
             onClick={() => setIsOverlayOpen(false)}
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
           >
             Close
           </button>
-        </SlideInOverlay>
+        </SlideInOverlay> 
     </div>
     </PageTransition>
   )

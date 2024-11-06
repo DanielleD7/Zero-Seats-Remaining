@@ -28,12 +28,9 @@ export default class StudentProfileCard extends React.Component<StudentProfilePr
   render() {
     return (
       <Card className="bg-white text-gray-800">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
+            {/* <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xl font-bold">Student Profile</CardTitle>
-              <button className="text-gray-500 hover:text-gray-700" aria-label="Close" onClick={()=>console.log("clicked x button")}>
-                <X className="h-6 w-6"/>
-              </button>
-            </CardHeader>
+            </CardHeader> */}
             <CardContent>
               <div className="flex items-center mb-4">
                 <Avatar className="h-16 w-16 mr-4">

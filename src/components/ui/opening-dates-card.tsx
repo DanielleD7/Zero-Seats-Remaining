@@ -30,12 +30,13 @@ export default function OpeningDatesCard({
   ]
 }: OpeningDatesProps) {
   return (
-    <Card className="bg-purple-100 text-gray-800 max-w-md mx-auto">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-xl font-bold">Opening Dates</CardTitle>
-        <button className="text-gray-500 hover:text-gray-700" aria-label="Close">
-          <X className="h-6 w-6" />
-        </button>
+    // <Card className="bg-purple-100 text-gray-800 max-w-md mx-auto">
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-0">
+        {/*<CardTitle className="text-xl font-bold">Opening Dates</CardTitle>*/}
+        {/*<button className="text-gray-500 hover:text-gray-700" aria-label="Close">*/}
+        {/*  <X className="h-6 w-6" />*/}
+        {/*</button>*/}
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-600 mb-4">

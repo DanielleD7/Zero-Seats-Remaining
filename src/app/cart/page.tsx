@@ -6,26 +6,14 @@ import { Button } from "@/components/ui/button"
 import CourseCard from "@/components/ui/course-card"
 import { Course, Section, Courses } from "@/components/ui/data"
 import searchParams from "@/components/ui/global"
-import PageTransition from '@/components/meta/page-transition'
-import Header from '@/components/ui/header'
 
-export default function CourseList() {
+export default function Cart() {
+
   return (
-    <PageTransition>
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
-      <Header showShoppingCart={true} title="My Courses"/>
-      {/* <header className="flex justify-between items-center p-4 bg-white">
-        <Button variant="ghost" size="icon">
-          <ChevronLeft className="h-6 w-6" />
-        </Button>
-        <h1 className="text-xl font-semibold">Search Results</h1>
-        <Button variant="ghost" size="icon">
-          <ShoppingCart className="h-6 w-6" />
-        </Button>
-      </header> */}
       <main className="p-4">
         {Courses.map((course) => (course.sections.map((section) => {
-          if (section.enrolled) {
+          if (section.inCart) {
             return <CourseCard
               section={section.id}
               days={section.days}
@@ -41,6 +29,5 @@ export default function CourseList() {
         })))}
       </main>
     </div>
-    </PageTransition>
   );
 }

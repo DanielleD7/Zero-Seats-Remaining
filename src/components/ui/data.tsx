@@ -17,6 +17,8 @@ export type Section = {
     professor: string
     seatsOpen: number
     seats: number
+    enrolled?: boolean
+    inCart?: boolean
 }
 
 export type Enroll = {
@@ -43,7 +45,7 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Instructor Not Available",
                 seatsOpen: 18,
-                seats: 24
+                seats: 24,
             },
             {
                 id: "02",
@@ -52,7 +54,9 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Stalvey, RoxAnn",
                 seatsOpen: 13,
-                seats: 24
+                seats: 24,
+                enrolled: true,
+                inCart: true
             },
             {
                 id: "03",
@@ -81,7 +85,7 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Instructor Not Available",
                 seatsOpen: 14,
-                seats: 22
+                seats: 22,
             },
             {
                 id: "02",
@@ -145,7 +149,7 @@ export const Courses: Course[] = [
             location: "HWEA 300",
             professor: "Ghosh, Kris",
             seatsOpen: 7,
-            seats: 12
+            seats: 12,
         }],
     },
     {
@@ -217,7 +221,9 @@ export const Courses: Course[] = [
             location: "HWEA 300",
             professor: "Ghosh, Kris",
             seatsOpen: 3,
-            seats: 10
+            seats: 10,
+            enrolled: true,
+            inCart: true
         }],
     },
 ]
