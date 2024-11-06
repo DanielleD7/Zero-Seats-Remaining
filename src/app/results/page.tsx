@@ -5,15 +5,27 @@ import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import CourseCard from "@/components/ui/course-card"
+
 import { Course, Section, Courses } from "@/components/ui/data"
 import searchParams from "@/components/ui/global"
 import Header from "@/components/ui/header"
 import PageTransition from '@/components/meta/page-transition'
+import CourseInfoCard from '@/components/ui/course-info-card'
+import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom'
+import StudentProfileCard from '@/components/ui/student-profile-card'
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
 
   const AddCourse = () => {}
+  const DisplayClassInfo = () => {
+    return (
+    <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+          <CourseInfoCard></CourseInfoCard>
+      </SlideInOverlay>
+    );
+  }
 
   return (
     <Card className="mb-4 bg-white">
@@ -40,7 +52,8 @@ function CourseDropdown({ course }: { course: Course }) {
                 professor={section.professor}
                 seatsOpen={section.seatsOpen}
                 seats={section.seats}
-                onAdd={AddCourse}>
+                onAdd={AddCourse}
+                openFunction={DisplayClassInfo}>
               </CourseCard>
             ))}
           </div>
