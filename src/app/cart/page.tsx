@@ -5,6 +5,7 @@ import { Class } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import CourseCard from "@/components/ui/course-card"
 import Header from '@/components/ui/header'
+import PageTransition from '@/components/meta/page-transition'
 
 export default function Cart() {
   const { user } = useUser()
