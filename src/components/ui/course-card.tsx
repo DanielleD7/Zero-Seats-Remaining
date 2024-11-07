@@ -31,8 +31,12 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         setAdded(!added)
     }
 
+    const onCardClick = () => {
+        onTouch(course.id)
+    }
+
     return (
-        <Card className="w-full max-w-xl bg-white overflow-hidden" onClick={() => {onTouch}}>
+        <Card className="w-full max-w-xl bg-white overflow-hidden" onClick={onCardClick}>
             {(showHeader) && (
                 <CardHeader className="bg-slate-100 p-3 pb-2">
                     <div className="font-semibold text-primary"> {course.id} </div>

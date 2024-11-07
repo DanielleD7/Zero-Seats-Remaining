@@ -59,7 +59,7 @@ function CourseDropdown({ course }: { course: Course }) {
               <CourseCard
                 course={course}
                 section={section}
-                onTouch={() => {DisplayClassInfo(course.id)}}
+                onTouch={DisplayClassInfo}
                 showHeader={false}
                 isAdded={false}>
               </CourseCard>
