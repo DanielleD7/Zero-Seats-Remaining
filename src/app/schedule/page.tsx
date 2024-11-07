@@ -4,113 +4,167 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronDown } from 'lucide-react'
 import Header from '@/components/ui/header'
 import PageTransition from '@/components/meta/page-transition'
-import { useUser } from "@/components/meta/context"
+import * as React from "react";
 
-type ScheduleClass = {
+interface ClassBlock {
+  id: string
   name: string
   room: string
-  day: string
-  startTime: number
-  endTime: number
-  isWaitlisted: boolean
+  startTime: string
+  endTime: string
+  days: number[]
+  isWaitlisted?: boolean
 }
 
-const semesters = ['2025 Spring', '2025 Fall', '2026 Spring', '2026 Fall']
+export default function Component() {
+  // TODO Possibly add more data to be shown in the class block and make it clickable for more details.
+  const classes: ClassBlock[] = [
+    {
+      id: "1",
+      name: "CSCI 220",
+      room: "HWEA 302",
+      startTime: "09:55",
+      endTime: "11:10",
+      days: [1, 3], // Tuesday and Thursday
+      isWaitlisted: true
+    },
+    {
+      id: "2",
+      name: "CSIS 690",
+      room: "HWEA 300",
+      startTime: "17:30",
+      endTime: "20:15",
+      days: [1], // Tuesday only
+      isWaitlisted: false
+    },
+  ]
 
-// The class blocks do not work right. Try to change it to allow 5-minute intervals.
-const classes: ScheduleClass[] = [
-  { name: 'CSCI 220', room: 'HWEA 302', day: 'T', startTime: 10, endTime: 11, isWaitlisted: false },
-  { name: 'CSCI 220', room: 'HWEA 302', day: 'H', startTime: 10, endTime: 11, isWaitlisted: false },
-  { name: 'CSIS 690', room: 'HWEA 300', day: 'T', startTime: 17, endTime: 20, isWaitlisted: false },
-]
-//   { name: 'MATH 101', room: 'MATH 201', day: 'M', startTime: 14, endTime: 15, isWaitlisted: true },
+  const semesters = ['2025 Spring', '2024 Fall', '2024 Spring', '2023 Fall']
+  const days = ["M", "T", "W", "H", "F"]
+  const hours = Array.from({ length: 16 }, (_, i) => i + 8) // 8am to 11pm
 
-export default function Schedule() {
   const [selectedSemester, setSelectedSemester] = useState(semesters[0])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  const days = ['M', 'T', 'W', 'H', 'F']
-  const hours = Array.from({ length: 16 }, (_, i) => i + 8) // 8am to 11pm
+  const getGridPosition = (time: string) => {
+    const [hours, minutes] = time.split(":").map(Number)
+    return (hours - 8) * 12 + minutes / 5
+  }
 
-  const getClassForCell = (day: string, hour: number) => {
-    return classes.find(c => c.day === day && hour >= c.startTime && hour < c.endTime)
+  const getBlockHeight = (startTime: string, endTime: string) => {
+    const start = getGridPosition(startTime)
+    const end = getGridPosition(endTime)
+    return end - start
   }
 
   return (
-    <div> <Header showShoppingCart={false} title="My Schedule" />
+      <PageTransition>
+        {/*Little Nav Bar*/}
+        <div> <Header showShoppingCart={false} title="My Schedule" />
+          <div className="max-w-4xl mx-auto p-4 bg-blue-100">
 
-    <div className="max-w-4xl mx-auto p-4 bg-blue-100">
-      
-      <div className="relative mb-4">
-        <button
-          className="w-full bg-white p-2 rounded-md flex justify-between items-center"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          {selectedSemester}
-          <ChevronDown className="w-4 h-4" />
-        </button>
-        {isDropdownOpen && (
-          <ul className="absolute w-full bg-white mt-1 rounded-md shadow-lg z-10">
-            {semesters.map((semester) => (
-              <li
-                key={semester}
-                className="p-2 hover:bg-blue-100 cursor-pointer"
-                onClick={() => {
-                  setSelectedSemester(semester)
-                  setIsDropdownOpen(false)
-                }}
+            {/*Drop Down*/}
+            <div className="relative mb-4">
+              <button
+                  className="w-full bg-white p-2 rounded-md flex justify-between items-center"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
-                {semester}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr>
-              <th className="border p-2"></th>
-              {days.map(day => (
-                <th key={day} className="border p-2">{day}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white">
-            {hours.map(hour => (
-              <tr key={hour}>
-                <td className="border p-2 whitespace-nowrap">
-                  {hour % 12 || 12}{hour < 12 ? 'am' : 'pm'}
-                </td>
-                {days.map(day => {
-                  const classInfo = getClassForCell(day, hour)
-                  return (
-                    <td key={day} className="border p-2 relative h-16">
-                      {classInfo && classInfo.startTime === hour && (
-                        <div
-                          className={`absolute inset-0 m-1 p-1 flex flex-col justify-center items-center text-xs
-                            ${classInfo.isWaitlisted
-                              ? 'bg-purple-100 border border-dashed border-purple-400'
-                              : 'bg-purple-200 border border-purple-400'}
-                          `}
-                          style={{
-                            height: `${(classInfo.endTime - classInfo.startTime) * 100}%`,
-                          }}
-                        >
-                          <div>{classInfo.name}</div>
-                          <div>{classInfo.room}</div>
-                        </div>
-                      )}
-                    </td>
-                  )
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-    </div>
+                {selectedSemester}
+                <ChevronDown className="w-4 h-4"/>
+              </button>
 
+              {isDropdownOpen && (
+                  <ul className="absolute w-full bg-white mt-1 rounded-md shadow-lg z-10">
+                    {semesters.map((semester) => (
+                        <li
+                            key={semester}
+                            className="p-2 hover:bg-blue-100 cursor-pointer"
+                            onClick={() => {
+                              setSelectedSemester(semester)
+                              setIsDropdownOpen(false)
+                            }}
+                        >
+                          {semester}
+                        </li>
+                    ))}
+                  </ul>
+              )}
+            </div>
+            {/*Drop Down END*/}
+
+            {/************ SCHEDULE ************/}
+            <div className="flex-1 overflow-hidden">
+              <div className="grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
+                {/********** Days of the week header **********/}
+                <div className="p-5"/> {/* That little rectangle in front of Monday block header,
+                TODO Need to work on figuring out alignment, it's not quite perfect. Buuutt hiding the boarder makes it look good */}
+                {days.map((day) => (
+                    <div key={day} className="p-2 text-center font-bold bg-transparent">
+                      {day}
+                    </div>
+                ))}
+              </div>
+
+              {/* Schedule Grid */}
+              <div className="relative grid grid-cols-[auto_repeat(5,1fr)] overflow-auto bg-white">
+
+                {/* Hours Column */}
+                <div className="sticky left-0 bg-white">
+                  {hours.map((hour) => (
+                      // Changing the style and class names only effects the time column,
+                      // does not affect the rest of the grid.
+                      <div
+                          key={hour}
+                          className="border-b px-1.5 py-5 text-sm"
+                          style={{height: "60px"}}
+                      >
+                        {hour % 12 || 12}
+                        {hour < 12 ? "am" : "pm"}
+                      </div>
+                  ))}
+                </div>
+
+                {/* To change the class block to match the size of the grid, you gotta do some math
+                and change sizes in multiple places in the grid.
+                Such as the time grid, the whole grid for the blocks, and the class blocks*/}
+                {/* TODO Figure that out later */}
+                {Array.from({length: 5}, (_, dayIndex) => (
+                    <div key={dayIndex} className="relative border-l">
+                      {classes
+                          .filter((cls) => cls.days.includes(dayIndex))
+                          .map((cls) => {
+                            const top = getGridPosition(cls.startTime) * 5
+                            const height = getBlockHeight(cls.startTime, cls.endTime) * 5
+                            return (
+                                <div
+                                    key={cls.id}
+                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-2 text-xs"
+                                    style={{
+                                      top: `${top}px`,
+                                      height: `${height}px`,
+                                      borderStyle: cls.isWaitlisted ? "dashed" : "solid",
+                                      background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
+                                    }}
+                                    // TODO Find a way to just change the bg color to lighter instead of opacity
+                                >
+                                  <div className="font-medium">{cls.name}</div>
+                                  <div>{cls.room}</div>
+                                </div>
+                            )
+                          })}
+                      {Array.from({length: hours.length}, (_, i) => (
+                          <div
+                              key={i}
+                              className="border-b"
+                              style={{height: "60px"}} // This is for the MAIN grid, does NOT affect the class block
+                          />
+                      ))}
+                    </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </PageTransition>
   )
 }
