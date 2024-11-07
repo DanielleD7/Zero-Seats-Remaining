@@ -19,13 +19,13 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
 
     const onButtonClick = () => {
         if (added) {
-            user!.cart = user?.cart.filter((e : Class) => {
+            user.cart = user.cart.filter((e : Class) => {
                 e.course != course || e.section != section
             })
         }
 
         else {
-            user?.cart.push({course: course, section: section})
+            user.cart.push({course: course, section: section})
         }
 
         setAdded(!added)

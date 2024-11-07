@@ -18,7 +18,7 @@ export default function CourseList() {
       <Header showShoppingCart={true} title="My Courses"/>
       
       <main className="p-4">
-        {user?.enrolled.map((e : Class) => (
+        {user.enrolled.map((e : Class) => (
           <CourseCard
             course={e.course}
             section={e.section}
@@ -30,7 +30,7 @@ export default function CourseList() {
       </main>
 
       <main className="p-4">
-        {user?.waitlist.map((e : Class) => (
+        {user.waitlist.map((e : Class) => (
           <CourseCard
             course={e.course}
             section={e.section}

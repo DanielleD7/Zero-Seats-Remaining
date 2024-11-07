@@ -13,7 +13,7 @@ export default function Cart() {
   return (
     <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
       <main className="p-4">
-        {user?.cart.map((e : Class) => (
+        {user.cart.map((e : Class) => (
           <CourseCard
             course={e.course}
             section={e.section}
