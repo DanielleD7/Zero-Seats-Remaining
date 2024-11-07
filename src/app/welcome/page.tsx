@@ -21,6 +21,7 @@ export default function Welcome() {
   const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
   const [hasRegistrationHold] = useState(true)
 
+  
   return (
     <PageTransition>
 
@@ -101,6 +102,7 @@ export default function Welcome() {
       <SlideInOverlay isOpen={isOverlayOpen} title="Student Profile" onClose={() => setIsOverlayOpen(false)}>
           <StudentProfileCard name="Regilax" studentId="346143" classLevel="Junior" avatarUrl="/lilguy.svg" programOfStudy="Computer Science B.S."></StudentProfileCard>
       </SlideInOverlay>
+      
       <SlideInOverlay isOpen={isOverlayOpenRegistrationDates} title="Registration Dates" onClose={() => setIsOverlayOpenRegistrationDates(false)}>
           <OpeningDatesCard openTime={"7:30AM"} timezone={"EST"} registrationDates={[
               { creditHours: "90+", date: "October 29", day: "Tuesday" },

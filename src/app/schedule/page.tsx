@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronDown } from 'lucide-react'
 import Header from '@/components/ui/header'
 import PageTransition from '@/components/meta/page-transition'
+import { useUser } from "@/components/meta/context"
 
-type Class = {
+type ScheduleClass = {
   name: string
   room: string
   day: string
@@ -17,7 +18,7 @@ type Class = {
 const semesters = ['2025 Spring', '2025 Fall', '2026 Spring', '2026 Fall']
 
 // The class blocks do not work right. Try to change it to allow 5-minute intervals.
-const classes: Class[] = [
+const classes: ScheduleClass[] = [
   { name: 'CSCI 220', room: 'HWEA 302', day: 'T', startTime: 10, endTime: 11, isWaitlisted: false },
   { name: 'CSCI 220', room: 'HWEA 302', day: 'H', startTime: 10, endTime: 11, isWaitlisted: false },
   { name: 'CSIS 690', room: 'HWEA 300', day: 'T', startTime: 17, endTime: 20, isWaitlisted: false },
