@@ -38,26 +38,27 @@ export type Class = {
     section: Section
 }
 
+export const defaultAccount = {
+    CWID: "00000000",
+    name: "Test",
+    email: "test@test.com",
+    password: "test",
+    rank: "test",
+    major: [""],
+    cart: [],
+    enrolled: [],
+    waitlist: [],
+    taken: []
+}
+
 export const Accounts: Account[] = [
     {
-        CWID: "00000000",
-        name: "John Doe",
-        email: "john@test.edu",
+        CWID: "34614325",
+        name: "Regilax Student",
+        email: "student@college.edu",
         password: "Password",
         rank: "Junior",
         major: ["Computer Science B.S."],
-        cart: [],
-        enrolled: [],
-        waitlist: [],
-        taken: [],
-    },
-    {
-        CWID: "00000001",
-        name: "Jane Doe",
-        email: "jane@test.edu",
-        password: "Password",
-        rank: "Sophomore",
-        major: ["Business Administration B.S."],
         cart: [],
         enrolled: [],
         waitlist: [],

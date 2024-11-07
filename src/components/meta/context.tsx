@@ -1,17 +1,17 @@
 'use client'
 
 import { createContext, useContext, useState, ReactNode } from 'react'
-import { Account } from "@/components/ui/data"
+import { Account, defaultAccount } from "@/components/ui/data"
 
 interface AccountContextType {
-    user: Account | null
-    setUser: (user: Account | null) => void
+    user: Account
+    setUser: (user: Account) => void
 }
 
-const AccountContext = createContext<AccountContextType | undefined>(undefined)
+const AccountContext = createContext<AccountContextType>({user: defaultAccount, setUser: (defaultAccount : Account) => {}})
 
 export function AccountProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<Account | null>(null)
+    const [user, setUser] = useState<Account>(defaultAccount)
 
     return (
         <AccountContext.Provider value={{ user, setUser }}>
@@ -21,9 +21,5 @@ export function AccountProvider({ children }: { children: ReactNode }) {
 }
 
 export function useUser() {
-    const context = useContext(AccountContext)
-    if (context === undefined) {
-        throw new Error('useUser must be used within a UserProvider')
-    }
-    return context
+    return useContext(AccountContext)
 }

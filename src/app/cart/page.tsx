@@ -15,15 +15,11 @@ export default function Cart() {
       <main className="p-4">
         {user?.cart.map((e : Class) => (
           <CourseCard
-            section={e.section.id}
-            days={e.section.days}
-            time={e.section.time}
-            location={e.section.location}
-            professor={e.section.professor}
-            seatsOpen={e.section.seatsOpen}
-            seats={e.section.seats}
-            code={e.course.id}
-            title={e.course.title}>
+            course={e.course}
+            section={e.section}
+            onTouch={() => {}}
+            showHeader={true}
+            isAdded={true}>
           </CourseCard>
         ))}
       </main>

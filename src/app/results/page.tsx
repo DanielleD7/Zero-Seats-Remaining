@@ -1,18 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import CourseCard from "@/components/ui/course-card"
 
-import { Course, Section, Courses } from "@/components/ui/data"
-import searchParams from "@/components/ui/global"
+import { Course, Section, Courses, Class, Account, Accounts } from "@/components/ui/data"
 import Header from "@/components/ui/header"
 import PageTransition from '@/components/meta/page-transition'
 import CourseInfoCard from '@/components/ui/course-info-card'
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom'
-import StudentProfileCard from '@/components/ui/student-profile-card'
 import { read } from '@/lib/neo4j'
 
 var classNumber = "TEST 101"
@@ -24,10 +23,8 @@ var corequisites = "None"
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const AddCourse = () => {}
-
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+  
   const DisplayClassInfo = async (courseCode : String) => {
     const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Code as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
     const params = {CourseCode: courseCode}
@@ -56,24 +53,19 @@ function CourseDropdown({ course }: { course: Course }) {
         </CardHeader>
 
         <CardContent className="px-4 pb-4">
-          {isExpanded && (
-            <div className="mt-4 space-y-4">
-              {course.sections.map((section : Section) => (
-                <CourseCard
-                  section={section.id}
-                  days={section.days}
-                  time={section.time}
-                  location={section.location}
-                  professor={section.professor}
-                  seatsOpen={section.seatsOpen}
-                  seats={section.seats}
-                  onAdd={AddCourse}
-                  code={course.subject + " " + course.number}
-                  openFunction={DisplayClassInfo}>
-                </CourseCard>
-              ))}
-            </div>
-          )}
+        {isExpanded && (
+          <div className="mt-4 space-y-4">
+            {course.sections.map((section : Section) => (
+              <CourseCard
+                course={course}
+                section={section}
+                onTouch={DisplayClassInfo}
+                showHeader={false}
+                isAdded={false}>
+              </CourseCard>
+            ))}
+          </div>
+        )}
         </CardContent>
       </Card>
       {/* TODO Implement Chex's Generic Popup System */}
@@ -85,27 +77,22 @@ function CourseDropdown({ course }: { course: Course }) {
 }
 
 export default function Results() {
+  const searchParams = useSearchParams()
+  const subject = searchParams.get('subject')
+  const number = searchParams.get('number')
+
   return (
     <PageTransition>
-    <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
-      <Header showShoppingCart={true} title="Search Results"/>
-      {/* <header className="flex justify-between items-center p-4 bg-white">
-        <Button variant="ghost" size="icon">
-          <ChevronLeft className="h-6 w-6" />
-        </Button>
-        <h1 className="text-xl font-semibold">Search Results</h1>
-        <Button variant="ghost" size="icon">
-          <ShoppingCart className="h-6 w-6" />
-        </Button>
-      </header> */}
-      <main className="p-4">
-        { Courses.filter(
-          (course : Course) => ((course.subject == searchParams.subject || searchParams.subject == '') && (course.number == searchParams.number || searchParams.number == ''))
-        ).map(
-          (course : Course) => (<CourseDropdown course={course}/>)
-        )}
-      </main>
-    </div>
+      <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
+        <Header showShoppingCart={true} title="Search Results"/>
+        <main className="p-4">
+          {Courses.filter(
+            (course : Course) => (['', course.subject].includes(subject!) && ['', course.number].includes(number!))
+          ).map(
+            (course : Course) => (<CourseDropdown course={course}/>)
+          )}
+        </main>
+      </div>
     </PageTransition>
   );
 }
