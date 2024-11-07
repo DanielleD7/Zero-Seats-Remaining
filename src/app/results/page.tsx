@@ -15,31 +15,29 @@ import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom'
 import StudentProfileCard from '@/components/ui/student-profile-card'
 import { read } from '@/lib/neo4j'
 
-
+var classNumber = "TEST 101"
+var className = "Test Class"
+var crn = "123405"
+var description = "This is a test and shouldn't appear under normal circumstances"
+var prerequisites = "None"
+var corequisites = "None"
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const AddCourse = () => {}
-  
-  var classNumber = "TEST 101"
-  var className = "Test Class"
-  var crn = "123405"
-  var description = "This is a test and shouldn't appear under normal circumstances"
-  var prerequisites = "None"
-  var corequisites = "None"
 
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
-  const DisplayClassInfo = async () => {
+  const DisplayClassInfo = async (courseCode : String) => {
     const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Number as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
-    const params = {CourseCode: "CSCI 220"}
+    const params = {CourseCode: courseCode}
     const neo4jData = await read(query, params)
     classNumber = neo4jData[0]["CourseCode"]
     className = neo4jData[0]["Name"]
     description = neo4jData[0]["Desc"]
     prerequisites = neo4jData[0]["Prereq"]
     corequisites = neo4jData[0]["Coreq"]
-    console.log(classNumber)
+    // console.log(classNumber)
     setIsOverlayOpen(true)
   }
 
@@ -70,6 +68,7 @@ function CourseDropdown({ course }: { course: Course }) {
                   seatsOpen={section.seatsOpen}
                   seats={section.seats}
                   onAdd={AddCourse}
+                  code={course.subject + " " + course.number}
                   openFunction={DisplayClassInfo}>
                 </CourseCard>
               ))}
