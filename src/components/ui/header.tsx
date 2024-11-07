@@ -38,7 +38,7 @@ export default function Header({ showShoppingCart = true, title = "" }: HeaderPr
             onClick={() => router.push('/cart')}
           >
             <ShoppingCart className="h-8 w-8" />
-            {user.cart.length && (
+            {user.cart.length > 0 && (
               <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
                 {user.cart.length}
               </span>
