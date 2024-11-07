@@ -1,3 +1,16 @@
+export type Account = {
+    CWID: string
+    name: string
+    email: string
+    password: string
+    rank: string
+    major: string[]
+    cart: Class[]
+    enrolled: Class[]
+    waitlist: Class[]
+    taken: Class[]
+}
+
 export type Course = {
     id: string
     subject: string
@@ -18,15 +31,39 @@ export type Section = {
     seatsOpen: number
     seats: number
     enrolled?: boolean
-    inCart?: boolean
 }
 
-export type Enroll = {
-    course: string
-    section: string
+export type Class = {
+    course: Course
+    section: Section
 }
 
-export const Enrollment: Enroll[] = []
+export const Accounts: Account[] = [
+    {
+        CWID: "00000000",
+        name: "John Doe",
+        email: "john@test.edu",
+        password: "Password",
+        rank: "Junior",
+        major: ["Computer Science B.S."],
+        cart: [],
+        enrolled: [],
+        waitlist: [],
+        taken: [],
+    },
+    {
+        CWID: "00000001",
+        name: "Jane Doe",
+        email: "jane@test.edu",
+        password: "Password",
+        rank: "Sophomore",
+        major: ["Business Administration B.S."],
+        cart: [],
+        enrolled: [],
+        waitlist: [],
+        taken: [],
+    }
+]
 
 export const Courses: Course[] = [
     {
@@ -45,7 +82,7 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Instructor Not Available",
                 seatsOpen: 18,
-                seats: 24,
+                seats: 24
             },
             {
                 id: "02",
@@ -54,9 +91,7 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Stalvey, RoxAnn",
                 seatsOpen: 13,
-                seats: 24,
-                enrolled: true,
-                inCart: true
+                seats: 24
             },
             {
                 id: "03",
@@ -85,7 +120,7 @@ export const Courses: Course[] = [
                 location: "HWEA 302",
                 professor: "Instructor Not Available",
                 seatsOpen: 14,
-                seats: 22,
+                seats: 22
             },
             {
                 id: "02",
@@ -149,7 +184,7 @@ export const Courses: Course[] = [
             location: "HWEA 300",
             professor: "Ghosh, Kris",
             seatsOpen: 7,
-            seats: 12,
+            seats: 12
         }],
     },
     {
@@ -221,9 +256,7 @@ export const Courses: Course[] = [
             location: "HWEA 300",
             professor: "Ghosh, Kris",
             seatsOpen: 3,
-            seats: 10,
-            enrolled: true,
-            inCart: true
+            seats: 10
         }],
     },
 ]
