@@ -14,6 +14,7 @@ export default function Welcome() {
   const router = useRouter()
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
+  
   return (
     <PageTransition>
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
@@ -78,6 +79,7 @@ export default function Welcome() {
       <SlideInOverlay isOpen={isOverlayOpen} title="Student Profile" onClose={() => setIsOverlayOpen(false)}>
           <StudentProfileCard name="Regilax" studentId="346143" classLevel="Junior" avatarUrl="/lilguy.svg" programOfStudy="Computer Science B.S."></StudentProfileCard>
       </SlideInOverlay>
+      
       <SlideInOverlay isOpen={isOverlayOpenRegistrationDates} title="Registration Dates" onClose={() => setIsOverlayOpenRegistrationDates(false)}>
           <OpeningDatesCard openTime={"7:30AM"} timezone={"EST"} registrationDates={[
               { creditHours: "90+", date: "October 29", day: "Tuesday" },
