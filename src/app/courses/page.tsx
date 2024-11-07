@@ -15,32 +15,32 @@ export default function CourseList() {
   return (
     <PageTransition>
       <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
-      <Header showShoppingCart={true} title="My Courses"/>
-      
-      <main className="p-4">
-        {user.enrolled.map((e : Class) => (
-          <CourseCard
-            course={e.course}
-            section={e.section}
-            onTouch={() => {}}
-            showHeader={true}
-            isAdded={true}>
-          </CourseCard>
-        ))}
-      </main>
+        <Header showShoppingCart={false} title="My Courses"/>
+        
+        <main className="p-4">
+          {user.enrolled.map((e : Class) => (
+            <CourseCard
+              course={e.course}
+              section={e.section}
+              onTouch={() => {}}
+              showHeader={true}
+              isAdded={true}>
+            </CourseCard>
+          ))}
+        </main>
 
-      <main className="p-4">
-        {user.waitlist.map((e : Class) => (
-          <CourseCard
-            course={e.course}
-            section={e.section}
-            onTouch={() => {}}
-            showHeader={true}
-            isAdded={true}>
-          </CourseCard>
-        ))}
-      </main>
-    </div>
+        <main className="p-4">
+          {user.waitlist.map((e : Class) => (
+            <CourseCard
+              course={e.course}
+              section={e.section}
+              onTouch={() => {}}
+              showHeader={true}
+              isAdded={true}>
+            </CourseCard>
+          ))}
+        </main>
+      </div>
     </PageTransition>
   );
 }
