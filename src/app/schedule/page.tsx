@@ -37,7 +37,6 @@ export default function Schedule() {
   }
 
   return (
-    <PageTransition>
     <div> <Header showShoppingCart={false} title="My Schedule" />
 
     <div className="max-w-4xl mx-auto p-4 bg-blue-100">
@@ -112,7 +111,6 @@ export default function Schedule() {
       </div>
     </div>
     </div>
-    </PageTransition>
 
   )
 }

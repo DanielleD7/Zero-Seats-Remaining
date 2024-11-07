@@ -12,6 +12,8 @@ import OpeningDatesCard from "@/components/ui/opening-dates-card"
 import Modal from "@/components/meta/modal"
 import HoldBanner from "@/components/ui/hold-banner"
 import { AlertTriangle } from 'lucide-react'
+import Link from "next/link"
+import { TransitionLink } from "@/components/meta/transition-link"
 
 const handleBannerClick = () => {}
 
@@ -23,8 +25,7 @@ export default function Welcome() {
 
   
   return (
-    <PageTransition>
-
+    <div>
 
 
     {hasRegistrationHold && <Modal
@@ -63,26 +64,28 @@ export default function Welcome() {
             </button>
 
             <div className="space-y-4">
-                <Button variant="default"
+            <TransitionLink href="find-classes" mode="left"><Button variant="default"
                         className="w-full flex items-center justify-center font-bold text-black bg-[#BAC8F4] hover:bg-[#AABCF4]"
-                        onClick={() => router.push('/find-classes')}>
+                        >
                     <Image src='/search-icon.svg' alt="Search" width={16} height={16} className="mr-2"/>
                     Class Search
-                </Button>
+                </Button></TransitionLink>
 
+            <TransitionLink href="courses" mode="left">
                 <Button variant="default"
-                        className="w-full flex items-center justify-center font-bold text-black bg-[#BAC8F4] hover:bg-[#AABCF4]"
-                        onClick={() => router.push('/courses')}>
+                        className="w-full flex items-center justify-center font-bold text-black bg-[#BAC8F4] hover:bg-[#AABCF4] mt-4"
+                        >
                     <Image src='/my-courses-icon.svg' alt="My Courses" width={25} height={25} className="mr-2"/>
                     My Courses
                 </Button>
+            </TransitionLink>
 
-                <Button variant="default"
-                        className="w-full flex items-center justify-center font-bold text-black bg-[#BAC8F4] hover:bg-[#AABCF4]"
-                        onClick={() => router.push('/schedule')}>
+                <TransitionLink href="schedule" mode="top"><Button variant="default"
+                        className="w-full flex items-center justify-center font-bold text-black bg-[#BAC8F4] hover:bg-[#AABCF4] mt-4"
+                        >
                     <Image src='/calendar-icon.svg' alt="Schedule" width={25} height={25} className="mr-2"/>
                     Schedule
-                </Button>
+                </Button></TransitionLink>
             </div>
         </div>
 
@@ -117,7 +120,7 @@ export default function Welcome() {
       </SlideInOverlay>
     </div>
 
+    </div>
 
-    </PageTransition>
   )
 }

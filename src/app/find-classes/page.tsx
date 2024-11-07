@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation'
 import React from 'react';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import PageTransition from '../../components/meta/page-transition'
+import { usePageTransition } from '@/components/meta/transition-link';
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom';
 import Header from '@/components/ui/header'
-import searchParams from "@/components/ui/global"
 
 export default function FindClasses() {
   const router = useRouter()
@@ -24,12 +24,15 @@ export default function FindClasses() {
     "Spring 2025", "Fall 2024", "Spring 2024", "Fall 2023", "Spring 2023", "Fall 2022"
   ]
 
+
   const toResults = () => {
-    router.push(`/results?subject=${courseSubject.toUpperCase()}&number=${courseNumber.toUpperCase()}`)
+    const transition = usePageTransition()
+    transition(router, `/results?subject=${courseSubject.toUpperCase()}&number=${courseNumber.toUpperCase()}`, "left");
+    // router.push(`/results?subject=${courseSubject.toUpperCase()}&number=${courseNumber.toUpperCase()}`)
   }
 
   return (
-    <PageTransition>
+    // <PageTransition>
       <div className="min-h-screen bg-blue-100 flex flex-col">
       
       <Header showShoppingCart={true} title="Find Classes"/>
@@ -121,6 +124,6 @@ export default function FindClasses() {
             </button>
         </SlideInOverlay> 
       </div>
-    </PageTransition>
+    // </PageTransition>
   )
 }

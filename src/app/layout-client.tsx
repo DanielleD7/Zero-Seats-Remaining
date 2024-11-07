@@ -1,17 +1,26 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 export default function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      {/* Key is important for AnimatePresence to track route changes */}
-      <div key={pathname}>
+    <AnimatePresence mode="wait" >
+      <motion.main
+            key={pathname}
+          >
+      <div>
         {children}
       </div>
+      </motion.main>
     </AnimatePresence>
   );
 }
+
+{/* <AnimatePresence mode="wait">
+          
+            {children}
+          </motion.main>
+        </AnimatePresence> */}

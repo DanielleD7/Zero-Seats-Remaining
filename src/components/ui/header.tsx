@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ChevronLeft, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useUser } from "@/components/meta/context"
+import { TransitionLink } from '../meta/transition-link'
 
 interface HeaderProps {
   showShoppingCart?: boolean
@@ -19,14 +20,14 @@ export default function Header({ showShoppingCart = true, title = "" }: HeaderPr
     <header className="bg-background border-b h-16">
       <div className="container h-full flex items-center justify-between">
         <div className="flex items-center">
-          <Button
+          <TransitionLink href="PREV_PAGE" mode="right"><Button
             variant="ghost"
             size="icon"
-            onClick={() => router.back()}
+            
             aria-label="Go back"
           >
             <ChevronLeft className="h-6 w-6" />
-          </Button>
+          </Button></TransitionLink>
           <h1 className="ml-4 text-lg font-semibold">{title}</h1>
         </div>
         {showShoppingCart && (
