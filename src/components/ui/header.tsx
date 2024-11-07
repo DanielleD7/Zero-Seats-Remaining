@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useUser } from "@/components/meta/context"
 
 interface HeaderProps {
   showShoppingCart?: boolean
@@ -11,8 +12,8 @@ interface HeaderProps {
 }
 
 export default function Header({ showShoppingCart = true, title = "" }: HeaderProps) {
+  const { user } = useUser()
   const router = useRouter()
-  const [cartItemsCount, setCartItemsCount] = useState(3) // Example initial count
 
   return (
     <header className="bg-background border-b h-16">
@@ -33,13 +34,13 @@ export default function Header({ showShoppingCart = true, title = "" }: HeaderPr
             variant="ghost"
             size="icon"
             className="relative p-0 pr-5"
-            aria-label={`Shopping cart with ${cartItemsCount} items`}
+            aria-label={`Shopping cart with ${user.cart.length} items`}
             onClick={() => router.push('/cart')}
           >
             <ShoppingCart className="h-8 w-8" />
-            {cartItemsCount > 0 && (
+            {user.cart.length && (
               <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
-                {cartItemsCount}
+                {user.cart.length}
               </span>
             )}
           </Button>
