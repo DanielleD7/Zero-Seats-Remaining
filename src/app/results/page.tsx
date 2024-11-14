@@ -22,18 +22,23 @@ var prerequisites = "None"
 var corequisites = "None"
 
 function CourseDropdown({ course }: { course: Course }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false)
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   
   const DisplayClassInfo = async (courseCode : String) => {
-    const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Code as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
+    //const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Code as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
+    
+    const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c;"
     const params = {CourseCode: courseCode}
     const neo4jData = await read(query, params)
-    classNumber = neo4jData[0]["CourseCode"]
-    className = neo4jData[0]["Name"]
-    description = neo4jData[0]["Desc"]
-    prerequisites = neo4jData[0]["Prereq"]
-    corequisites = neo4jData[0]["Coreq"]
+
+    console.log(neo4jData)
+
+    // classNumber = neo4jData[0]["CourseCode"]
+    // className = neo4jData[0]["Name"]
+    // description = neo4jData[0]["Desc"]
+    // prerequisites = neo4jData[0]["Prereq"]
+    // corequisites = neo4jData[0]["Coreq"]
     // console.log(classNumber)
     setIsOverlayOpen(true)
   }
