@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Account, Accounts } from "@/components/ui/data"
+import { Account, Accounts, Class, Course, Section } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import Image from 'next/image'
 
@@ -18,12 +18,13 @@ export default function Login() {
     e.preventDefault()
     const query = `MATCH (c:Profile) RETURN c;`
     const neo4jData = await read(query)
-    console.log(neo4jData)
-    neo4jData.forEach((record)=>{
-      const node = record.c;
-      const properties = node.properties
-      console.log(properties)
-      let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major'], cart: [], enrolled: [], waitlist: [], taken: []}
+    //console.log(neo4jData)
+    neo4jData.forEach(async (record)=>{
+      const nodeProfile = record.c;
+      const properties = nodeProfile.properties
+      //console.log(properties)
+      let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + " " + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major']}
+      //console.log(account)
       if(account.email == email && account.password == password) {
         setUser(account)
         router.push('/welcome')

@@ -5,10 +5,6 @@ export type Account = {
     password: string
     rank: string
     major: string[]
-    cart: Class[]
-    enrolled: Class[]
-    waitlist: Class[]
-    taken: Class[]
 }
 
 export type Course = {
@@ -59,10 +55,6 @@ export const Accounts: Account[] = [
         password: "Password",
         rank: "Junior",
         major: ["Computer Science B.S."],
-        cart: [],
-        enrolled: [],
-        waitlist: [],
-        taken: [],
     }
 ]
 
