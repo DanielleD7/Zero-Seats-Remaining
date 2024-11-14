@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import CourseCard from "@/components/ui/course-card"
@@ -14,30 +14,43 @@ export default function CourseList() {
   
   return (
     <PageTransition>
-      <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
+      <div className="max-w-md mx-auto bg-gray-100 min-h-screen dyslexia-font">
+        <style jsx global>{` @font-face {
+          font-family: 'Dyslexia Font';
+          src: url('/Dyslexia_Font.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        .dyslexia-font {
+          font-family: 'Dyslexia Font', sans-serif;
+        } `}</style>
+
         <Header showShoppingCart={false} title="My Courses"/>
-        
+
         <main className="p-4">
-          {user.enrolled.map((e : Class) => (
-            <CourseCard
-              course={e.course}
-              section={e.section}
-              onTouch={() => {}}
-              showHeader={true}
-              isAdded={true}>
-            </CourseCard>
+          {user.enrolled.map((e: Class) => (
+              <CourseCard
+                  course={e.course}
+                  section={e.section}
+                  onTouch={() => {
+                  }}
+                  showHeader={true}
+                  isAdded={true}>
+              </CourseCard>
           ))}
         </main>
 
         <main className="p-4">
-          {user.waitlist.map((e : Class) => (
-            <CourseCard
-              course={e.course}
-              section={e.section}
-              onTouch={() => {}}
-              showHeader={true}
-              isAdded={true}>
-            </CourseCard>
+          {user.waitlist.map((e: Class) => (
+              <CourseCard
+                  course={e.course}
+                  section={e.section}
+                  onTouch={() => {
+                  }}
+                  showHeader={true}
+                  isAdded={true}>
+              </CourseCard>
           ))}
         </main>
       </div>
