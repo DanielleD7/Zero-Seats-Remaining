@@ -14,7 +14,7 @@ import CourseInfoCard from '@/components/ui/course-info-card'
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom'
 import { read } from '@/lib/neo4j'
 
-const [infoCourse, setInfoCourse] = useState({})
+// const [infoCourse, setInfoCourse] = useState({})
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false)
