@@ -28,11 +28,10 @@ function CourseDropdown({ course }: { course: Course }) {
   const DisplayClassInfo = async (courseCode : String) => {
     //const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Code as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
     
-    const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c;"
-    const params = {CourseCode: courseCode}
-    const neo4jData = await read(query, params)
+    const query = `MATCH (c:Course {Course_Code: ${courseCode}}) RETURN c;`
+    const neo4jData = await read(query)
 
-    console.log(neo4jData)
+    console.log(neo4jData[0])
 
     // classNumber = neo4jData[0]["CourseCode"]
     // className = neo4jData[0]["Name"]
