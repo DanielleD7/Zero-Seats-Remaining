@@ -19,16 +19,20 @@ import { read } from '@/lib/neo4j'
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+
+  const [infoCourse, setInfoCourse] = useState({})
   
   const DisplayClassInfo = async (courseCode : String) => {
     //const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Code as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
     
-    const query = `MATCH (c:Course {Course_Code: "${courseCode}"}) RETURN c;`
-    const neo4jData = await read(query)
+    let query = `MATCH (c:Course {Course_Code: "${courseCode}"}) RETURN c;`
+    let results = await read(query)
 
     // setInfoCourse(neo4jData[0].properties)
-    let text = JSON.stringify(neo4jData[0], null, 4);
-    console.log(text)
+    // let text = JSON.stringify(results[0], null, 4);
+    // console.log(text)
+
+    setInfoCourse(results[0].c.properties)
 
     // classNumber = neo4jData[0]["CourseCode"]
     // className = neo4jData[0]["Name"]
@@ -81,6 +85,9 @@ export default function Results() {
   const searchParams = useSearchParams()
   const subject = searchParams.get('subject')
   const number = searchParams.get('number')
+
+
+  let query = `MATCH (course:Course {Subject: "CSIS"}) RETURN course`
 
   return (
     <PageTransition>

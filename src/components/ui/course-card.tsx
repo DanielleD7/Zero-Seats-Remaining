@@ -36,7 +36,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
     }
 
     return (
-        <Card className="w-full max-w-xl bg-white overflow-hidden" onClick={onCardClick}>
+        <Card className="w-full max-w-xl bg-white overflow-hidden">
             {(showHeader) && (
                 <CardHeader className="bg-slate-100 p-3 pb-2">
                     <div className="font-semibold text-primary"> {course.id} </div>
@@ -47,7 +47,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
             <div className="flex items-stretch gap-4 p-4">
                 <div className="text-4xl font-bold min-w-[3rem] flex items-center justify-center pr-4 border-r border-gray-200"> {section.id} </div>
                 
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col" onClick={onCardClick}>
                     <div className="flex justify-between items-start mb-2">
                         <div className="flex gap-2 text-sm mb-1">
                             { section.days.map((day, index) => (<span key={index} className="font-medium"> {day} </span>)) }
