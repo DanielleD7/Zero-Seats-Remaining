@@ -5,10 +5,10 @@ export type Account = {
     password: string
     rank: string
     major: string[]
-    cart?: Section[]
-    enrolled?: Section[]
-    waitlist?: Section[]
-    taken?: Section[]
+    cart: Section[]
+    enrolled: Section[]
+    waitlist: Section[]
+    taken: Section[]
 }
 
 export type Course = {
