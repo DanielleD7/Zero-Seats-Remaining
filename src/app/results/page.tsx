@@ -14,12 +14,7 @@ import CourseInfoCard from '@/components/ui/course-info-card'
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom'
 import { read } from '@/lib/neo4j'
 
-var classNumber = "TEST 101"
-var className = "Test Class"
-var crn = "123405"
-var description = "This is a test and shouldn't appear under normal circumstances"
-var prerequisites = "None"
-var corequisites = "None"
+const [infoCourse, setInfoCourse] = useState()
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -31,7 +26,8 @@ function CourseDropdown({ course }: { course: Course }) {
     const query = `MATCH (c:Course {Course_Code: "${courseCode}"}) RETURN c;`
     const neo4jData = await read(query)
 
-    console.log(neo4jData[0])
+    setInfoCourse(neo4jData[0].properties)
+    console.log(neo4jData[0].properties)
 
     // classNumber = neo4jData[0]["CourseCode"]
     // className = neo4jData[0]["Name"]
