@@ -27,7 +27,7 @@ function CourseDropdown({ course }: { course: Course }) {
     const neo4jData = await read(query)
 
     // setInfoCourse(neo4jData[0].properties)
-    console.log(neo4jData[0])
+    console.log(neo4jData[0].c)
 
     // classNumber = neo4jData[0]["CourseCode"]
     // className = neo4jData[0]["Name"]
