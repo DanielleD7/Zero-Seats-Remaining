@@ -16,6 +16,8 @@ interface ClassBlock {
   isWaitlisted?: boolean
 }
 
+// TODO Try to have the nav stay at the top
+// TODO Pop up with more info on the class
 export default function Component() {
   // TODO Possibly add more data to be shown in the class block and make it clickable for more details.
   const classes: ClassBlock[] = [
@@ -60,8 +62,20 @@ export default function Component() {
   return (
       <PageTransition>
         {/*Little Nav Bar*/}
-        <div> <Header showShoppingCart={false} title="My Schedule" />
-          <div className="max-w-4xl mx-auto p-4 bg-blue-100">
+        <div className="dyslexia-font">
+          <style jsx global>{` @font-face {
+                font-family: 'Dyslexia Font';
+                src: url('/Dyslexia_Font.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            .dyslexia-font {
+                font-family: 'Dyslexia Font', sans-serif;
+            } `}</style>
+
+          <Header showShoppingCart={false} title="My Schedule"/>
+          <div className="max-w-4xl mx-auto p-4 bg-[#E3E9FA]">
 
             {/*Drop Down*/}
             <div className="relative mb-4">
@@ -96,7 +110,8 @@ export default function Component() {
             <div className="flex-1 overflow-hidden">
               <div className="grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
                 {/********** Days of the week header **********/}
-                <div className="p-5"/> {/* That little rectangle in front of Monday block header,
+                <div className="p-5"/>
+                {/* That little rectangle in front of Monday block header,
                 TODO Need to work on figuring out alignment, it's not quite perfect. Buuutt hiding the boarder makes it look good */}
                 {days.map((day) => (
                     <div key={day} className="p-2 text-center font-bold bg-transparent">
@@ -138,17 +153,20 @@ export default function Component() {
                             return (
                                 <div
                                     key={cls.id}
-                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-2 text-xs"
+                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-2 text-xs font-bold flex-col"
                                     style={{
                                       top: `${top}px`,
                                       height: `${height}px`,
+                                      // paddingTop: `${height/4}px`, // causes problems when it gets smaller
                                       borderStyle: cls.isWaitlisted ? "dashed" : "solid",
                                       background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
                                     }}
-                                    // TODO Find a way to just change the bg color to lighter instead of opacity
                                 >
-                                  <div className="font-medium">{cls.name}</div>
+                                  {/*<div className="font-bold">*/}
+                                  <div>{cls.name}</div>
                                   <div>{cls.room}</div>
+                                  {/*<div>{cls.startTime}-{cls.endTime}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                             )
                           })}
