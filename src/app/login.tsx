@@ -1,5 +1,5 @@
 'use client'
-
+import { read } from '@/lib/neo4j'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
@@ -14,14 +14,29 @@ export default function Login() {
   const router = useRouter()
   const { setUser } = useUser()
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    let account = Accounts.filter((account : Account) => (account.email == email && account.password == password))
+    const query = `MATCH (c:Profile) RETURN c;`
+    const neo4jData = await read(query)
+    console.log(neo4jData)
+    neo4jData.forEach((record)=>{
+      const node = record.c;
+      const properties = node.properties
+      console.log(properties)
+      let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major'], cart: [], enrolled: [], waitlist: [], taken: []}
+      if(account.email == email && account.password == password) {
+        setUser(account)
+        router.push('/welcome')
+      }
+    })
 
-    if (account.length) {
-      setUser(account[0])
-      router.push('/welcome')
-    }
+
+    // let account = Accounts.filter((account : Account) => (account.email == email && account.password == password))
+
+    // if (account.length) {
+    //   setUser(account[0])
+    //   router.push('/welcome')
+    // }
   }
 
   return (
