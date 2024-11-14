@@ -70,7 +70,7 @@ function CourseDropdown({ course }: { course: Course }) {
       </Card>
       {/* TODO Implement Chex's Generic Popup System */}
       <SlideInOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
-        <CourseInfoCard className={className} classNumber={classNumber} crn={crn} description={description} prerequisites={prerequisites} corequisites={corequisites}></CourseInfoCard>
+        <CourseInfoCard className={"Test"} classNumber={"Test"} crn={"Test"} description={"Test"} prerequisites={"Test"} corequisites={"Test"}></CourseInfoCard>
       </SlideInOverlay>
     </div>
   )
