@@ -26,7 +26,7 @@ function CourseDropdown({ course }: { course: Course }) {
     const query = `MATCH (c:Course {Course_Code: "${courseCode}"}) RETURN c;`
     const neo4jData = await read(query)
 
-    setInfoCourse(neo4jData[0].properties)
+    // setInfoCourse(neo4jData[0].properties)
     console.log(neo4jData[0].properties)
 
     // classNumber = neo4jData[0]["CourseCode"]
