@@ -32,25 +32,27 @@ export default function OpeningDatesCard({
   return (
     // <Card className="bg-purple-100 text-gray-800 max-w-md mx-auto">
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-0">
+      <CardHeader className="flex flex-row items-center justify-between">
         {/*<CardTitle className="text-xl font-bold">Opening Dates</CardTitle>*/}
         {/*<button className="text-gray-500 hover:text-gray-700" aria-label="Close">*/}
         {/*  <X className="h-6 w-6" />*/}
         {/*</button>*/}
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-center text-sm text-gray-600 mb-4">
           Opens at {openTime} {timezone}.
         </p>
-        <div className="grid grid-cols-[auto,auto,1fr] gap-2 items-center">
-          <div className="font-semibold col-span-2">Earned credit hours</div>
-          <div className="font-semibold">Registration available on</div>
+        
+        <div className="grid grid-cols-[auto,auto,1fr] gap-2 items-center ">
+          <div className="text-sm font-semibold col-span-2" style={{textAlign: "right"}}>Earned credit hours</div>
+          <div className="text-sm font-semibold text-center">Available on</div>
+          
           {registrationDates.map((item, index) => (
             <React.Fragment key={index}>
-              <div className="text-right pr-2">{item.creditHours}</div>
+              <div className={`text-center pr-2`}>{item.creditHours}</div>
               <ArrowRight className="h-4 w-4" />
               <div>
-                {item.date} <span className="text-gray-500">({item.day})</span>
+                {item.date} <span className={`text-gray-500`}>({item.day})</span>
               </div>
             </React.Fragment>
           ))}

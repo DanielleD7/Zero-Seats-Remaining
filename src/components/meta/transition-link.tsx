@@ -27,12 +27,12 @@ export const usePageTransition = () => {
       await sleep(170)
   
       if (href !== 'PREV_PAGE') {
-        router.push(href)
+        await router.push(href)
       } else {
-        router.back()
+        await router.back()
       }
   
-      await sleep(160)
+      await sleep(500)
   
       body.classList.add(`page-transition-${mode}2`)
       await sleep(20)

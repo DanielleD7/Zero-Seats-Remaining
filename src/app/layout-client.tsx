@@ -7,15 +7,11 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait" >
-      <motion.main
-            key={pathname}
-          >
+
       <div>
         {children}
       </div>
-      </motion.main>
-    </AnimatePresence>
+
   );
 }
 

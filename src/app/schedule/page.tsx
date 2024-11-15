@@ -60,8 +60,9 @@ export default function Component() {
   }
 
   return (
-      <PageTransition>
-        {/*Little Nav Bar*/}
+       
+    <div className="max-h-screen overflow-auto">
+           {/*Little Nav Bar*/}
         <div className="dyslexia-font">
           <style jsx global>{` @font-face {
                 font-family: 'Dyslexia Font';
@@ -183,6 +184,6 @@ export default function Component() {
             </div>
           </div>
         </div>
-      </PageTransition>
+      </div>
   )
 }
