@@ -31,12 +31,14 @@ export default function CourseList() {
         <main className="p-4">
           {user.enrolled.map((e: Class) => (
               <CourseCard
-                  course={e.course}
-                  section={e.section}
-                  onTouch={() => {
-                  }}
-                  showHeader={true}
-                  isAdded={true}>
+              course={e.course}
+              section={e.section}
+              onTouch={() => {
+              } }
+              showHeader={true}
+              isAdded={true} modal={function (): void {
+                throw new Error('Function not implemented.')
+              } }>
               </CourseCard>
           ))}
         </main>
@@ -44,12 +46,14 @@ export default function CourseList() {
         <main className="p-4">
           {user.waitlist.map((e: Class) => (
               <CourseCard
-                  course={e.course}
-                  section={e.section}
-                  onTouch={() => {
-                  }}
-                  showHeader={true}
-                  isAdded={true}>
+              course={e.course}
+              section={e.section}
+              onTouch={() => {
+              } }
+              showHeader={true}
+              isAdded={true} modal={function (): void {
+                throw new Error('Function not implemented.')
+              } }>
               </CourseCard>
           ))}
         </main>

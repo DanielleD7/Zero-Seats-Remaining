@@ -11,11 +11,15 @@ interface CourseCardProps {
     onTouch: (code : string) => void
     showHeader: boolean
     isAdded: boolean
+    modal: () => void
 }
 
-export default function CourseCard({course, section, onTouch, showHeader, isAdded}: CourseCardProps) {
+export default function CourseCard({course, section, onTouch, showHeader, isAdded, modal}: CourseCardProps) {
     const { user } = useUser()
     const [ added, setAdded ] = useState(isAdded)
+
+    
+
 
     const onButtonClick = () => {
         if (added) {
@@ -25,10 +29,11 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         }
 
         else {
-            user.cart.push({course: course, section: section})
+            modal()
+            //user.cart.push({course: course, section: section})
         }
 
-        setAdded(!added)
+        // setAdded(!added)
     }
 
     const onCardClick = () => {
@@ -43,6 +48,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
                     <div className="text-sm text-muted-foreground"> {course.title} </div>
                 </CardHeader>
             )}
+      
       
             <div className="flex items-stretch gap-4 p-4">
                 <div className="text-4xl font-bold min-w-[3rem] flex items-center justify-center pr-4 border-r border-gray-200"> {section.id} </div>

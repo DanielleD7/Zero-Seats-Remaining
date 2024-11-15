@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { UserCircle } from "lucide-react"
 import { useState } from "react"
 import Image from 'next/image'
+import { Card, CardContent } from "@/components/ui/card"
 import PageTransition from '../../components/meta/page-transition'
 import SlideInOverlay from "@/components/meta/slide-in-overlay-bottom"
 import StudentProfileCard from "@/components/ui/student-profile-card"
@@ -17,12 +18,37 @@ import { TransitionLink } from "@/components/meta/transition-link"
 
 const handleBannerClick = () => {}
 
+const myClassesOnClick = () => {
+
+}
+
+const homeOnClick = () => {
+    
+}
+
+// This is a mock array! It can/should be configured to lookup real data in the full app.
+const classData = [
+    {
+      className: "Computer Programming I Lab",
+      sectionNumber: "CSCI 220L-03",
+      meetingTime: "MWF @ 10:00 - 10:50AM",
+      professor: "Dr. Roxanne Stalvey"
+    },
+    {
+      className: "Calculus I",
+      sectionNumber: "MATH201-02",
+      meetingTime: "TTh 2:00 PM - 3:45 PM",
+      professor: "Prof. John Doe"
+    }
+  ]
+
 export default function Welcome() {
   const router = useRouter()
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
   const [hasRegistrationHold] = useState(true)
 
+  
   return (
     <div>
     {hasRegistrationHold && <Modal
@@ -38,28 +64,17 @@ export default function Welcome() {
       </div>
     </Modal>}
 
-        <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4 dyslexia-font">
-            <style jsx global>{` @font-face {
-                font-family: 'Dyslexia Font';
-                src: url('/Dyslexia_Font.ttf') format('truetype');
-                font-weight: normal;
-                font-style: normal;
-            }
-
-            .dyslexia-font {
-                font-family: 'Dyslexia Font', sans-serif;
-            } `}</style>
-
-            <style jsx>{` @font-face {
-                font-family: 'Playwrite US Trad';
-                src: url('/PlaywriteUSTrad-VariableFont_wght.ttf') format('truetype');
-                font-weight: normal;
-                font-style: normal;
-            }
-
-            .playwrite-font {
-                font-family: 'Playwrite US Trad', sans-serif;
-            } `}</style>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
+        <style jsx>{` @font-face {
+              font-family: 'Playwrite US Trad';
+              src: url('/PlaywriteUSTrad-VariableFont_wght.ttf') format('truetype');
+              font-weight: normal;
+              font-style: normal; 
+        } 
+        
+        .playwrite-font {
+              font-family: 'Playwrite US Trad', sans-serif;
+        } `}</style>
 
             <div className="w-full max-w-md space-y-8">
                 <h1 className="text-5xl text-center playwrite-font">Welcome</h1>

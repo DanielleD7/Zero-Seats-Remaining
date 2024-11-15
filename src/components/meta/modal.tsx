@@ -1,15 +1,3 @@
-// USAGE INSTRUCTIONS:
-// import Modal from "@/components/meta/modal"
-// then include a <Modal /> element anywhere:
-//
-// <Modal 
-//   title = "HEADER TEXT"
-//   variant = "default"|"destructive"
-//   trigger = {clickableElement} {*/ like "<a>click me!!</a>" /*}
-//   defaultOpen = false {*/ whether the popup opens automatically /*}
-// />
-//
-
 "use client"
 
 import { X } from "lucide-react"
@@ -33,13 +21,18 @@ interface ModalProps {
   defaultOpen?: boolean
 }
 
-export default function Modal({
+export interface ModalRef {
+  open: () => void
+  close: () => void
+}
+
+const Modal = React.forwardRef<ModalRef, ModalProps>(({
   title = "Registration Hold",
   children,
   trigger,
   variant = "default",
   defaultOpen = false,
-}: ModalProps) {
+}, ref) => {
   const [open, setOpen] = React.useState(defaultOpen)
 
   React.useEffect(() => {
@@ -50,7 +43,13 @@ export default function Modal({
 
   const headerClass = variant === "destructive" ? "bg-destructive text-destructive-foreground" : "bg-background text-foreground"
 
+  const handleOpen = React.useCallback(() => setOpen(true), [])
   const handleClose = React.useCallback(() => setOpen(false), [])
+
+  React.useImperativeHandle(ref, () => ({
+    open: handleOpen,
+    close: handleClose,
+  }))
 
   return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -82,4 +81,8 @@ export default function Modal({
         </DialogContent>
       </Dialog>
   )
-}
+})
+
+Modal.displayName = "Modal"
+
+export default Modal

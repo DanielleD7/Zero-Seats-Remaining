@@ -13,9 +13,18 @@ import PageTransition from '@/components/meta/page-transition'
 import CourseInfoCard from '@/components/ui/course-info-card'
 import SlideInOverlay from '@/components/meta/slide-in-overlay-bottom'
 import { read } from '@/lib/neo4j'
-import * as React from "react";
+import GoToCartFAB from '@/components/ui/cart-fab' 
+import Modal, { ModalRef } from '@/components/meta/modal'
+import React from 'react'
 
-// const [infoCourse, setInfoCourse] = useState({})
+var classNumber = "TEST 101"
+var className = "Test Class"
+var crn = "123405"
+var description = "This is a test and shouldn't appear under normal circumstances"
+var prerequisites = "None"
+var corequisites = "None"
+
+var confirmModalUp = false;
 
 function CourseDropdown({ course }: { course: Course }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -44,6 +53,18 @@ function CourseDropdown({ course }: { course: Course }) {
     setIsOverlayOpen(true)
   }
 
+  
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  // const [modal, setModal] = useState(false)
+  const waitlistConfirmationModal = () => {
+    confirmModalUp = true;
+  }
+  const modalRef = React.useRef<ModalRef>(null)
+
+  const openModal = () => {
+    modalRef.current?.open()
+  }
+  
   return (
       <div className="dyslexia-font">
         <style jsx global>{` @font-face {
@@ -57,7 +78,18 @@ function CourseDropdown({ course }: { course: Course }) {
           font-family: 'Dyslexia Font', sans-serif;
         } `}</style>
 
-        <Card className="mb-4 bg-white">
+  
+      <Modal 
+        ref={modalRef}
+        title="Function Triggered Modal"
+
+      >
+        <div className="p-4">
+          <p>This modal was opened using a function call!</p>
+        </div>
+      </Modal>
+      
+      <Card className="mb-4 bg-white">
           <CardHeader className="p-4 flex flex-row items-center justify-between">
             <div className="flex flex-col">
               <CardTitle className="text-lg font-bold"> {course.id} </CardTitle>
@@ -78,7 +110,8 @@ function CourseDropdown({ course }: { course: Course }) {
                           section={section}
                           onTouch={DisplayClassInfo}
                           showHeader={false}
-                          isAdded={false}>
+                          isAdded={false}
+                modal={openModal}>
                       </CourseCard>
                   ))}
                 </div>
@@ -99,8 +132,6 @@ export default function Results() {
   const subject = searchParams.get('subject')
   const number = searchParams.get('number')
 
-
-  let query = `MATCH (course:Course {Subject: "CSIS"}) RETURN course`
 
   return (
       <PageTransition>
