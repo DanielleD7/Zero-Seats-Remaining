@@ -16,8 +16,8 @@ export default function Cart() {
   }
 
   return (
-    <PageTransition>
-      <div className="max-w-md mx-auto bg-gray-100 min-h-screen dyslexia-font">
+    <div className="max-h-screen overflow-auto">
+      <div className="mx-auto bg-gray-100 min-h-screen dyslexia-font">
         <style jsx global>{` @font-face {
           font-family: 'Dyslexia Font';
           src: url('/Dyslexia_Font.ttf') format('truetype');
@@ -34,16 +34,18 @@ export default function Cart() {
         <main className="p-4">
           {user.cart.map((e: Class) => (
               <CourseCard
-                  course={e.course}
-                  section={e.section}
-                  onTouch={() => {
-                  }}
-                  showHeader={true}
-                  isAdded={true}>
+              course={e.course}
+              section={e.section}
+              onTouch={() => {
+              } }
+              showHeader={true}
+              isAdded={true} modal={function (callback: () => void): void {
+                throw new Error("Function not implemented.")
+              } }>
               </CourseCard>
           ))}
         </main>
       </div>
-    </PageTransition>
+    </div>
   );
 }

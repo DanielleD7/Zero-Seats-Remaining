@@ -60,8 +60,9 @@ export default function Component() {
   }
 
   return (
-      <PageTransition>
-        {/*Little Nav Bar*/}
+       
+    <div className="max-h-screen overflow-auto">
+           {/*Little Nav Bar*/}
         <div className="dyslexia-font">
           <style jsx global>{` @font-face {
                 font-family: 'Dyslexia Font';
@@ -108,7 +109,7 @@ export default function Component() {
 
             {/************ SCHEDULE ************/}
             <div className="flex-1 overflow-hidden">
-              <div className="grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
+              <div className="z-10 grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
                 {/********** Days of the week header **********/}
                 <div className="p-5"/>
                 {/* That little rectangle in front of Monday block header,
@@ -183,6 +184,6 @@ export default function Component() {
             </div>
           </div>
         </div>
-      </PageTransition>
+      </div>
   )
 }

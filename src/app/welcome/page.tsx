@@ -10,11 +10,13 @@ import PageTransition from '../../components/meta/page-transition'
 import SlideInOverlay from "@/components/meta/slide-in-overlay-bottom"
 import StudentProfileCard from "@/components/ui/student-profile-card"
 import OpeningDatesCard from "@/components/ui/opening-dates-card"
-import Modal from "@/components/meta/modal"
+import Modal, { ModalRef } from '@/components/meta/modal'
 import HoldBanner from "@/components/ui/hold-banner"
 import { AlertTriangle } from 'lucide-react'
 import Link from "next/link"
 import { TransitionLink } from "@/components/meta/transition-link"
+import React from "react"
+import ProfileIcon from "@/components/ui/profile-icon"
 
 const handleBannerClick = () => {}
 
@@ -48,6 +50,14 @@ export default function Welcome() {
   const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
   const [hasRegistrationHold] = useState(true)
 
+  const modalRef = React.useRef<ModalRef>(null)
+
+  const openModal = () => {
+    modalRef.current?.open()
+  }
+  const closeModal = () => {
+    modalRef.current?.close()
+  }
   
   return (
     <div>
@@ -60,9 +70,45 @@ export default function Welcome() {
         <b>Academic Advising</b>
       </div>
       <div className = "pb-5 pl-3 pr-5" style={{textAlign: "center"}}>
-        You have an advisory hold placed on your account. This hold must be lifted before you can register. To have your hold lifted, please contact your advisor or department.
+        You have an advisory hold placed on your account. This hold must be lifted before you can register for classes. To have your hold lifted, please contact your advisor or department.
       </div>
     </Modal>}
+
+    <Modal
+        title="Waitlisted Seat Granted"
+        variant = "default"
+        defaultOpen
+        ref={modalRef}
+> 
+      {/* <div className = "pb-0 pl-3 pr-3" style={{textAlign: "center"}}>
+        <b>GOOD NEWS!</b>
+      </div> */}
+      <div className = "pb-0 pl-7 pr-7" style={{textAlign: "left"}}>
+        Good news! Seats you waitlisted for in <b>the following class(es) have been reserved for you:</b>
+      </div>
+        <hr />
+    <div className="space-y-4 mb-3 pl-3 pr-3">
+        {classData.map((classInfo, index) => (
+            <Card key={index}>
+            <CardContent className="pt-4 pb-4">
+                <h3 className="font-semibold text-lg mb-2">{classInfo.className}</h3>
+                <p className="text-sm text-muted-foreground"><b>{classInfo.sectionNumber}</b></p>
+                <p className="text-sm text-muted-foreground"><b>{classInfo.meetingTime}</b></p>
+                <p className="text-sm text-muted-foreground"><b>{classInfo.professor}</b></p>
+            </CardContent>
+            </Card>
+        ))}
+    </div>
+
+      <div className=" pl-5 pr-5 pb-5 flex flex-row justify-between space-x-2">
+          <Button variant="outline" onClick={closeModal} className="flex-1 border-2 border-primary hover:bg-primary/20 hover:text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2">
+            BACK TO HOME
+          </Button>
+          <TransitionLink  href="schedule" mode="top"><Button onClick={myClassesOnClick}>
+            MY SCHEDULE
+          </Button></TransitionLink>
+        </div>
+    </Modal>
 
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
         <style jsx>{` @font-face {
@@ -111,15 +157,15 @@ export default function Welcome() {
                 </div>
             </div>
 
-            <div className="absolute bottom-4 right-4">
+            <div className="w-15 h-15 absolute bottom-4 right-4">
                 {/*Find a way to put them together*/}
                 {/*The svg icon doesn't show when just inserting the Image tag in the button*/}
                 {/*<div className="absolute bottom-4 right-4">*/}
                 {/*    <Image src='/profile-icon.svg' alt="Profile" width={30} height={30} className="mr-2"/>*/}
                 {/*</div>*/}
 
-                <Button variant="ghost" className="w-8 h-8 text-gray-500" onClick={() => setIsOverlayOpen(true)}>
-                    <UserCircle className="w-8 h-8 text-gray-500"/>
+                <Button variant="ghost" className="w-15 h-15 text-gray-500" onClick={() => setIsOverlayOpen(true)}>
+                    <UserCircle/>
                 </Button>
             </div>
 

@@ -17,7 +17,7 @@ interface ModalProps {
   title?: string
   children: React.ReactNode | ((props: { close: () => void }) => React.ReactNode)
   trigger?: React.ReactNode
-  variant?: "default" | "destructive"
+  variant?: "default" | "destructive" | "waitlist"
   defaultOpen?: boolean
 }
 
@@ -41,7 +41,9 @@ const Modal = React.forwardRef<ModalRef, ModalProps>(({
     }
   }, [defaultOpen])
 
-  const headerClass = variant === "destructive" ? "bg-destructive text-destructive-foreground" : "bg-background text-foreground"
+  const headerClass = variant === "destructive" ? "bg-destructive text-destructive-foreground" : 
+                      variant ===  "waitlist" ? "bg-waitlist text-destructive-foreground" : 
+                                   "bg-background text-foreground"
 
   const handleOpen = React.useCallback(() => setOpen(true), [])
   const handleClose = React.useCallback(() => setOpen(false), [])

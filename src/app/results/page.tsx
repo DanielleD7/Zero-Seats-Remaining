@@ -6,7 +6,8 @@ import { ChevronLeft, ShoppingCart, ChevronDown, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import CourseCard from "@/components/ui/course-card"
-
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { Course, Section, Courses, Class, Account, Accounts } from "@/components/ui/data"
 import Header from "@/components/ui/header"
 import PageTransition from '@/components/meta/page-transition'
@@ -32,6 +33,8 @@ function CourseDropdown({ course }: { course: Course }) {
 
   const [infoCourse, setInfoCourse] = useState({})
   
+
+
   const DisplayClassInfo = async (courseCode : String) => {
     //const query = "MATCH (c:Course {Course_Code: $CourseCode}) RETURN c.Course_Code as CourseCode, c.Course_Name as Name, c.Description as Desc, c.Prerequisites as Prereq, c.Prerequisites_And_Or_Corequisites as Precoreq, c.Corequisites as Coreq;"
     
@@ -53,18 +56,29 @@ function CourseDropdown({ course }: { course: Course }) {
     setIsOverlayOpen(true)
   }
 
+  var callback = () => {}
   
+
+  const openModal = (cb: () => void) => {
+    callback = cb
+    modalRef.current?.open()
+  }
+  const closeModal = () => {
+    modalRef.current?.close()
+  }
+
   const [confirmOpen, setConfirmOpen] = useState(false)
   // const [modal, setModal] = useState(false)
-  const waitlistConfirmationModal = () => {
-    confirmModalUp = true;
+  const addToWaitlist = () => {
+    callback()
+    // addToWaitlistNotif()
+    closeModal()
   }
   const modalRef = React.useRef<ModalRef>(null)
 
-  const openModal = () => {
-    modalRef.current?.open()
-  }
-  
+
+
+
   return (
       <div className="dyslexia-font">
         <style jsx global>{` @font-face {
@@ -81,12 +95,21 @@ function CourseDropdown({ course }: { course: Course }) {
   
       <Modal 
         ref={modalRef}
-        title="Function Triggered Modal"
-
+        variant="waitlist"
+        title="This section is full!"
       >
-        <div className="p-4">
-          <p>This modal was opened using a function call!</p>
+        <div className="p-4 pt-0">
+          <p>There are no seats remaining for this section. Do you want to add yourself to a waitlist? We'll reserve a seat and notify you if one becomes available.</p>
         </div>
+
+        <div className=" pl-5 pr-5 pb-5 flex flex-row justify-between space-x-2">
+        <Button variant="outline" onClick={closeModal} className="flex-1 border-2 border-primary hover:bg-primary/20 hover:text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2">
+            <b>CANCEL</b>
+        </Button>
+        <Button variant="waitlist" onClick={addToWaitlist}  className="flex-1 border-2 border-primary hover:bg-primary/20 hover:text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2">
+            <b>JOIN WAITLIST</b>
+        </Button>
+          </div>
       </Modal>
       
       <Card className="mb-4 bg-white">
@@ -111,7 +134,7 @@ function CourseDropdown({ course }: { course: Course }) {
                           onTouch={DisplayClassInfo}
                           showHeader={false}
                           isAdded={false}
-                modal={openModal}>
+                          modal={openModal}>
                       </CourseCard>
                   ))}
                 </div>
@@ -134,8 +157,8 @@ export default function Results() {
 
 
   return (
-      <PageTransition>
-        <div className="max-w-md mx-auto bg-gray-100 min-h-screen dyslexia-font">
+    <div className="max-h-screen overflow-auto">
+        <div className="mx-auto bg-gray-100 min-h-screen dyslexia-font">
           <style jsx global>{` @font-face {
           font-family: 'Dyslexia Font';
           src: url('/Dyslexia_Font.ttf') format('truetype');
@@ -155,7 +178,12 @@ export default function Results() {
                 (course: Course) => (<CourseDropdown course={course}/>)
             )}
           </main>
+          <GoToCartFAB />
         </div>
-      </PageTransition>
+       <ToastContainer
+        // toastStyle = {{ backgroundColor: "#e85d0d", fontFamily: 'Dyslexia Font' }}
+        />
+      </div>
   );
 }
+
