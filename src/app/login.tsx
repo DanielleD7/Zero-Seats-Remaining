@@ -8,6 +8,7 @@ import { Account, Accounts, Class, Course, Section } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import Image from 'next/image'
 import * as React from "react";
+import { TransitionLink } from '@/components/meta/transition-link'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -83,10 +84,10 @@ export default function Login() {
           </form>
 
           {/*This button is outside the form tag to prevent that you need email and password pop up*/}
-          <Button variant="default" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold"
+          <TransitionLink href={'welcome'} mode="left"><Button variant="default" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold mt-6"
                   onClick={() => router.push('/welcome')}>
             Sign in with SSO
-          </Button>
+          </Button></TransitionLink>
         </div>
       </div>
   )

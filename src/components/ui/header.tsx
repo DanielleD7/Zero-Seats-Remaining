@@ -24,7 +24,7 @@ export default function Header({ showShoppingCart = true, title = "" }: HeaderPr
       }
       pollCart()
       // Set up the interval
-      const intervalId = setInterval(pollCart, 1000)
+      const intervalId = setInterval(pollCart, 500)
 
       // Clean up function to clear the interval when the component unmounts
       return () => clearInterval(intervalId)

@@ -7,6 +7,7 @@ import CourseCard from "@/components/ui/course-card"
 import Header from '@/components/ui/header'
 import PageTransition from '@/components/meta/page-transition'
 import React from "react";
+import { TransitionLink } from "@/components/meta/transition-link"
 
 export default function Cart() {
   const { user } = useUser()
@@ -16,9 +17,9 @@ export default function Cart() {
   }
 
   return (
-    <div className="max-h-screen overflow-auto">
+    <div className="max-h-screen overflow-scroll">
       <div className="mx-auto bg-gray-100 min-h-screen dyslexia-font">
-        <style jsx global>{` @font-face {
+      <style jsx global>{` @font-face {
           font-family: 'Dyslexia Font';
           src: url('/Dyslexia_Font.ttf') format('truetype');
           font-weight: normal;
@@ -44,6 +45,16 @@ export default function Cart() {
               } }>
               </CourseCard>
           ))}
+
+
+          {user.cart.length == 0 && <div className = "justify-center items-center flex-col flex">
+            <p className="mb-5">Your Course Cart is empty!</p>
+            <div className=" pl-5 pr-5 pb-5 flex flex-row justify-between space-x-2">
+            <TransitionLink  href="find-classes" mode="right"><Button>
+            FIND CLASSES
+          </Button></TransitionLink>
+          </div>
+          </div>}
         </main>
       </div>
     </div>

@@ -109,7 +109,7 @@ export default function Component() {
 
             {/************ SCHEDULE ************/}
             <div className="flex-1 overflow-hidden">
-              <div className="z-10 grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
+              <div className="grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
                 {/********** Days of the week header **********/}
                 <div className="p-5"/>
                 {/* That little rectangle in front of Monday block header,

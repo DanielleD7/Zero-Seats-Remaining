@@ -33,7 +33,7 @@ export default function GoToCartFAB() {
     <TransitionLink href="/cart" mode="left">
       {cartCount>0 && (<Button
         onClick={handleClick}
-        className="fixed bottom-4 right-4 rounded-full shadow-lg flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90"
+        className="fixed bottom-4 right-4 h-12 rounded-full flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90"
       >
         <ShoppingCart className="h-5 w-5" />
         <span>Go to Cart</span>
