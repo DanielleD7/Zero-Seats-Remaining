@@ -30,7 +30,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         progress: undefined,
         theme: "colored",
         className: 'registered-notif',
-        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)',  backgroundColor: "rgb(59 130 246)", fontFamily: 'Dyslexia Font'}
+        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)',  backgroundColor: "rgb(59 130 246)"}
         });
 
     const removeFromCartNotif = () => toast.info('Removed from cart.', {
@@ -42,7 +42,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         draggable: true,
         progress: undefined,
         className: 'registered-notif',
-        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)', fontFamily: 'Dyslexia Font'}
+        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)'}
         });
     
     const addToWaitlistNotif = () => toast.info('Added to waitlist!', {
@@ -55,7 +55,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
           progress: undefined,
           theme: "colored",
           className: 'registered-notif',
-          style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)',  backgroundColor: "#e85d0d", fontFamily: 'Dyslexia Font'}
+          style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)',  backgroundColor: "#e85d0d"}
     });
 
     const timeConflictNotif = () => toast.error("Couldn't add seat: TIME CONFLICT", {
@@ -68,7 +68,7 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         progress: undefined,
         theme: "colored",
         className: 'registered-notif',
-        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)', fontFamily: 'Dyslexia Font'}
+        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)'}
         });
     // set this based on whether the section has Zero Seats Remaining
     

@@ -76,23 +76,8 @@ function CourseDropdown({ course }: { course: Course }) {
   }
   const modalRef = React.useRef<ModalRef>(null)
 
-
-
-
   return (
-      <div className="dyslexia-font">
-        <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
-
-  
+      <div>
       <Modal 
         ref={modalRef}
         variant="waitlist"
@@ -158,19 +143,7 @@ export default function Results() {
 
   return (
     <div className="max-h-screen overflow-auto">
-
-        <div className="mx-auto bg-gray-100 min-h-screen dyslexia-font">
-
-          <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
+        <div className="mx-auto bg-gray-100 min-h-screen">
 
           <Header showShoppingCart={true} title="Search Results"/>
           <main className="p-4">
@@ -181,7 +154,7 @@ export default function Results() {
             )}
           </main>
           <ToastContainer
-        // toastStyle = {{ backgroundColor: "#e85d0d", fontFamily: 'Dyslexia Font' }}
+        // toastStyle = {{ backgroundColor: "#e85d0d"}}
         />
           <GoToCartFAB />
         </div>

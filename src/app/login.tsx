@@ -42,19 +42,9 @@ export default function Login() {
     // }
   }
 
+
   return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4 dyslexia-font">
-        <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
-
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
         <div className="w-full max-w-md space-y-8">
           <div className="logo">
             <Image src="/logo.svg" alt="Logo" width={400} height={400} className="mx-auto"/>

@@ -18,18 +18,7 @@ export default function Cart() {
 
   return (
     <div className="max-h-screen overflow-scroll">
-      <div className="mx-auto bg-gray-100 min-h-screen dyslexia-font">
-      <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
-
+      <div className="mx-auto bg-gray-100 min-h-screen">
         <Header showShoppingCart={false} title="Course Cart"/>
 
         <main className="p-4">
@@ -45,7 +34,6 @@ export default function Cart() {
               } }>
               </CourseCard>
           ))}
-
 
           {user.cart.length == 0 && <div className = "justify-center items-center flex-col flex">
             <p className="mb-5">Your Course Cart is empty!</p>

@@ -32,18 +32,7 @@ export default function FindClasses() {
 
   return (
     // <PageTransition>
-      <div className="min-h-screen bg-blue-100 flex flex-col dyslexia-font">
-        <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
-
+      <div className="min-h-screen bg-blue-100 flex flex-col">
         <Header showShoppingCart={true} title="Find Classes"/>
         <main className="flex-grow flex flex-col">
           <div className="bg-white p-6 shadow-md">

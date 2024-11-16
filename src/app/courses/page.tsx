@@ -14,18 +14,7 @@ export default function CourseList() {
   
   return (
     <PageTransition>
-      <div className="max-w-md mx-auto bg-gray-100 min-h-screen dyslexia-font">
-        <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
-
+      <div className="max-w-md mx-auto bg-gray-100 min-h-screen">
         <Header showShoppingCart={false} title="My Courses"/>
 
         <main className="p-4">

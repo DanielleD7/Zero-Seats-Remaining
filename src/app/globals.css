@@ -2,15 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  /* font-family: Arial, Helvetica, sans-serif; */
-  /* font-size: 12; */
-
+@font-face {
   font-family: 'Dyslexia Font';
   src: url('/Dyslexia_Font.ttf') format('truetype');
+  font-weight: normal; font-style: normal;
+}
+
+body {
+  font-family: 'Dyslexia Font', sans-serif;
   transition-property: opacity, transform, filter;
   transition-timing-function: ease-in-out;
-  
+}
+
+@font-face {
+  font-family: 'Playwrite US Trad';
+  src: url('/PlaywriteUSTrad-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.playwrite-font {
+  font-family: 'Playwrite US Trad', sans-serif;
+  transition-property: opacity, transform, filter;
+  transition-timing-function: ease-in-out;
 }
 
 .page-transition-left {

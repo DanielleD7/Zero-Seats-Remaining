@@ -58,19 +58,8 @@ export default function Component() {
 
   return (
       <div className="max-h-screen overflow-auto">
-        <style jsx global>{` @font-face {
-          font-family: 'Dyslexia Font';
-          src: url('/Dyslexia_Font.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        .dyslexia-font {
-          font-family: 'Dyslexia Font', sans-serif;
-        } `}</style>
-
         {/* Nav bar with dropdown and the days of the week header */}
-        <div className="max-w-4xl mx-auto dyslexia-font">
+        <div className="max-w-4xl mx-auto">
           <div className="sticky top-0 z-50 bg-[#E3E9FA]">
               <Header showShoppingCart={false} title="My Schedule"/>
 
