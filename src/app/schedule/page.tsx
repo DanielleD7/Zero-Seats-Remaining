@@ -1,9 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronLeft, ChevronDown } from 'lucide-react'
+import {ChevronDown } from 'lucide-react'
 import Header from '@/components/ui/header'
-import PageTransition from '@/components/meta/page-transition'
 import * as React from "react";
 
 interface ClassBlock {
@@ -16,8 +15,6 @@ interface ClassBlock {
   isWaitlisted?: boolean
 }
 
-// TODO Try to have the nav stay at the top
-// TODO Pop up with more info on the class
 export default function Component() {
   // TODO Possibly add more data to be shown in the class block and make it clickable for more details.
   const classes: ClassBlock[] = [
@@ -60,26 +57,25 @@ export default function Component() {
   }
 
   return (
-       
-    <div className="max-h-screen overflow-auto">
-           {/*Little Nav Bar*/}
-        <div className="dyslexia-font">
-          <style jsx global>{` @font-face {
-                font-family: 'Dyslexia Font';
-                src: url('/Dyslexia_Font.ttf') format('truetype');
-                font-weight: normal;
-                font-style: normal;
-            }
+      <div className="max-h-screen overflow-auto">
+        <style jsx global>{` @font-face {
+          font-family: 'Dyslexia Font';
+          src: url('/Dyslexia_Font.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
 
-            .dyslexia-font {
-                font-family: 'Dyslexia Font', sans-serif;
-            } `}</style>
+        .dyslexia-font {
+          font-family: 'Dyslexia Font', sans-serif;
+        } `}</style>
 
-          <Header showShoppingCart={false} title="My Schedule"/>
-          <div className="max-w-4xl mx-auto p-4 bg-[#E3E9FA]">
+        {/* Nav bar with dropdown and the days of the week header */}
+        <div className="max-w-4xl mx-auto dyslexia-font">
+          <div className="sticky top-0 z-50 bg-[#E3E9FA]">
+              <Header showShoppingCart={false} title="My Schedule"/>
 
             {/*Drop Down*/}
-            <div className="relative mb-4">
+            <div className="relative px-4 py-2">
               <button
                   className="w-full bg-white p-2 rounded-md flex justify-between items-center"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -107,19 +103,26 @@ export default function Component() {
             </div>
             {/*Drop Down END*/}
 
+            {/********** Days of the week header **********/}
+            <div className="pt-1 grid grid-cols-[auto_repeat(5,1fr)] border-none bg-transparent text-sm">
+              <div className="px-8 bg-[#E3E9FA]"/>
+              {/* That little rectangle in front of Monday block header,
+                TODO Need to work on figuring out alignment, it's not quite perfect. Buuutt hiding the boarder makes it look good */}
+              {days.map((day) => (
+                  <div key={day} className="p-2 text-center font-bold bg-[#E3E9FA]">
+                    {day}
+                  </div>
+              ))}
+            </div>
+            {/* Days of the week header END */}
+          </div>
+          {/* Nav bar with dropdown and the days of the week header END */}
+
+          {/*The colored area underneath the grid and dropdown*/}
+          <div className="max-w-4xl mx-auto p-4 bg-[#E3E9FA]">
+
             {/************ SCHEDULE ************/}
             <div className="flex-1 overflow-hidden">
-              <div className="grid grid-cols-[auto_repeat(5,1fr)] border-b bg-transparent text-sm">
-                {/********** Days of the week header **********/}
-                <div className="p-5"/>
-                {/* That little rectangle in front of Monday block header,
-                TODO Need to work on figuring out alignment, it's not quite perfect. Buuutt hiding the boarder makes it look good */}
-                {days.map((day) => (
-                    <div key={day} className="p-2 text-center font-bold bg-transparent">
-                      {day}
-                    </div>
-                ))}
-              </div>
 
               {/* Schedule Grid */}
               <div className="relative grid grid-cols-[auto_repeat(5,1fr)] overflow-auto bg-white">
@@ -127,7 +130,7 @@ export default function Component() {
                 {/* Hours Column */}
                 <div className="sticky left-0 bg-white">
                   {hours.map((hour) => (
-                      // Changing the style and class names only effects the time column,
+                      // Changing the style and classNames only effects the time column,
                       // does not affect the rest of the grid.
                       <div
                           key={hour}
@@ -140,10 +143,9 @@ export default function Component() {
                   ))}
                 </div>
 
-                {/* To change the class block to match the size of the grid, you gotta do some math
-                and change sizes in multiple places in the grid.
+                {/* To change the class block to match the size of the grid, you have to
+                change sizes in multiple areas in the schedule grid.
                 Such as the time grid, the whole grid for the blocks, and the class blocks*/}
-                {/* TODO Figure that out later */}
                 {Array.from({length: 5}, (_, dayIndex) => (
                     <div key={dayIndex} className="relative border-l">
                       {classes
@@ -163,11 +165,10 @@ export default function Component() {
                                       background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
                                     }}
                                 >
-                                  {/*<div className="font-bold">*/}
-                                  <div>{cls.name}</div>
-                                  <div>{cls.room}</div>
-                                  {/*<div>{cls.startTime}-{cls.endTime}</div>*/}
-                                  {/*</div>*/}
+                                  <div className="font-light">
+                                    <div>{cls.name}</div>
+                                    <div>{cls.room}</div>
+                                  </div>
                                 </div>
                             )
                           })}
@@ -185,5 +186,4 @@ export default function Component() {
           </div>
         </div>
       </div>
-  )
-}
+  )}
