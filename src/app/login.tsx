@@ -25,7 +25,7 @@ export default function Login() {
       const nodeProfile = record.c;
       const properties = nodeProfile.properties
       //console.log(properties)
-      let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + " " + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major'], cart: [], enrolled: [], waitlist: [], taken: [], hours: properties['hours']}
+      let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + " " + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major'], cart: [], enrolled: [], waitlist: [], taken: [], hours: properties['hours'], image:properties['image']}
       //console.log(account)
       if(account.email == email && account.password == password) {
         setUser(account)

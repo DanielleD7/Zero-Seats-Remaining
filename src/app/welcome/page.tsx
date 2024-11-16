@@ -86,7 +86,7 @@ export default function Welcome() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
     const [hasRegistrationHold] = useState(true)
-
+    const user = useUser().user;
     const waitlistModalRef = React.useRef<ModalRef>(null)
     const holdModalRef = React.useRef<ModalRef>(null)
 
@@ -226,8 +226,8 @@ export default function Welcome() {
 
                 {/* Move slide in overlay into  */}
                 <SlideInOverlay isOpen={isOverlayOpen} title="Student Profile" onClose={() => setIsOverlayOpen(false)}>
-                    <StudentProfileCard name="Regilax" studentId="346143" classLevel="Junior" avatarUrl="/lilguy.svg"
-                                        programOfStudy="Computer Science B.S."></StudentProfileCard>
+                    <StudentProfileCard name={user.name} studentId={user.CWID} classLevel={user.rank} avatarUrl={user.image}
+                                        programOfStudy={user.major[0]}></StudentProfileCard>
                 </SlideInOverlay>
 
                 <SlideInOverlay isOpen={isOverlayOpenRegistrationDates} title="Registration Dates"

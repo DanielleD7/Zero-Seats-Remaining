@@ -12,6 +12,7 @@ export type Account = {
     waitlist: Class[]
     taken: Class[]
     hours: Number
+    image: string
 }
 
 export type Course = {
@@ -52,7 +53,8 @@ export const defaultAccount = {
     enrolled: [],
     waitlist: [],
     taken: [],
-    hours: 0
+    hours: 0,
+    image: "/lilguy.svg"
 }
 
 export const Accounts: Account[] = [
@@ -68,6 +70,7 @@ export const Accounts: Account[] = [
         waitlist: [],
         taken: [],
         hours: 0,
+        image: "/lilguy.svg"
     }
 ]
 
