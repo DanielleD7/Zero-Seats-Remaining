@@ -1,3 +1,5 @@
+import { Integer } from "neo4j-driver"
+
 export type Account = {
     CWID: string
     name: string
@@ -9,6 +11,7 @@ export type Account = {
     enrolled: Class[]
     waitlist: Class[]
     taken: Class[]
+    hours: Number
 }
 
 export type Course = {
@@ -48,7 +51,8 @@ export const defaultAccount = {
     cart: [],
     enrolled: [],
     waitlist: [],
-    taken: []
+    taken: [],
+    hours: 0
 }
 
 export const Accounts: Account[] = [
@@ -63,6 +67,7 @@ export const Accounts: Account[] = [
         enrolled: [],
         waitlist: [],
         taken: [],
+        hours: 0,
     }
 ]
 
