@@ -162,7 +162,7 @@ export default function CourseCard({section, onTouch, modal, isAdded, showHeader
                 <div className="flex-1 flex flex-col" onClick={onCardClick}>
                     <div className="flex justify-between items-start mb-2">
                         <div className=" border-gray-200 rounded-lg bg-white  p-1 wflex gap-2 text-sm mb-1">
-                            { section.days.map((day, index) => (<span key={index} className="text-xs"> {day} </span>)) }
+                            { days.map((day, index) => (<span key={index} className="text-xs"> {day} </span>)) }
                         </div>
                     
                         <div className=" border-gray-200 rounded-lg bg-white p-1 flex gap-1 text-sm mb-1"> {location} </div>
