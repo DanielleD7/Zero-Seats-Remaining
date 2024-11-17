@@ -56,6 +56,8 @@ export default function Welcome() {
 
     const waitlistModalRef = React.useRef<ModalRef>(null)
     const holdModalRef = React.useRef<ModalRef>(null)
+    
+    const {user} = useUser()
 
     const openWaitlistModal = () => {
         waitlistModalRef.current?.open()

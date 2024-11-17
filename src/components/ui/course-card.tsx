@@ -5,19 +5,18 @@ import { Card, CardHeader } from "@/components/ui/card"
 import { Class, Course, Section } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import { toast } from 'react-toastify'
-import { write } from '@/lib/neo4j'
+import { read, write } from '@/lib/neo4j'
 
 interface CourseCardProps {
     section: any
-    isAdded: boolean
     onTouch: (code : string) => void
     modal: (callback: () => void) => void
     showHeader?: boolean
 }
 
-export default function CourseCard({section, onTouch, modal, isAdded, showHeader = false}: CourseCardProps) {
+export default function CourseCard({section, onTouch, modal, showHeader = false}: CourseCardProps) {
     const { user } = useUser()
-    const [ added, setAdded ] = useState(isAdded)
+    const [ added, setAdded ] = useState(false)
     const [ classIsFull, setClassisFull ] = useState(Math.random() < 0.5)
 
     const [ code, setCode ] = useState('')
@@ -26,6 +25,7 @@ export default function CourseCard({section, onTouch, modal, isAdded, showHeader
     const [ location, setLocation ] = useState('')
     
     React.useEffect(() => {
+        queryData()
         setCode(`${section.subject} ${section.courseNumber}`)
         setLocation(`${section.building} ${section.room}`)
 
@@ -43,6 +43,15 @@ export default function CourseCard({section, onTouch, modal, isAdded, showHeader
         section.saturday  ? schedule.push("S") : {}
         setDays(schedule)
     }, [])
+
+    const queryData = async() => {
+        let query = `MATCH (p:Profile {CWID: "${user}"}) -[r]-> (s:Section {id: ${section.id.low}}) RETURN TYPE(r) IN ['Registered', 'Waitlisted', 'Cart'] AS added`
+        let response = await read(query)
+        
+        console.log(JSON.stringify(response, null, 4))
+
+        // setAdded(response[0])
+    }
 
     const addToCartNotif = () => toast.info('Added to cart!', {
         position: "top-right",

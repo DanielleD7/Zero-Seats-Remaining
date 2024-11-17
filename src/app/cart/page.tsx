@@ -20,7 +20,9 @@ export default function Cart() {
 
   const queryData = async () => {
     let getCart = `MATCH (:Profile {CWID: "${user}"}) -[:Cart]-> (section:Section) RETURN section`
-    setCart(await read(getCart))
+    let response = await read(getCart)
+
+    setCart(response)
   }
 
   const register = (classes : Class[]) => {
@@ -37,7 +39,7 @@ export default function Cart() {
 
         <main className="p-4">
           {cart.map((section: any) => (
-            <CourseCard section={section.section.properties} onTouch={() => {}} showHeader={true} isAdded={true} modal={() => {throw new Error('Function not implemented.')}}/>
+            <CourseCard section={section.section.properties} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
           ))}
 
           {cart.length == 0 && 
