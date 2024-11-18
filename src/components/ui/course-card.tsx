@@ -14,10 +14,37 @@ interface CourseCardProps {
     showHeader?: boolean
 }
 
+interface ColorProps {
+    header: string
+    background: string
+    border: string
+}
+
+const colorScheme = {
+    blue: {
+        header: "border-l-blue-500",
+        background: "bg-blue-50",
+        border: "border-blue-500"
+    },
+    orange: {
+        header: "border-l-orange-500",
+        background: "bg-orange-50",
+        border: "border-orange-500"
+    }
+}
+
+const buttonColors = {
+    red: "bg-red-500 hover:bg-red-600",
+    orange: "bg-orange-500 hover:bg-orange-600",
+    blue: "bg-blue-500 hover:bg-blue-600",
+}
+
 export default function CourseCard({section, onTouch, modal, showHeader = false}: CourseCardProps) {
     const { user } = useUser()
     const [ added, setAdded ] = useState(false)
-    const [ classIsFull, setClassisFull ] = useState(Math.random() < 0.5)
+    const [ full, setFull ] = useState(false)
+    const [ colors, setColors ] = useState<ColorProps>({header: '', background: '', border: ''})
+    const [ buttonColor, setButtonColor ] = useState('')
 
     const [ code, setCode ] = useState('')
     const [ time, setTime ] = useState('')
@@ -45,12 +72,31 @@ export default function CourseCard({section, onTouch, modal, showHeader = false}
     }, [])
 
     const queryData = async() => {
-        let query = `MATCH (p:Profile {CWID: "${user}"}) -[r]-> (s:Section {id: ${section.id.low}}) RETURN TYPE(r) IN ['Registered', 'Waitlisted', 'Cart'] AS added`
-        let response = await read(query)
+        let getStatus = `MATCH (:Profile {CWID: "${user}"}) -[r]-> (:Section {id: ${section.id.low}}) RETURN TYPE(r) AS status`
+        let getFull = `MATCH (s:Section {id: ${section.id.low}}) RETURN s.seatsAvailable < 1 AS full`
         
-        console.log(JSON.stringify(response, null, 4))
+        let rspStatus = await read(getStatus)
+        let rspFull = await read(getFull)
 
-        // setAdded(response[0])
+        let isAdded = rspStatus.length > 0
+        let isFull = rspFull[0].full
+        let status = isAdded ? rspStatus[0].status : "None"
+
+        if (status == "Registered") {
+            setColors(colorScheme.blue)
+        }
+
+        else if (status == "Waitlisted" || isFull) {
+            setColors(colorScheme.orange)
+        }
+
+        else {
+            setColors(colorScheme.blue)
+        }
+
+        setButtonColor(isAdded ? buttonColors.red : isFull ? buttonColors.orange : buttonColors.blue)
+        setAdded(isAdded)
+        setFull(isFull)
     }
 
     const addToCartNotif = () => toast.info('Added to cart!', {
@@ -112,34 +158,36 @@ export default function CourseCard({section, onTouch, modal, showHeader = false}
 
     const addSection = () => {
         let query = `MATCH (p:Profile {CWID: "${user}"}) MATCH (s:Section {id: ${section.id.low}}) CREATE (p) -[:Cart]-> (s)`
+        console.log(query)
         write(query)
 
         setAdded(true)
+        setButtonColor(buttonColors.red)
     }
 
     const removeSection = () => {
-        let query = `MATCH (p:Profile {CWID: "${user}"}) -[r:Cart]-> (s:Section {id: ${section.id.low}}) DELETE r`
+        let query = `MATCH (p:Profile {CWID: "${user}"}) -[r]-> (s:Section {id: ${section.id.low}}) DELETE r`
         write(query)
 
         setAdded(false)
+        setButtonColor(full ? buttonColors.orange : buttonColors.blue)
     }
 
     const onButtonClick = () => {
-
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
 
         if (added) {
             removeSection()
             removeFromCartNotif()
-        } 
+        }
         
         else {
             if (timeConflict) {
                 timeConflictNotif()
             }
 
-            else if (classIsFull) {
+            else if (full) {
                 modal(toggleByWaitlist)
             }
 
@@ -157,14 +205,14 @@ export default function CourseCard({section, onTouch, modal, showHeader = false}
     return (
         <Card className=" w-full max-w-xl bg-white overflow-hidden border mb-2">
             {(showHeader) && (
-                <CardHeader className={`bg-white border-black p-3 pb-2 border-b-1 border-l-8 ${classIsFull ? "border-l-orange-500" : "border-l-blue-500"}`}>
+                <CardHeader className={`bg-white border-black p-3 pb-2 border-b-1 border-l-8 ${colors.header}`}>
                     <div className="font-semibold text-primary"> {code} </div>
                     <div className="text-sm text-muted-foreground"> {section.courseTitle} </div>
                 </CardHeader>
             )}
       
       
-            <div className={`${classIsFull ? 'bg-orange-50' : 'bg-blue-50'} flex items-stretch gap-4 p-4 border-l-8 ${classIsFull ? "border-orange-500" : "border-blue-500"}`}>
+            <div className={`${colors.background} flex items-stretch gap-4 p-4 border-l-8 ${colors.border}`}>
                 {/* <div className="bg-blue-400 text-white flex items-center justify-center p-1"></div> */}
                 <div className="text-2xl font-bold min-w-[3rem] flex items-center justify-center pr-4 border-r border-gray-200"> {`${section.sequenceNumber.low}`.padStart(2, '0')} </div>
                 
@@ -186,7 +234,7 @@ export default function CourseCard({section, onTouch, modal, showHeader = false}
                     
 
                     <div className="justify-center flex">
-                        <Button size="icon" className={`rounded-full w-12 h-12 ${added ? 'bg-red-500 hover:bg-red-600' : classIsFull ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-500 hover:bg-blue-600'}`} onClick={onButtonClick}>
+                        <Button size="icon" className={`rounded-full w-12 h-12 ${buttonColor}`} onClick={onButtonClick}>
                             {added ? <Minus/> : <Plus/>}
                             <span className="sr-only">Add course</span>
                         </Button>

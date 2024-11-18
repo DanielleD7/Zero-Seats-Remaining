@@ -112,7 +112,7 @@ function CourseDropdown({course} : {course : any}) {
         <CardContent className="px-2 pb-2">
           {isExpanded && (
             <div className="mt-4 space-y-4 mb-1">
-              {course.sections.map((section: any) => (
+              {sections.map((section: any) => (
                 <CourseCard section={section.section.properties} onTouch={DisplayClassInfo} showHeader={false} modal={openModal}/>
               ))}
             </div>
@@ -145,10 +145,8 @@ export default function Results() {
     subject ? queryParams.push(`Subject:"${subject}"`) : {}
     number ? queryParams.push(`Course_Number:${number}`) : {}
 
-    const query = `MATCH (course:Course {${queryParams.toString()}}) WHERE EXISTS {MATCH (course) <-[:SectionOf]- (:Section {term: 202520})} RETURN course ORDER BY course.Course_Code`
-    const response = await read(query)
-
-    setCourses(response)
+    let getCourses = `MATCH (course:Course {${queryParams.toString()}}) WHERE EXISTS {MATCH (course) <-[:SectionOf]- (:Section {term: 202520})} RETURN course ORDER BY course.Course_Code`
+    setCourses(await read(getCourses))
   }
 
   return (
@@ -168,4 +166,3 @@ export default function Results() {
     </div>
   );
 }
-

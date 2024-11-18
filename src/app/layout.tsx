@@ -2,7 +2,7 @@
 import { Suspense } from 'react'
 import type { Metadata } from "next";
 import { AnimatePresence } from 'framer-motion';
-import { AccountProvider } from "@/components/meta/context"
+import { UserProvider } from "@/components/meta/context"
 import LayoutClient from './layout-client';
 import localFont from "next/font/local";
 import "./globals.css";
