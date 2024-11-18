@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import {ChevronDown, X} from 'lucide-react'
 import Header from '@/components/ui/header'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import * as React from "react";
 
 interface ClassBlock {
@@ -97,7 +97,7 @@ export default function Component() {
             <Header showShoppingCart={false} title="My Schedule"/>
 
             {/*Drop Down*/}
-            <div className="relative px-4 py-2">
+            <div className="relative px-2 py-2">
               <button
                   className="w-full bg-white p-2 rounded-md flex justify-between items-center"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -141,13 +141,13 @@ export default function Component() {
           {/* Nav bar with dropdown and the days of the week header END */}
 
           {/*The colored area underneath the grid and dropdown*/}
-          <div className="max-w-4xl mx-auto p-4 bg-[#E3E9FA]">
+          <div className="max-w-4xl mx-auto p-2 bg-[#E3E9FA] rounded-b">
 
             {/************ SCHEDULE ************/}
             <div className="flex-1 overflow-hidden">
 
               {/* Schedule Grid */}
-              <div className="relative grid grid-cols-[auto_repeat(5,1fr)] overflow-auto bg-white">
+              <div className="relative grid grid-cols-[auto_repeat(5,1fr)] overflow-auto bg-white rounded">
 
                 {/* Hours Column */}
                 <div className="sticky left-0 bg-white">
@@ -178,7 +178,7 @@ export default function Component() {
                             return (
                                 <div
                                     key={cls.id}
-                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-1 text-[9px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
+                                    className="absolute left-0 right-0 border-2 rounded border-purple-800 bg-purple-300 p-1 text-[9px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
                                     style={{
                                       top: `${top}px`,
                                       height: `${height}px`,
@@ -220,23 +220,22 @@ export default function Component() {
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
             </button>
+
             <DialogHeader className="text-left">
-              <DialogTitle>{selectedClass?.courseCode}</DialogTitle>
-              <div className="h-px bg-gray-400 my-2" />
-              <DialogDescription className="text-black text-left">
-                <div className="mt-2 space-y-2">
-                  <p><strong>Course Name:</strong> {selectedClass?.courseName}</p>
-                  <p><strong>Section:</strong> {selectedClass?.section}</p>
-                  <p><strong>Instructor:</strong> {selectedClass?.instructor}</p>
-                  <p><strong>Room:</strong> {selectedClass?.room}</p>
-                  <p><strong>Days:</strong> {selectedClass?.days.map(day => days[day]).join(', ')}</p>
-                  <p><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass.startTime)} - ${formatTime(selectedClass.endTime)}`}</p>
-                  <p><strong>Class Type:</strong> {selectedClass?.classType}</p>
-                  <p><strong>Credits:</strong> {selectedClass?.credits}</p>
-                  <p><strong>Description:</strong> {selectedClass?.description}</p>
-                </div>
-              </DialogDescription>
+              <DialogTitle>{selectedClass?.courseCode || 'Class Details'}</DialogTitle>
             </DialogHeader>
+            <div className="h-px bg-gray-400 my-2" />
+            <div className="mt-2 space-y-2">
+              <div><strong>Course Name:</strong> {selectedClass?.courseName || 'N/A'}</div>
+              <div><strong>Section:</strong> {selectedClass?.section || 'N/A'}</div>
+              <div><strong>Instructor:</strong> {selectedClass?.instructor || 'N/A'}</div>
+              <div><strong>Room:</strong> {selectedClass?.room || 'N/A'}</div>
+              <div><strong>Days:</strong> {selectedClass?.days.map(day => days[day]).join(', ') || 'N/A'}</div>
+              <div><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass.startTime)} - ${formatTime(selectedClass.endTime)}` || 'N/A'}</div>
+              <div><strong>Class Type:</strong> {selectedClass?.classType || 'N/A'}</div>
+              <div><strong>Credits:</strong> {selectedClass?.credits || 'N/A'}</div>
+              <div><strong>Description:</strong> {selectedClass?.description || 'No description available.'}</div>
+            </div>
           </DialogContent>
         </Dialog>
       </div>
