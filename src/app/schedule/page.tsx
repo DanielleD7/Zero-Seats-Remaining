@@ -8,45 +8,51 @@ import * as React from "react";
 
 interface ClassBlock {
   id: string
-  name: string
+  courseCode: string
+  courseName: string
   section: number
+  instructor: string
   room: string
+  days: number[]
   startTime: string
   endTime: string
-  days: number[]
-  isWaitlisted?: boolean
-  instructor: string
+  classType: string
   credits: number
   description: string
+  isWaitlisted?: boolean
 }
 
 export default function Component() {
   const classes: ClassBlock[] = [
     {
       id: "1",
-      name: "CSCI 220",
+      courseCode: "CSCI 220",
+      courseName: "Computer Programming I",
       section: 2,
+      instructor: "RoxAnn Stalvey",
       room: "HWEA 302",
+      days: [1, 3], // Tuesday and Thursday
       startTime: "08:30",
       endTime: "09:45",
-      days: [1, 3], // Tuesday and Thursday
-      isWaitlisted: true,
-      instructor: "RoxAnn Stalvey",
+      classType: "Lecture",
       credits: 3,
-      description: "An introduction to programming and problem solving. Topics include data types, variables, assignment, control structures (selection and iteration), lists, functions, classes, and an introduction to object-oriented programming. Lectures three hours per week."
+      description: "An introduction to programming and problem solving. Topics include data types, variables, assignment, control structures (selection and iteration), lists, functions, classes, and an introduction to object-oriented programming. Lectures three hours per week.",
+      isWaitlisted: true
     },
     {
       id: "2",
-      name: "CSIS 690",
+      courseCode: "CSIS 690",
+      courseName: "ST: Data Dependent Digital Forensics",
       section: 1,
+      instructor: "Kris Ghosh",
       room: "HWEA 300",
+      days: [1], // Tuesday only
       startTime: "17:30",
       endTime: "20:15",
-      days: [1], // Tuesday only
-      isWaitlisted: false,
-      instructor: "Kris Ghosh",
+      classType: "Lecture",
       credits: 3,
-      description: "A course that covers algorithms, focusing on foundations of algorithms, and applications to areas such as data science, cybersecurity, and software engineering."
+      description: "A course in the special study of an advanced or new topic in computer science, information science or software engineering.",
+      isWaitlisted: false
     },
   ]
 
@@ -74,6 +80,13 @@ export default function Component() {
     const period = hours >= 12 ? 'PM' : 'AM'
     const formattedHours = hours % 12 || 12
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`
+  }
+
+  // Might use for the class block on the schedule grid due to text cut off on smaller screens
+  const formatTimeNoAM_PM = (time: string) => {
+    const [hours, minutes] = time.split(":").map(Number)
+    const formattedHours = hours % 12 || 12
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')}`
   }
 
   return (
@@ -165,7 +178,7 @@ export default function Component() {
                             return (
                                 <div
                                     key={cls.id}
-                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-1 text-[10px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
+                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-1 text-[9px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
                                     style={{
                                       top: `${top}px`,
                                       height: `${height}px`,
@@ -176,7 +189,7 @@ export default function Component() {
                                     onClick={() => setSelectedClass(cls)}
                                 >
                                   <div className="font-light text-center">
-                                    <div>{cls.name}</div>
+                                    <div>{cls.courseCode}</div>
                                     <div>{cls.room}</div>
                                     <div>{formatTime(cls.startTime)} - {formatTime(cls.endTime)}</div>
                                   </div>
@@ -207,17 +220,19 @@ export default function Component() {
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
             </button>
-            <DialogHeader>
-              <DialogTitle>{selectedClass?.name}</DialogTitle>
+            <DialogHeader className="text-left">
+              <DialogTitle>{selectedClass?.courseCode}</DialogTitle>
               <div className="h-px bg-gray-400 my-2" />
-              <DialogDescription className="text-black">
+              <DialogDescription className="text-black text-left">
                 <div className="mt-2 space-y-2">
+                  <p><strong>Course Name:</strong> {selectedClass?.courseName}</p>
+                  <p><strong>Section:</strong> {selectedClass?.section}</p>
                   <p><strong>Instructor:</strong> {selectedClass?.instructor}</p>
                   <p><strong>Room:</strong> {selectedClass?.room}</p>
-                  <p><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass.startTime)} - ${formatTime(selectedClass.endTime)}`}</p>
                   <p><strong>Days:</strong> {selectedClass?.days.map(day => days[day]).join(', ')}</p>
+                  <p><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass.startTime)} - ${formatTime(selectedClass.endTime)}`}</p>
+                  <p><strong>Class Type:</strong> {selectedClass?.classType}</p>
                   <p><strong>Credits:</strong> {selectedClass?.credits}</p>
-                  <p><strong>Status:</strong> {selectedClass?.isWaitlisted ? 'Waitlisted' : 'Enrolled'}</p>
                   <p><strong>Description:</strong> {selectedClass?.description}</p>
                 </div>
               </DialogDescription>
