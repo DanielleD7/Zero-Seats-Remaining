@@ -1,40 +1,52 @@
 'use client'
 
 import { useState } from 'react'
-import {ChevronDown } from 'lucide-react'
+import {ChevronDown, X} from 'lucide-react'
 import Header from '@/components/ui/header'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import * as React from "react";
 
 interface ClassBlock {
   id: string
   name: string
+  section: number
   room: string
   startTime: string
   endTime: string
   days: number[]
   isWaitlisted?: boolean
+  instructor: string
+  credits: number
+  description: string
 }
 
 export default function Component() {
-  // TODO Possibly add more data to be shown in the class block and make it clickable for more details.
   const classes: ClassBlock[] = [
     {
       id: "1",
       name: "CSCI 220",
+      section: 2,
       room: "HWEA 302",
-      startTime: "09:55",
-      endTime: "11:10",
+      startTime: "08:30",
+      endTime: "09:45",
       days: [1, 3], // Tuesday and Thursday
-      isWaitlisted: true
+      isWaitlisted: true,
+      instructor: "RoxAnn Stalvey",
+      credits: 3,
+      description: "An introduction to programming and problem solving. Topics include data types, variables, assignment, control structures (selection and iteration), lists, functions, classes, and an introduction to object-oriented programming. Lectures three hours per week."
     },
     {
       id: "2",
       name: "CSIS 690",
+      section: 1,
       room: "HWEA 300",
       startTime: "17:30",
       endTime: "20:15",
       days: [1], // Tuesday only
-      isWaitlisted: false
+      isWaitlisted: false,
+      instructor: "Kris Ghosh",
+      credits: 3,
+      description: "A course that covers algorithms, focusing on foundations of algorithms, and applications to areas such as data science, cybersecurity, and software engineering."
     },
   ]
 
@@ -44,6 +56,7 @@ export default function Component() {
 
   const [selectedSemester, setSelectedSemester] = useState(semesters[0])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [selectedClass, setSelectedClass] = useState<ClassBlock | null>(null)
 
   const getGridPosition = (time: string) => {
     const [hours, minutes] = time.split(":").map(Number)
@@ -56,12 +69,19 @@ export default function Component() {
     return end - start
   }
 
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time.split(":").map(Number)
+    const period = hours >= 12 ? 'PM' : 'AM'
+    const formattedHours = hours % 12 || 12
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`
+  }
+
   return (
       <div className="max-h-screen overflow-auto">
         {/* Nav bar with dropdown and the days of the week header */}
         <div className="max-w-4xl mx-auto">
           <div className="sticky top-0 z-50 bg-[#E3E9FA]">
-              <Header showShoppingCart={false} title="My Schedule"/>
+            <Header showShoppingCart={false} title="My Schedule"/>
 
             {/*Drop Down*/}
             <div className="relative px-4 py-2">
@@ -118,9 +138,9 @@ export default function Component() {
 
                 {/* Hours Column */}
                 <div className="sticky left-0 bg-white">
+                  {/*Changing the style and classNames only effects the time column,*/}
+                  {/*does not affect the rest of the grid.*/}
                   {hours.map((hour) => (
-                      // Changing the style and classNames only effects the time column,
-                      // does not affect the rest of the grid.
                       <div
                           key={hour}
                           className="border-b px-1.5 py-5 text-sm"
@@ -145,7 +165,7 @@ export default function Component() {
                             return (
                                 <div
                                     key={cls.id}
-                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-2 text-xs font-bold flex-col"
+                                    className="absolute left-0 right-0 border-2 border-purple-800 bg-purple-300 p-1 text-[10px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
                                     style={{
                                       top: `${top}px`,
                                       height: `${height}px`,
@@ -153,10 +173,12 @@ export default function Component() {
                                       borderStyle: cls.isWaitlisted ? "dashed" : "solid",
                                       background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
                                     }}
+                                    onClick={() => setSelectedClass(cls)}
                                 >
-                                  <div className="font-light">
+                                  <div className="font-light text-center">
                                     <div>{cls.name}</div>
                                     <div>{cls.room}</div>
+                                    <div>{formatTime(cls.startTime)} - {formatTime(cls.endTime)}</div>
                                   </div>
                                 </div>
                             )
@@ -174,5 +196,34 @@ export default function Component() {
             </div>
           </div>
         </div>
+
+        {/* Class Information Popup */}
+        <Dialog open={!!selectedClass} onOpenChange={() => setSelectedClass(null)}>
+          <DialogContent className="text-black">
+            <button
+                onClick={() => setSelectedClass(null)}
+                className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </button>
+            <DialogHeader>
+              <DialogTitle>{selectedClass?.name}</DialogTitle>
+              <div className="h-px bg-gray-400 my-2" />
+              <DialogDescription className="text-black">
+                <div className="mt-2 space-y-2">
+                  <p><strong>Instructor:</strong> {selectedClass?.instructor}</p>
+                  <p><strong>Room:</strong> {selectedClass?.room}</p>
+                  <p><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass.startTime)} - ${formatTime(selectedClass.endTime)}`}</p>
+                  <p><strong>Days:</strong> {selectedClass?.days.map(day => days[day]).join(', ')}</p>
+                  <p><strong>Credits:</strong> {selectedClass?.credits}</p>
+                  <p><strong>Status:</strong> {selectedClass?.isWaitlisted ? 'Waitlisted' : 'Enrolled'}</p>
+                  <p><strong>Description:</strong> {selectedClass?.description}</p>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
-  )}
+  )
+}
