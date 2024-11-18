@@ -76,6 +76,17 @@ function CourseDropdown({ course }: { course: Course }) {
   }
   const modalRef = React.useRef<ModalRef>(null)
 
+  const prereqModalRef = React.useRef<ModalRef>(null)
+  let [preReqString, updatePreReqString] = useState("")
+
+  const openPrereqModal = (string: string) => {
+    updatePreReqString(string)
+    prereqModalRef.current?.open()
+  }
+  const closePrereqModal = () => {
+    prereqModalRef.current?.close()
+  }
+
   return (
       <div>
       <Modal 
@@ -94,6 +105,20 @@ function CourseDropdown({ course }: { course: Course }) {
         <Button variant="waitlist" onClick={addToWaitlist}  className="flex-1 border-2 border-primary hover:bg-primary/20 hover:text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2">
             <b>JOIN WAITLIST</b>
         </Button>
+          </div>
+      </Modal>
+
+      <Modal
+          title="MISSING PREREQUISITES"
+          variant = "destructive"
+          ref={prereqModalRef}>
+          <div className = "pb-5 pl-5 pr-5" style={{textAlign: "left"}}>
+            <p>{preReqString}</p>
+          </div>
+          <div className=" pl-5 pr-5 pb-5 flex flex-row justify-between space-x-2">
+            <Button variant="outline" onClick={closePrereqModal} className="font-bold flex-1 border-2 text-white border-primary hover:text-white hover:bg-red-700 focus:ring-2 focus:ring-primary active:bg-red-800 focus:ring-offset-2  ml-20 mr-20 hover:ml-25 bg-red-600">
+              OK
+            </Button>
           </div>
       </Modal>
       
@@ -119,7 +144,8 @@ function CourseDropdown({ course }: { course: Course }) {
                           onTouch={DisplayClassInfo}
                           showHeader={false}
                           isAdded={false}
-                          modal={openModal}>
+                          modal={openModal}
+                          modal2={openPrereqModal}>
                       </CourseCard>
                   ))}
                 </div>

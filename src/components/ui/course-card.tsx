@@ -5,6 +5,9 @@ import { Card, CardHeader } from "@/components/ui/card"
 import { Class, Course, Section } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import { toast } from 'react-toastify'
+import { read } from '@/lib/neo4j'
+import React from 'react'
+import { ModalRef } from '../meta/modal'
 
 interface CourseCardProps {
     course: Course
@@ -13,9 +16,10 @@ interface CourseCardProps {
     showHeader: boolean
     isAdded: boolean
     modal: (callback: () => void) => void
+    modal2: (string: string) => void
 }
 
-export default function CourseCard({course, section, onTouch, showHeader, isAdded, modal}: CourseCardProps) {
+export default function CourseCard({course, section, onTouch, showHeader, isAdded, modal, modal2}: CourseCardProps) {
     const { user } = useUser()
     const [ added, setAdded ] = useState(isAdded)
     const [classIsFull, setClassisFull] = useState(Math.random() < 0.5)
@@ -70,7 +74,13 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         className: 'registered-notif',
         style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)'}
         });
-    // set this based on whether the section has Zero Seats Remaining
+    
+    const prereqMissingNotif = () => {
+
+    }
+    
+
+     // set this based on whether the section has Zero Seats Remaining
     
     
     const toggleByWaitlist = () => {
@@ -83,11 +93,39 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
         setAdded(true)
     }
 
-    const onButtonClick = () => {
+    var missingPrereqs: { Prereq: string; Course: string }[] = []
+
+    const checkPrereq = async () => {
+        let string = ""
+        const query = `MATCH (p:Profile {CWID: $cwid})-[:Taken]-(c:Course) WITH c.Course_Code AS code RETURN code;`
+        const neo4jData = await read(query, {"cwid" : "32480132"})
+        console.log(neo4jData)
+        
+        course.prereqs.forEach((prereq)=>{
+            let preReqMet = false
+            neo4jData.forEach((data)=>{
+            if (data['code'] == prereq) {
+                preReqMet = true
+            }
+            })
+            if(!preReqMet) {
+            console.log("Yay")
+            missingPrereqs.push({"Prereq" : prereq, "Course" : course.id})
+            }
+        })
+        console.log(missingPrereqs)
+        missingPrereqs.forEach((preReq)=>{string += ("Missing " + preReq['Prereq'] + " for " + preReq['Course'] + "\n")})
+        console.log("Prereq: " +  string)
+        return string;
+    }
+
+
+
+    const onButtonClick = async() => {
 
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
-
+        const preReqString = await checkPrereq()
         if (added) {
             user.cart = user.cart.filter((e : Class) => 
                 e.course != course || e.section != section
@@ -95,22 +133,19 @@ export default function CourseCard({course, section, onTouch, showHeader, isAdde
             setAdded(false)
             removeFromCartNotif()
         } else {
-            if(classIsFull) {
+            if(preReqString != "") {
+                modal2(preReqString)
+            }
+            else if(classIsFull) {
                 modal(toggleByWaitlist)
             } else if (timeConflict) {
                 timeConflictNotif()
-            } else {
+            } 
+            else {
                 addSection()
                 addToCartNotif()
             }
         }
-
-
-
-        
-        
-
-        
     }
 
 
