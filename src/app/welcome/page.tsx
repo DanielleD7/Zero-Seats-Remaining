@@ -68,12 +68,12 @@ export default function Welcome() {
     const queryData = async () => {
         let getCart = `MATCH (p:Profile {CWID: "${user}"}) RETURN p`
         let response = await read(getCart)
-        setProfile(response[0].p)
+        setProfile(response[0].p.properties)
 
         console.log(JSON.stringify(response, null, 2))
 
-        let hours = response[0].p.hours
-        let rank = response[0].p.rank
+        let hours = response[0].p.properties.hours.low
+        let rank = response[0].p.properties.rank
 
         if(hours >= 90 || rank == 'Graduate') {
             setRegistrationDate("October 29")
