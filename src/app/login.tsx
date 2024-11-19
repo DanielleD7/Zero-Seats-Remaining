@@ -27,21 +27,6 @@ export default function Login() {
       setUser(response[0].profile.properties.CWID)
       router.push('/welcome')
     }
-
-    // const query = `MATCH (c:Profile) RETURN c;`
-    // const neo4jData = await read(query)
-    // console.log(neo4jData)
-    // neo4jData.forEach(async (record)=>{
-    //   const nodeProfile = record.c;
-    //   const properties = nodeProfile.properties
-    //   //console.log(properties)
-    //   let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + " " + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major'], cart: [], enrolled: [], waitlist: [], taken: []}
-    //   //console.log(account)
-    //   if(account.email == email && account.password == password) {
-    //     setUser(account)
-    //     router.push('/welcome')
-    //   }
-    // })
   }
 
   const handleSSO = () => {
