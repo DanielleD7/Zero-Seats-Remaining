@@ -61,7 +61,7 @@ export default function Welcome() {
     const holdModalRef = React.useRef<ModalRef>(null)
 
     React.useEffect(() => {
-        setRegistrationDate(queryData())
+        queryData()
     }, [])
 
     const queryData = async () => {
@@ -72,31 +72,31 @@ export default function Welcome() {
         let rank = response[0].p.rank
 
         if(hours >= 90 || rank == 'Graduate') {
-            return "October 29";
+            setRegistrationDate("October 29")
         }
         else if(hours >= 75) {
-            return "October 31";
+            setRegistrationDate("October 31")
         }
         else if(hours >= 60) {
-            return "November 1";
+            setRegistrationDate("November 1")
         }
         else if(hours >= 50) {
-            return "November 7";
+            setRegistrationDate("November 7")
         }
         else if(hours >= 40) {
-            return "November 8";
+            setRegistrationDate("November 8")
         }
         else if(hours >= 30) {
-            return "November 11";
+            setRegistrationDate("November 11")
         }
         else if(hours >= 20) {
-            return "November 12";
+            setRegistrationDate("November 12")
         }
         else if(hours >= 1) {
-            return "November 13"
+            setRegistrationDate("November 13")
         }
         else {
-            return "November 14"
+            setRegistrationDate("November 14")
         }
     }
 
