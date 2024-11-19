@@ -70,6 +70,8 @@ export default function Welcome() {
         let response = await read(getCart)
         setProfile(response[0].p)
 
+        console.log(JSON.stringify(response, null, 2))
+
         let hours = response[0].p.hours
         let rank = response[0].p.rank
 
