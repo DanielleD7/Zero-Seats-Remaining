@@ -48,47 +48,60 @@ const classData = [
     }
 ]
 
-function getRegistrationDate() {
-    let user = useUser().user;
-    let hours = user.hours.valueOf();
-    if(hours >= 90 || user.rank == 'Graduate') {
-        return "October 29";
-    }
-    else if(hours >= 75) {
-        return "October 31";
-    }
-    else if(hours >= 60) {
-        return "November 1";
-    }
-    else if(hours >= 50) {
-        return "November 7";
-    }
-    else if(hours >= 40) {
-        return "November 8";
-    }
-    else if(hours >= 30) {
-        return "November 11";
-    }
-    else if(hours >= 20) {
-        return "November 12";
-    }
-    else if(hours >= 1) {
-        return "November 13"
-    }
-    else {
-        return "November 14"
-    }
-}
-
 export default function Welcome() {
+    const { user } = useUser()
     const router = useRouter()
+    
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
     const [hasRegistrationHold] = useState(true)
     const waitlistModalRef = React.useRef<ModalRef>(null)
     const holdModalRef = React.useRef<ModalRef>(null)
     
-    const {user} = useUser()
+
+    React.useEffect(() => {
+        queryData()
+    }, [])
+
+    const queryData = async () => {
+        let getCart = `MATCH (p:Profile {CWID: "${user}"}) RETURN p`
+        let response = await read(getCart)
+
+        let hours = response[0].p.hours
+        let rank = response[0].p.rank
+
+        if(hours >= 90 || rank == 'Graduate') {
+            return "October 29";
+        }
+        else if(hours >= 75) {
+            return "October 31";
+        }
+        else if(hours >= 60) {
+            return "November 1";
+        }
+        else if(hours >= 50) {
+            return "November 7";
+        }
+        else if(hours >= 40) {
+            return "November 8";
+        }
+        else if(hours >= 30) {
+            return "November 11";
+        }
+        else if(hours >= 20) {
+            return "November 12";
+        }
+        else if(hours >= 1) {
+            return "November 13"
+        }
+        else {
+            return "November 14"
+        }
+    }
+
+    React.useEffect(() => {
+        queryData()
+    }, [])
 
     const openWaitlistModal = () => {
         waitlistModalRef.current?.open()
