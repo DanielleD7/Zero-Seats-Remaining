@@ -51,16 +51,17 @@ const classData = [
 export default function Welcome() {
     const { user } = useUser()
     const router = useRouter()
-    
+
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
     const [hasRegistrationHold] = useState(true)
+    const [registrationDate, setRegistrationDate] = useState('')
+
     const waitlistModalRef = React.useRef<ModalRef>(null)
     const holdModalRef = React.useRef<ModalRef>(null)
-    
 
     React.useEffect(() => {
-        queryData()
+        setRegistrationDate(queryData())
     }, [])
 
     const queryData = async () => {
@@ -98,10 +99,6 @@ export default function Welcome() {
             return "November 14"
         }
     }
-
-    React.useEffect(() => {
-        queryData()
-    }, [])
 
     const openWaitlistModal = () => {
         waitlistModalRef.current?.open()
@@ -184,7 +181,7 @@ export default function Welcome() {
                     <div className="ml-6 mr-6"><button className="w-full mx-auto text-center mt-6 bg-gray-100 p-1 rounded-xl">
                         <div onClick={() => setIsOverlayOpenRegistrationDates(true)}>
                             <p className="text-gray-600 text-base">You can register for classes on</p>
-                            <p className="text-black font-bold text-xl">{getRegistrationDate()}</p>
+                            <p className="text-black font-bold text-xl">{registrationDate}</p>
                         </div>
                     </button></div>
 
