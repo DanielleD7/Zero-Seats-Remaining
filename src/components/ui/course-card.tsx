@@ -5,11 +5,11 @@ import { Card, CardHeader } from "@/components/ui/card"
 import { Class, Course, Section } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import { toast } from 'react-toastify'
-import React from 'react'
 import { ModalRef } from '../meta/modal'
 import { read, write } from '@/lib/neo4j'
 
 interface CourseCardProps {
+    course: any
     section: any
     status: string
     onTouch: (code : string) => void
@@ -43,7 +43,7 @@ const buttonColors = {
     blue: "bg-blue-500 hover:bg-blue-600",
 }
 
-export default function CourseCard({section, status, onTouch, modal, showHeader = false}: CourseCardProps) {
+export default function CourseCard({course, section, status, onTouch, modal, showHeader = false, modal2}: CourseCardProps) {
     const code = `${section.subject} ${section.courseNumber}`
     const location = `${section.building} ${section.room}`
     const instructor = section.instructor ? section.instructor : "Instructor Not Yet Assigned"
@@ -158,7 +158,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         const neo4jData = await read(query, {"cwid" : "32480132"})
         console.log(neo4jData)
         
-        course.prereqs.forEach((prereq)=>{
+        course.prereqs.forEach((prereq: any)=>{
             let preReqMet = false
             neo4jData.forEach((data)=>{
             if (data['code'] == prereq) {
@@ -187,7 +187,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         setButtonColor(full ? buttonColors.orange : buttonColors.blue)
     }
 
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
         const preReqString = await checkPrereq()
@@ -198,7 +198,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
             if(preReqString != "") {
                 modal2(preReqString)
             }
-            else if(classIsFull) {
+            else if(full) {
                 modal(toggleByWaitlist)
             } else if (timeConflict) {
                 timeConflictNotif()
