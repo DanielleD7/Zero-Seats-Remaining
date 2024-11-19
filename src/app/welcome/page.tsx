@@ -55,6 +55,7 @@ export default function Welcome() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
     const [hasRegistrationHold] = useState(true)
+    const [profile, setProfile] = useState<any>()
     const [registrationDate, setRegistrationDate] = useState<string>('')
 
     const waitlistModalRef = React.useRef<ModalRef>(null)
@@ -67,6 +68,7 @@ export default function Welcome() {
     const queryData = async () => {
         let getCart = `MATCH (p:Profile {CWID: "${user}"}) RETURN p`
         let response = await read(getCart)
+        setProfile(response[0].p)
 
         let hours = response[0].p.hours
         let rank = response[0].p.rank
@@ -226,8 +228,8 @@ export default function Welcome() {
 
                 {/* Move slide in overlay into  */}
                 <SlideInOverlay isOpen={isOverlayOpen} title="Student Profile" onClose={() => setIsOverlayOpen(false)}>
-                    <StudentProfileCard name={user.name} studentId={user.CWID} classLevel={user.rank} avatarUrl={user.image}
-                                        programOfStudy={user.major[0]}></StudentProfileCard>
+                    <StudentProfileCard name={profile.name} studentId={profile.CWID} classLevel={profile.rank} avatarUrl={profile.image}
+                                        programOfStudy={profile.major[0]}></StudentProfileCard>
                 </SlideInOverlay>
 
                 <SlideInOverlay isOpen={isOverlayOpenRegistrationDates} title="Registration Dates" onClose={() => setIsOverlayOpenRegistrationDates(false)}>
