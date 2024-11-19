@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
 import { UserCircle } from "lucide-react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Image from 'next/image'
 import { Card, CardContent } from "@/components/ui/card"
 import PageTransition from '../../components/meta/page-transition'
@@ -17,6 +17,9 @@ import Link from "next/link"
 import { TransitionLink } from "@/components/meta/transition-link"
 import React from "react"
 import ProfileIcon from "@/components/ui/profile-icon"
+import { useUser } from "@/components/meta/context"
+
+
 
 const handleBannerClick = () => {}
 
@@ -46,12 +49,44 @@ const classData = [
     }
 ]
 
+function getRegistrationDate() {
+    let user = useUser().user;
+    let hours = user.hours.valueOf();
+    if(hours >= 90 || user.rank == 'Graduate') {
+        return "October 29";
+    }
+    else if(hours >= 75) {
+        return "October 31";
+    }
+    else if(hours >= 60) {
+        return "November 1";
+    }
+    else if(hours >= 50) {
+        return "November 7";
+    }
+    else if(hours >= 40) {
+        return "November 8";
+    }
+    else if(hours >= 30) {
+        return "November 11";
+    }
+    else if(hours >= 20) {
+        return "November 12";
+    }
+    else if(hours >= 1) {
+        return "November 13"
+    }
+    else {
+        return "November 14"
+    }
+}
+
 export default function Welcome() {
     const router = useRouter()
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
     const [hasRegistrationHold] = useState(true)
-
+    const user = useUser().user;
     const waitlistModalRef = React.useRef<ModalRef>(null)
     const holdModalRef = React.useRef<ModalRef>(null)
 
@@ -147,7 +182,7 @@ export default function Welcome() {
                     <div className="ml-6 mr-6"><button className="w-full mx-auto text-center mt-6 bg-gray-100 p-1 rounded-xl">
                         <div onClick={() => setIsOverlayOpenRegistrationDates(true)}>
                             <p className="text-gray-600 text-base">You can register for classes on</p>
-                            <p className="text-black font-bold text-xl">OCTOBER 29</p>
+                            <p className="text-black font-bold text-xl">{getRegistrationDate()}</p>
                         </div>
                     </button></div>
 
@@ -191,8 +226,8 @@ export default function Welcome() {
 
                 {/* Move slide in overlay into  */}
                 <SlideInOverlay isOpen={isOverlayOpen} title="Student Profile" onClose={() => setIsOverlayOpen(false)}>
-                    <StudentProfileCard name="Regilax" studentId="346143" classLevel="Junior" avatarUrl="/lilguy.svg"
-                                        programOfStudy="Computer Science B.S."></StudentProfileCard>
+                    <StudentProfileCard name={user.name} studentId={user.CWID} classLevel={user.rank} avatarUrl={user.image}
+                                        programOfStudy={user.major[0]}></StudentProfileCard>
                 </SlideInOverlay>
 
                 <SlideInOverlay isOpen={isOverlayOpenRegistrationDates} title="Registration Dates"
