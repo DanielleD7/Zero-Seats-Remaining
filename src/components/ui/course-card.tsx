@@ -142,7 +142,6 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
 
     const addSection = () => {
         let query = `MATCH (p:Profile {CWID: "${user}"}) MATCH (s:Section {id: ${section.id.low}}) CREATE (p) -[:Cart]-> (s)`
-        console.log(query)
         write(query)
 
         setAdded(true)
