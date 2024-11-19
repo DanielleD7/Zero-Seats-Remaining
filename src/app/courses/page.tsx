@@ -15,19 +15,16 @@ export default function CourseList() {
   const [ enrolled, setEnrolled ] = useState<any[]>([])
   const [ waitlist, setWaitlist ] = useState<any[]>([])
 
-  React.useEffect(() => {
+React.useEffect(() => {
     queryData()
   }, [])
 
   const queryData = async () => {
-    let getEnrolled = `MATCH (:Profile {CWID: "${user}"}) -[:Registered]-> (section:Section) RETURN section`
-    let getWaitlist = `MATCH (:Profile {CWID: "${user}"}) -[:Waitlisted]-> (section:Section) RETURN section`
-
-    let response1 = await read(getEnrolled)
-    let response2 = await read(getWaitlist)
-
-    setEnrolled(response1)
-    setWaitlist(response2)
+    let enrollment = `MATCH (:Profile {CWID: "${user}"}) -[:Registered]-> (section:Section) RETURN section`
+    let waitlistment = `MATCH (:Profile {CWID: "${user}"}) -[:Waitlisted]-> (section:Section) RETURN section`
+    
+    setEnrolled(await read(enrollment))
+    setWaitlist(await read(waitlistment))
   }
   
   return (
@@ -37,13 +34,13 @@ export default function CourseList() {
 
         <main className="p-4">
           {enrolled.map((section: any) => (
-            <CourseCard section={section.section.properties} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
+            <CourseCard section={section.section.properties} status={"Registered"} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
           ))}
         </main>
 
         <main className="p-4">
           {waitlist.map((section: any) => (
-            <CourseCard section={section.section.properties} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
+            <CourseCard section={section.section.properties} status={"Waitlisted"} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
           ))}
         </main>
       </div>

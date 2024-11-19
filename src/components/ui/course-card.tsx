@@ -9,6 +9,7 @@ import { read, write } from '@/lib/neo4j'
 
 interface CourseCardProps {
     section: any
+    status: string
     onTouch: (code : string) => void
     modal: (callback: () => void) => void
     showHeader?: boolean
@@ -39,64 +40,47 @@ const buttonColors = {
     blue: "bg-blue-500 hover:bg-blue-600",
 }
 
-export default function CourseCard({section, onTouch, modal, showHeader = false}: CourseCardProps) {
+export default function CourseCard({section, status, onTouch, modal, showHeader = false}: CourseCardProps) {
+    const code = `${section.subject} ${section.courseNumber}`
+    const location = `${section.building} ${section.room}`
+    const instructor = section.instructor ? section.instructor : "Instructor Not Yet Assigned"
+    const time = section.room ? getTime(section.beginTime.low, section.endTime.low) : ""
+    const days = getDays()
+
     const { user } = useUser()
-    const [ added, setAdded ] = useState(false)
-    const [ full, setFull ] = useState(false)
-    const [ colors, setColors ] = useState<ColorProps>({header: '', background: '', border: ''})
-    const [ buttonColor, setButtonColor ] = useState('')
+    const [ added, setAdded ] = useState(status !== null)
+    const [ full, setFull ] = useState(section.seatsAvailable < 1)
+    const [ colors, setColors ] = useState<ColorProps>(getColors())
+    const [ buttonColor, setButtonColor ] = useState(getButton())
 
-    const [ code, setCode ] = useState('')
-    const [ time, setTime ] = useState('')
-    const [ days, setDays ] = useState<any[]>([])
-    const [ location, setLocation ] = useState('')
-    
-    React.useEffect(() => {
-        queryData()
-        setCode(`${section.subject} ${section.courseNumber}`)
-        setLocation(`${section.building} ${section.room}`)
+    function getTime(beginTime: number, endTime: number) {
+        let start = new Date(0, 0, 0, ~~(beginTime / 100), (beginTime % 100))
+        let end = new Date(0, 0, 0, ~~(endTime / 100), (endTime % 100))
+        return `${start.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})} - ${end.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})}`
+    }
 
-        let startTime = new Date(0, 0, 0, ~~(section.beginTime.low / 100), (section.beginTime.low % 100))
-        let endTime = new Date(0, 0, 0, ~~(section.endTime.low / 100), (section.endTime.low % 100))
-        setTime(`${startTime.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})} - ${endTime.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})}`)
-
+    function getDays() {
         let schedule = []
-        section.sunday    ? schedule.push("S") : {}
-        section.monday    ? schedule.push("M") : {}
-        section.tuesday   ? schedule.push("T") : {}
-        section.wednesday ? schedule.push("W") : {}
-        section.thursday  ? schedule.push("H") : {}
-        section.friday    ? schedule.push("F") : {}
-        section.saturday  ? schedule.push("S") : {}
-        setDays(schedule)
-    }, [])
+        section.sunday    ? schedule.push("S") : null
+        section.monday    ? schedule.push("M") : null
+        section.tuesday   ? schedule.push("T") : null
+        section.wednesday ? schedule.push("W") : null
+        section.thursday  ? schedule.push("H") : null
+        section.friday    ? schedule.push("F") : null
+        section.saturday  ? schedule.push("S") : null
+        return schedule
+    }
 
-    const queryData = async() => {
-        let getStatus = `MATCH (:Profile {CWID: "${user}"}) -[r]-> (:Section {id: ${section.id.low}}) RETURN TYPE(r) AS status`
-        let getFull = `MATCH (s:Section {id: ${section.id.low}}) RETURN s.seatsAvailable < 1 AS full`
-        
-        let rspStatus = await read(getStatus)
-        let rspFull = await read(getFull)
+    function getColors() {
+        if (status === "Registered") return colorScheme.blue
+        if (status === "Waitlisted" || full) return colorScheme.orange
+        return colorScheme.blue
+    }
 
-        let isAdded = rspStatus.length > 0
-        let isFull = rspFull[0].full
-        let status = isAdded ? rspStatus[0].status : "None"
-
-        if (status == "Registered") {
-            setColors(colorScheme.blue)
-        }
-
-        else if (status == "Waitlisted" || isFull) {
-            setColors(colorScheme.orange)
-        }
-
-        else {
-            setColors(colorScheme.blue)
-        }
-
-        setButtonColor(isAdded ? buttonColors.red : isFull ? buttonColors.orange : buttonColors.blue)
-        setAdded(isAdded)
-        setFull(isFull)
+    function getButton() {
+        if (added) return buttonColors.red
+        if (full) return buttonColors.orange
+        return buttonColors.blue
     }
 
     const addToCartNotif = () => toast.info('Added to cart!', {
@@ -226,7 +210,7 @@ export default function CourseCard({section, onTouch, modal, showHeader = false}
                     </div>
                     
                     <div className="mb-4 text-xs text-black"> {time} </div>
-                    <div className="text-xs text-muted-foreground">{section.instructor} </div>
+                    <div className="text-xs text-muted-foreground">{instructor} </div>
                 </div>
 
                 <div className="flex flex-col justify-between pl-4 border-l border-gray-200">
