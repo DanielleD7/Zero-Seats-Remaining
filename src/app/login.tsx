@@ -1,4 +1,5 @@
 'use client'
+
 import { read } from '@/lib/neo4j'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -18,30 +19,20 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const query = `MATCH (c:Profile) RETURN c;`
-    const neo4jData = await read(query)
-    //console.log(neo4jData)
-    neo4jData.forEach(async (record)=>{
-      const nodeProfile = record.c;
-      const properties = nodeProfile.properties
-      //console.log(properties)
-      let account : Account = {CWID: properties['CWID'], name: properties['firstName'] + " " + properties['lastName'], email: properties['email'], password: properties['password'], rank: properties['rank'], major: properties['major'], cart: [], enrolled: [], waitlist: [], taken: [], hours: properties['hours'], image:properties['image']}
-      //console.log(account)
-      if(account.email == email && account.password == password) {
-        setUser(account)
-        router.push('/welcome')
-      }
-    })
 
+    let query = `MATCH (profile:Profile {email: "${email}", password: "${password}"}) RETURN profile`
+    let response = await read(query)
 
-    // let account = Accounts.filter((account : Account) => (account.email == email && account.password == password))
-
-    // if (account.length) {
-    //   setUser(account[0])
-    //   router.push('/welcome')
-    // }
+    if (response.length > 0) {
+      setUser(response[0].profile.properties.CWID)
+      router.push('/welcome')
+    }
   }
 
+  const handleSSO = () => {
+    setUser("32480132")
+    router.push('/welcome')
+  }
 
   return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#E2E4EB] p-4">
@@ -52,20 +43,20 @@ export default function Login() {
 
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-[#EBF4FA]"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="bg-[#EBF4FA]"
             />
             <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="bg-[#EBF4FA]"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="bg-[#EBF4FA]"
             />
 
             <Button type="submit" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold">
@@ -74,10 +65,11 @@ export default function Login() {
           </form>
 
           {/*This button is outside the form tag to prevent that you need email and password pop up*/}
-          <TransitionLink href={'welcome'} mode="left"><Button variant="default" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold mt-6"
-                  onClick={() => router.push('/welcome')}>
-            Sign in with SSO
-          </Button></TransitionLink>
+          <TransitionLink href={'welcome'} mode="left">
+            <Button variant="default" className="w-full bg-[#BAC8F4] hover:bg-[#AABCF4] text-black font-bold mt-6" onClick={handleSSO}>
+              Sign in with SSO
+            </Button>
+          </TransitionLink>
         </div>
       </div>
   )

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { TransitionLink } from "../meta/transition-link"
 import { useUser } from "@/components/meta/context"
 import { useEffect, useState } from "react"
+import { read } from '@/lib/neo4j'
 
 export default function GoToCartFAB() {
   const router = useRouter()
@@ -14,8 +15,11 @@ export default function GoToCartFAB() {
   
   useEffect(() => {
     // Function to run on each interval
-    const pollCart = () => {
-      setCartCount(user.cart.length)
+    const pollCart = async () => {
+      let query = `MATCH (:Profile {CWID: "${user}"}) -[:Cart]-> (section:Section) RETURN section`
+      let response = await read(query)
+      
+      setCartCount(response.length)
     }
     pollCart()
     // Set up the interval
@@ -31,13 +35,12 @@ export default function GoToCartFAB() {
 
   return (
     <TransitionLink href="/cart" mode="left">
-      {cartCount>0 && (<Button
-        onClick={handleClick}
-        className="fixed bottom-4 right-4 h-12 rounded-full flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90"
-      >
-        <ShoppingCart className="h-5 w-5" />
-        <span>Go to Cart</span>
-      </Button>)}
+      {cartCount>0 && (
+        <Button onClick={handleClick} className="fixed bottom-4 right-4 h-12 rounded-full flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90">
+          <ShoppingCart className="h-5 w-5"/>
+          <span>Go to Cart</span>
+        </Button>
+      )}
     </TransitionLink>
   )
 }

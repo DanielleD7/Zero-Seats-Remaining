@@ -2,7 +2,7 @@
 import { Suspense } from 'react'
 import type { Metadata } from "next";
 import { AnimatePresence } from 'framer-motion';
-import { AccountProvider } from "@/components/meta/context"
+import { UserProvider } from "@/components/meta/context"
 import LayoutClient from './layout-client';
 import localFont from "next/font/local";
 import "./globals.css";
@@ -27,13 +27,13 @@ export default function RootLayout({children} : Readonly<{children : React.React
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}>
-        <LayoutClient>
-          <AccountProvider>
+        <UserProvider>
+          <LayoutClient>
             <Suspense fallback={null}>
               {children}
             </Suspense>
-          </AccountProvider>
-        </LayoutClient>
+          </LayoutClient>
+        </UserProvider>
       </body>
     </html>
   );
