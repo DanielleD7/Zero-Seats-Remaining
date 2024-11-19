@@ -55,7 +55,7 @@ export default function Welcome() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
     const [hasRegistrationHold] = useState(true)
-    const [profile, setProfile] = useState<any>()
+    const [profile, setProfile] = useState<any>({name: '', rank: '', CWID: '', image: '', major: ['']})
     const [registrationDate, setRegistrationDate] = useState<string>('')
 
     const waitlistModalRef = React.useRef<ModalRef>(null)
