@@ -166,7 +166,7 @@ export default function Component() {
 
             {/********** Days of the week header **********/}
             <div className="pt-1 grid grid-cols-[auto_repeat(5,1fr)] border-none bg-transparent text-sm">
-              <div className="px-8 bg-[#E3E9FA]"/>
+              <div className="px-6 bg-[#E3E9FA]"/>
               {/* That little rectangle in front of Monday block header,
                 TODO Need to work on figuring out alignment, it's not quite perfect. Buuutt hiding the boarder makes it look good */}
               {daysLetters.map((day) => (
@@ -189,13 +189,13 @@ export default function Component() {
               <div className="relative grid grid-cols-[auto_repeat(5,1fr)] overflow-auto bg-white rounded">
 
                 {/* Hours Column */}
-                <div className="sticky left-0 bg-white">
+                <div className="sticky left-0">
                   {/*Changing the style and classNames only effects the time column,*/}
                   {/*does not affect the rest of the grid.*/}
                   {hours.map((hour) => (
                       <div
                           key={hour}
-                          className="border-b px-1.5 py-5 text-sm"
+                          className="border-b text-[12px] px-0.5 py-5 text-center"
                           style={{height: "60px"}}
                       >
                         {hour % 12 || 12}
@@ -231,8 +231,16 @@ export default function Component() {
                                     // onClick={() => (console.log(JSON.stringify(cls, null, 2)))}
                                 >
                                   <div className="font-light text-center">
-                                    <div>{cls.section.properties.subject} {cls.section.properties.courseNumber}</div>
-                                    <div>{cls.section.properties.building} {cls.section.properties.room}</div>
+                                    <div>
+                                      <span className="text-[7px] mr-0.5">{cls.section.properties.subject}</span>
+                                      <span>{cls.section.properties.courseNumber}</span>
+                                    </div>
+
+                                    <div>
+                                      <span className="text-[7px] mr-0.5">{cls.section.properties.building}</span>
+                                      <span>{cls.section.properties.room}</span>
+                                    </div>
+
                                     <div>{formatTime(cls.section.properties.beginTime.low)} - {formatTime(cls.section.properties.endTime.low)}</div>
                                   </div>
                                 </div>
