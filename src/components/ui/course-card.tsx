@@ -179,7 +179,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         const query2 = `MATCH (c:Course {Course_Code: $code}) WITH c.Prerequisites AS prereq RETURN prereq;`
         let prereq = await read(query2, {"code" : code})
         const prereqStr :string = prereq[0].prereq
-        //console.log(prereqStr)
+        console.log(prereqStr)
 
         if(prereqStr != null) {
             let preReqBooleaLogic = prereqStr
@@ -188,6 +188,11 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
             preReqBooleaLogic = preReqBooleaLogic.replaceAll("or permission of the department", "")
             preReqBooleaLogic = preReqBooleaLogic.replaceAll("or permission of the instructor", "")
             preReqBooleaLogic = preReqBooleaLogic.replaceAll("or higher math", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("Placement or", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("or Placement", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\S+ rank or higher/gm, "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\S+ rank or higher,/gm, "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/Senior rank,/gm, "")
 
 
             preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\s/gm, "")
@@ -208,8 +213,8 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
             })
             let preReqBooleaLogicFinal = preReqBooleaLogic.replaceAll(/\w\w\w\w\d\d\d/gm, "false")
             console.log(preReqBooleaLogicFinal)
-            console.log(eval(preReqBooleaLogicFinal))
-            if(eval(preReqBooleaLogicFinal) == false) {
+            //console.log(eval(preReqBooleaLogicFinal))
+            if(preReqBooleaLogic != "()" && eval(preReqBooleaLogicFinal) == false) {
                 string = "Missing " + prereqStr
                 console.log("Prereq: " +  string)
                 return string;
