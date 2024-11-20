@@ -56,8 +56,8 @@ export default function Welcome() {
      
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const [isOverlayOpenRegistrationDates, setIsOverlayOpenRegistrationDates] = useState(false)
-    const [hasRegistrationHold] = useState(true)
-    const [profile, setProfile] = useState<any>({name: '', rank: '', CWID: '', image: '', major: ['']})
+    const [hasRegistrationHold, setRegistrationHold] = useState(false)
+    const [profile, setProfile] = useState<any>({name: '', rank: '', CWID: '', image: '', major: [''], holdNotification: false, waitlistNotif: false})
     const [registrationDate, setRegistrationDate] = useState<string>('')
 
     const waitlistModalRef = React.useRef<ModalRef>(null)
@@ -119,10 +119,9 @@ export default function Welcome() {
     const closeHoldModal = () => {
         holdModalRef.current?.close()
     }
-
     return (
         <div className="max-h-screen overflow-auto overflow-hidden">
-            {hasRegistrationHold && 
+            {profile.holdNotification && 
                 <Modal
                     trigger={<a> <HoldBanner onClick={handleBannerClick} subheading="Academic Advising - Tap for more info"/> </a>}
                     title="REGISTRATION HOLD"
@@ -146,7 +145,7 @@ export default function Welcome() {
                 </div>
             </Modal>}
 
-            <Modal title="Waitlist Seat Granted" variant = "waitlist" defaultOpen ref={waitlistModalRef}>
+            <Modal title="Waitlist Seat Granted" variant = "waitlist" defaultOpen = {profile.waitlistNotif} ref={waitlistModalRef}>
                 <div className = "pb-0 pl-7 pr-7" style={{textAlign: "left"}}>
                     <p className="text-center font-black text-lg pt-2 pb-6"> Good news! </p> Seats you waitlisted for in <br/>
                     <p className="font-black pt-2 ml-6 pb-4 mr-20">the following sections(s) have been reserved for you:</p>
