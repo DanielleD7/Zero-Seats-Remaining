@@ -14,6 +14,7 @@ interface CourseCardProps {
     onTouch: (code : string) => void
     modal: (callback: () => void) => void
     modal2: (string: string) => void
+    dropModal: (callback: () => void) => boolean
     showHeader?: boolean
 }
 
@@ -42,7 +43,7 @@ const buttonColors = {
     blue: "bg-blue-500 hover:bg-blue-600",
 }
 
-export default function CourseCard({section, status, onTouch, modal, showHeader = false, modal2}: CourseCardProps) {
+export default function CourseCard({section, status, onTouch, modal, showHeader = false, modal2, dropModal=()=>{return false}}: CourseCardProps) {
     const code = `${section.subject} ${section.courseNumber}`
     const location = `${section.building} ${section.room}`
     const instructor = section.instructor ? section.instructor : "Instructor Not Yet Assigned"
@@ -98,6 +99,18 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     });
 
     const removeFromCartNotif = () => toast.info('Removed from cart.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        className: 'registered-notif',
+        style: { position: 'absolute', left: '15%', right: '25%', width:'calc(100vw - 40vw)'}
+    });
+
+    const dropNotif = () => toast.info('Dropped ' + code, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -229,13 +242,26 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         setButtonColor(full ? buttonColors.orange : buttonColors.blue)
     }
 
+    const dropSection = () => {
+        let query = `MATCH (p:Profile {CWID: "${user}"}) -[r]-> (s:Section {id: ${section.id.low}}) DELETE r`
+        write(query)
+        console.log("Activated")
+        setAdded(false)
+        setButtonColor(full ? buttonColors.orange : buttonColors.blue)
+        dropNotif()
+    }
+
     const onButtonClick = async () => {
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
         const preReqString = await checkPrereq()
         if (added) {
-            removeSection()
-            removeFromCartNotif()
+            if (!dropModal(dropSection)) {
+                console.log("Here 1")
+                removeSection()
+                removeFromCartNotif()
+            }
+            
         } else {
             if(preReqString != "") {
                 modal2(preReqString)

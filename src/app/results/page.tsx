@@ -65,7 +65,7 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
   const closePrereqModal = () => {
     prereqModalRef.current?.close()
   }
-
+  console.log(course)
   return (
     <div>
       <Modal ref={modalRef} variant="waitlist" title="This section is full!">
@@ -113,16 +113,15 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
         <CardContent className="px-2 pb-2">
           {isExpanded && (
             <div className="mt-4 space-y-4 mb-1">
-              {sections.map((sectionData: any) => (<CourseCard section={sectionData.section.properties} status={sectionData.status} onTouch={DisplayClassInfo} modal={openModal} modal2={openPrereqModal}/>))}
+              {sections.map((sectionData: any) => (<CourseCard section={sectionData.section.properties} status={sectionData.status} onTouch={DisplayClassInfo} modal={openModal} modal2={openPrereqModal} dropModal={()=>{return false}}/>))}
             </div>
           )}
         </CardContent>
       </Card>
 
       {/* TODO Implement Chex's Generic Popup System */}
-      <SlideInOverlay title={"CLASS TITLE"} isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
-        <CourseInfoCard classNumber={"TEST 123-01"} crn={"12345"} description={"All told, the decision to acquire InfoWars was an easy one for the Global Tetrahedron executive board. Founded in 1999 on the heels of the Satanic “panic” and growing steadily ever since, InfoWars has distinguished itself as an invaluable tool for brainwashing and controlling the masses. With a shrewd mix of delusional paranoia and dubious anti-aging nutrition hacks, they strive to make life both scarier and longer for everyone, a commendable goal. They are a true unicorn, capable of simultaneously inspiring public support for billionaires and stoking outrage at an inept federal state that can assassinate JFK but can’t even put a man on the Moon."}
-                        prerequisites={"Test"} corequisites={"Test"}/>
+      <SlideInOverlay title={course.Course_Name} isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+        <CourseInfoCard classNumber={course.Course_Code} description={course.Description} className={course.Course_Name} prerequisites={course.Prerequisites} corequisites= {course.Corequisites}/>
       </SlideInOverlay>
     </div>
   )
