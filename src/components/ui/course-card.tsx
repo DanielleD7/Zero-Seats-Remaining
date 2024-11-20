@@ -54,6 +54,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     const [ full, setFull ] = useState(section.seatsAvailable < 1)
     const [ colors, setColors ] = useState<ColorProps>(getColors())
     const [ buttonColor, setButtonColor ] = useState(getButton())
+    const [loadingProgress, setLoadingProgress] = useState(0)
 
     function getTime(beginTime: number, endTime: number) {
         let start = new Date(0, 0, 0, ~~(beginTime / 100), (beginTime % 100))
@@ -149,6 +150,11 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     });
     // set this based on whether the section has Zero Seats Remaining
     
+
+    const loadingNotif = (promise: Promise<string> | (() => Promise<string>)) => toast.promise(promise, {
+        pending: "Loading",
+    });
+
     const toggleByWaitlist = () => {
         addSection()
         addToWaitlistNotif()
@@ -173,7 +179,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         const query2 = `MATCH (c:Course {Course_Code: $code}) WITH c.Prerequisites AS prereq RETURN prereq;`
         let prereq = await read(query2, {"code" : code})
         const prereqStr :string = prereq[0].prereq
-        //console.log(prereqStr)
+        console.log(prereqStr)
 
         if(prereqStr != null) {
             let preReqBooleaLogic = prereqStr
@@ -182,6 +188,11 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
             preReqBooleaLogic = preReqBooleaLogic.replaceAll("or permission of the department", "")
             preReqBooleaLogic = preReqBooleaLogic.replaceAll("or permission of the instructor", "")
             preReqBooleaLogic = preReqBooleaLogic.replaceAll("or higher math", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("Placement or", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("or Placement", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\S+ rank or higher/gm, "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\S+ rank or higher,/gm, "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/Senior rank,/gm, "")
 
 
             preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\s/gm, "")
@@ -202,8 +213,8 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
             })
             let preReqBooleaLogicFinal = preReqBooleaLogic.replaceAll(/\w\w\w\w\d\d\d/gm, "false")
             console.log(preReqBooleaLogicFinal)
-            console.log(eval(preReqBooleaLogicFinal))
-            if(eval(preReqBooleaLogicFinal) == false) {
+            //console.log(eval(preReqBooleaLogicFinal))
+            if(preReqBooleaLogic != "()" && eval(preReqBooleaLogicFinal) == false) {
                 string = "Missing " + prereqStr
                 console.log("Prereq: " +  string)
                 return string;
@@ -252,9 +263,12 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     }
 
     const onButtonClick = async () => {
+        setLoadingProgress(0)
+        let preReqPromise = loadingNotif(checkPrereq())
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
-        const preReqString = await checkPrereq()
+        const preReqString = await preReqPromise
+        setLoadingProgress(1)
         if (added) {
             if (!dropModal(dropSection)) {
                 console.log("Here 1")
