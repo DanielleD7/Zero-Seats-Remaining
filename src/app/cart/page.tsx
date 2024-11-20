@@ -18,6 +18,8 @@ export default function Cart() {
   const [ cart, setCart ] = useState<any[]>([])
   const modalRef = React.useRef<ModalRef>(null)
   const successModalRef = React.useRef<ModalRef>(null)
+  const [registeredClassData, setRegisteredClassData] = useState<{ className: any; sectionNumber: string; meetingTime: string; meetingLocation: string; professor: any }[]>([])
+  const [waitlistedClassData, setWaitlistedClassData] = useState<{ className: any; sectionNumber: string; meetingTime: string; meetingLocation: string; professor: any }[]>([])
 
   React.useEffect(() => {
     queryData()
@@ -31,38 +33,6 @@ export default function Cart() {
     console.log(response)
   }
 
-  const registeredClassData = [
-    {
-        className: "Computer Programming I Lab",
-        sectionNumber: "CSCI 220L-03",
-        meetingTime: "MWF @ 10:00 - 10:50AM",
-        meetingLocation: "HWEA 340",
-        professor: "Dr. Roxanne Stalvey"
-    },
-    {
-        className: "Calculus I",
-        sectionNumber: "MATH 201-02",
-        meetingTime: "TTh 2:00 PM - 3:45 PM",
-        meetingLocation: "MYBK 112",
-        professor: "Prof. John Doe"
-    }
-  ]
-  const waitlistedClassData = [
-    {
-        className: "Computer Programming I Lab",
-        sectionNumber: "CSCI 220L-03",
-        meetingTime: "MWF @ 10:00 - 10:50AM",
-        meetingLocation: "HWEA 340",
-        professor: "Dr. Roxanne Stalvey"
-    },
-    {
-        className: "Calculus I",
-        sectionNumber: "MATH 201-02",
-        meetingTime: "TTh 2:00 PM - 3:45 PM",
-        meetingLocation: "MYBK 112",
-        professor: "Prof. John Doe"
-    }
-  ]
 
   const openModal = () => {
     modalRef.current?.open()
@@ -72,12 +42,32 @@ export default function Cart() {
   }
 
   const openSuccessModal = () => {
+    let registered: { className: any; sectionNumber: string; meetingTime: string; meetingLocation: string; professor: any }[] = []
+    let waitlist: { className: any; sectionNumber: string; meetingTime: string; meetingLocation: string; professor: any }[] = []
+    cart.forEach((section)=>{
+      let properties = section.s.properties
+      console.log(properties);
+      if(properties.seatsAvailable.toInt() > 1) {
+        registered.push({className : properties.courseTitle, sectionNumber: `${properties.subject} ${properties.courseNumber}`, meetingTime: properties.room ? getTime(properties.beginTime.low, properties.endTime.low) : "", meetingLocation: `${properties.building} ${properties.room}`, professor: properties.instructor ? properties.instructor : "Instructor Not Yet Assigned"})
+      }
+      else {
+        waitlist.push({className : properties.courseTitle, sectionNumber: `${properties.subject} ${properties.courseNumber}`, meetingTime: properties.room ? getTime(properties.beginTime.low, properties.endTime.low) : "", meetingLocation: `${properties.building} ${properties.room}`, professor: properties.instructor ? properties.instructor : "Instructor Not Yet Assigned"})
+      }
+    })
+    console.log(registered)
+    console.log(waitlist)
+    setRegisteredClassData(registered)
+    setWaitlistedClassData(waitlist)
     successModalRef.current?.open()
   }
   const closeSuccessModal = () => {
     successModalRef.current?.close()
   }
-
+  function getTime(beginTime: number, endTime: number) {
+    let start = new Date(0, 0, 0, ~~(beginTime / 100), (beginTime % 100))
+    let end = new Date(0, 0, 0, ~~(endTime / 100), (endTime % 100))
+    return `${start.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})} - ${end.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})}`
+  }
   const register = async () => {
     let enroll = `MATCH (p:Profile {CWID: "${user}"}) -[r:Cart]-> (s:Section) WHERE s.seatsAvailable > 0 DELETE r CREATE (p) -[:Registered]-> (s)`
     let waitlist = `MATCH (p:Profile {CWID: "${user}"}) -[r:Cart]-> (s:Section) WHERE s.seatsAvailable < 1 DELETE r CREATE (p) -[:Waitlisted]-> (s)`
@@ -114,7 +104,7 @@ export default function Cart() {
 
                 <div className="overflow-scroll max-h-[25rem]">
                 
-                {registeredClassData.length && <><div className = "pb-0 pl-7 pr-7" style={{textAlign: "left"}}>
+                {registeredClassData.length > 0 && <><div className = "pb-0 pl-7 pr-7" style={{textAlign: "left"}}>
                     <p className="font-black pt-2 pb-4 ml-6 mr-20">Registered:</p>
                 </div>
                 <hr className="mx-5" />
@@ -136,7 +126,7 @@ export default function Cart() {
                     ))}
                 </div></>}
 
-                {waitlistedClassData.length && <><div className = "pb-0 pl-7 pr-7" style={{textAlign: "left"}}>
+                {waitlistedClassData.length > 0 && <><div className = "pb-0 pl-7 pr-7" style={{textAlign: "left"}}>
                     <p className="font-black pt-2 ml-6 mr-20 pb-4 pt-5">Waitlisted:</p>
                 </div>
                 <hr className="mx-5" />
