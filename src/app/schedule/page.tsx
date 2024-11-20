@@ -5,87 +5,126 @@ import {ChevronDown, X} from 'lucide-react'
 import Header from '@/components/ui/header'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import * as React from "react";
+import {read} from "@/lib/neo4j";
+import {useUser} from "@/components/meta/context";
 
-interface ClassBlock {
-  id: string
-  courseCode: string
-  courseName: string
-  section: number
-  instructor: string
-  room: string
-  days: number[]
-  startTime: string
-  endTime: string
-  classType: string
-  credits: number
-  description: string
-  isWaitlisted?: boolean
-}
+// For the hard coded classes
+// interface ClassBlock {
+//   id: string
+//   courseCode: string
+//   courseName: string
+//   subject: string
+//   courseNumber: number
+//   section: number
+//   instructor: string
+//   room: string
+//   days: number[]
+//   startTime: string
+//   endTime: string
+//   classType: string
+//   credits: number
+//   description: string
+//   isWaitlisted?: boolean
+// }
 
 export default function Component() {
-  const classes: ClassBlock[] = [
-    {
-      id: "1",
-      courseCode: "CSCI 220",
-      courseName: "Computer Programming I",
-      section: 2,
-      instructor: "RoxAnn Stalvey",
-      room: "HWEA 302",
-      days: [1, 3], // Tuesday and Thursday
-      startTime: "08:30",
-      endTime: "09:45",
-      classType: "Lecture",
-      credits: 3,
-      description: "An introduction to programming and problem solving. Topics include data types, variables, assignment, control structures (selection and iteration), lists, functions, classes, and an introduction to object-oriented programming. Lectures three hours per week.",
-      isWaitlisted: true
-    },
-    {
-      id: "2",
-      courseCode: "CSIS 690",
-      courseName: "ST: Data Dependent Digital Forensics",
-      section: 1,
-      instructor: "Kris Ghosh",
-      room: "HWEA 300",
-      days: [1], // Tuesday only
-      startTime: "17:30",
-      endTime: "20:15",
-      classType: "Lecture",
-      credits: 3,
-      description: "A course in the special study of an advanced or new topic in computer science, information science or software engineering.",
-      isWaitlisted: false
-    },
-  ]
+
+  // Hard Coded Classes
+  // const classes: ClassBlock[] = [
+  //   {
+  //     id: "1",
+  //     courseCode: "CSCI 220",
+  //     courseName: "Computer Programming I",
+  //     subject: "CSCI",
+  //     courseNumber: 220,
+  //     section: 2,
+  //     instructor: "RoxAnn Stalvey",
+  //     room: "HWEA 302",
+  //     days: [1, 3], // Tuesday and Thursday
+  //     startTime: "08:30",
+  //     endTime: "09:45",
+  //     classType: "Lecture",
+  //     credits: 3,
+  //     description: "An introduction to programming and problem solving. Topics include data types, variables, assignment, control structures (selection and iteration), lists, functions, classes, and an introduction to object-oriented programming. Lectures three hours per week.",
+  //     isWaitlisted: true
+  //   },
+  //   {
+  //     id: "2",
+  //     courseCode: "CSIS 690",
+  //     courseName: "ST: Data Dependent Digital Forensics",
+  //     subject: "CSIS",
+  //     courseNumber: 690,
+  //     section: 1,
+  //     instructor: "Kris Ghosh",
+  //     room: "HWEA 300",
+  //     days: [1], // Tuesday only
+  //     startTime: "17:30",
+  //     endTime: "20:15",
+  //     classType: "Lecture",
+  //     credits: 3,
+  //     description: "A course in the special study of an advanced or new topic in computer science, information science or software engineering.",
+  //     isWaitlisted: false
+  //   },
+  // ]
 
   const semesters = ['2025 Spring', '2024 Fall', '2024 Spring', '2023 Fall']
-  const days = ["M", "T", "W", "H", "F"]
+  const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+  const daysLetters = ["M", "T", "W", "H", "F"]
   const hours = Array.from({ length: 16 }, (_, i) => i + 8) // 8am to 11pm
+
+  const getDaysString = (classDays: { [x: string]: unknown }) => {
+    return daysOfWeek
+        .filter(day => classDays[day])
+        .map(day => day.charAt(0).toUpperCase())
+        .join(', ')
+  }
 
   const [selectedSemester, setSelectedSemester] = useState(semesters[0])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [selectedClass, setSelectedClass] = useState<ClassBlock | null>(null)
+  const [selectedClass, setSelectedClass] = useState<any>(null)
 
-  const getGridPosition = (time: string) => {
-    const [hours, minutes] = time.split(":").map(Number)
+  // Database Use Set Up
+  const { user } = useUser()
+  const [ courses, setClasses ] = useState<any[]>([])
+
+  React.useEffect(() => {
+    queryData()
+  }, [])
+
+  const queryData = async () => {
+    let courses = `MATCH (:Profile {CWID: "${user}"}) -[r]-> (section:Section) RETURN TYPE(r) AS status, section`
+    // let response = await read(courses)
+    // console.log(JSON.stringify(response, null, 2))
+    setClasses(await read(courses))
+  }
+
+  const getGridPosition = (time: number) => {
+    let hours = ~~(time / 100)
+    let minutes = (time % 100)
+
     return (hours - 8) * 12 + minutes / 5
   }
 
-  const getBlockHeight = (startTime: string, endTime: string) => {
+  const getBlockHeight = (startTime: number, endTime: number) => {
     const start = getGridPosition(startTime)
     const end = getGridPosition(endTime)
+
     return end - start
   }
 
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(":").map(Number)
-    const period = hours >= 12 ? 'PM' : 'AM'
-    const formattedHours = hours % 12 || 12
-    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`
+  const formatTime = (time: number) => {
+    let hours = ~~(time / 100)
+    let minutes = (time % 100)
+    let newTime = new Date(0, 0, 0, hours, minutes)
+
+    return `${newTime.toLocaleTimeString([], {hour: 'numeric', minute: 'numeric'})}`
   }
 
   // Might use for the class block on the schedule grid due to text cut off on smaller screens
   const formatTimeNoAM_PM = (time: string) => {
     const [hours, minutes] = time.split(":").map(Number)
     const formattedHours = hours % 12 || 12
+
     return `${formattedHours}:${minutes.toString().padStart(2, '0')}`
   }
 
@@ -130,7 +169,7 @@ export default function Component() {
               <div className="px-8 bg-[#E3E9FA]"/>
               {/* That little rectangle in front of Monday block header,
                 TODO Need to work on figuring out alignment, it's not quite perfect. Buuutt hiding the boarder makes it look good */}
-              {days.map((day) => (
+              {daysLetters.map((day) => (
                   <div key={day} className="p-2 text-center font-bold bg-[#E3E9FA]">
                     {day}
                   </div>
@@ -168,30 +207,33 @@ export default function Component() {
                 {/* To change the class block to match the size of the grid, you have to
                 change sizes in multiple areas in the schedule grid.
                 Such as the time grid, the whole grid for the blocks, and the class blocks*/}
-                {Array.from({length: 5}, (_, dayIndex) => (
-                    <div key={dayIndex} className="relative border-l">
-                      {classes
-                          .filter((cls) => cls.days.includes(dayIndex))
+                {daysOfWeek.map ( (day) => (
+                    <div key={day} className="relative border-l">
+                      {courses
+                          .filter((cls) => cls.section.properties[day])
+
                           .map((cls) => {
-                            const top = getGridPosition(cls.startTime) * 5
-                            const height = getBlockHeight(cls.startTime, cls.endTime) * 5
+                            const top = getGridPosition(cls.section.properties.beginTime.low) * 5
+                            const height = getBlockHeight(cls.section.properties.beginTime.low, cls.section.properties.endTime.low) * 5
                             return (
                                 <div
-                                    key={cls.id}
+                                    key={cls.section.properties.id}
                                     className="absolute left-0 right-0 border-2 rounded border-purple-800 bg-purple-300 p-1 text-[9px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
                                     style={{
                                       top: `${top}px`,
                                       height: `${height}px`,
                                       // paddingTop: `${height/4}px`, // causes problems when it gets smaller
-                                      borderStyle: cls.isWaitlisted ? "dashed" : "solid",
-                                      background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
+                                      borderStyle: cls.status == "Waitlisted" ? "dashed" : "solid",
+                                      background: cls.status == "Waitlisted" ? "rgba(243 232 255)" : "rgba(216 180 254)",
+                                      // background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
                                     }}
                                     onClick={() => setSelectedClass(cls)}
+                                    // onClick={() => (console.log(JSON.stringify(cls, null, 2)))}
                                 >
                                   <div className="font-light text-center">
-                                    <div>{cls.courseCode}</div>
-                                    <div>{cls.room}</div>
-                                    <div>{formatTime(cls.startTime)} - {formatTime(cls.endTime)}</div>
+                                    <div>{cls.section.properties.subject} {cls.section.properties.courseNumber}</div>
+                                    <div>{cls.section.properties.building} {cls.section.properties.room}</div>
+                                    <div>{formatTime(cls.section.properties.beginTime.low)} - {formatTime(cls.section.properties.endTime.low)}</div>
                                   </div>
                                 </div>
                             )
@@ -210,7 +252,7 @@ export default function Component() {
           </div>
         </div>
 
-        {/* Class Information Popup */}
+        {/*/!* Class Information Popup *!/*/}
         <Dialog open={!!selectedClass} onOpenChange={() => setSelectedClass(null)}>
           <DialogContent className="text-black">
             <button
@@ -222,19 +264,18 @@ export default function Component() {
             </button>
 
             <DialogHeader className="text-left">
-              <DialogTitle>{selectedClass?.courseCode || 'Class Details'}</DialogTitle>
+              <DialogTitle>{selectedClass?.section?.properties?.subject || 'N/A'} {selectedClass?.section?.properties?.courseNumber || 'N/A'}</DialogTitle>
             </DialogHeader>
             <div className="h-px bg-gray-400 my-2" />
             <div className="mt-2 space-y-2">
-              <div><strong>Course Name:</strong> {selectedClass?.courseName || 'N/A'}</div>
-              <div><strong>Section:</strong> {selectedClass?.section || 'N/A'}</div>
-              <div><strong>Instructor:</strong> {selectedClass?.instructor || 'N/A'}</div>
-              <div><strong>Room:</strong> {selectedClass?.room || 'N/A'}</div>
-              <div><strong>Days:</strong> {selectedClass?.days.map(day => days[day]).join(', ') || 'N/A'}</div>
-              <div><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass.startTime)} - ${formatTime(selectedClass.endTime)}` || 'N/A'}</div>
-              <div><strong>Class Type:</strong> {selectedClass?.classType || 'N/A'}</div>
-              <div><strong>Credits:</strong> {selectedClass?.credits || 'N/A'}</div>
-              <div><strong>Description:</strong> {selectedClass?.description || 'No description available.'}</div>
+              <div><strong>Course Name:</strong> {selectedClass?.section?.properties?.courseTitle || 'N/A'}</div>
+              <div><strong>Section:</strong> {selectedClass?.section?.properties?.sequenceNumber?.low || 'N/A'}</div>
+              <div><strong>Instructor:</strong> {selectedClass?.section?.properties?.instructor || 'N/A'}</div>
+              <div><strong>Room:</strong> {selectedClass?.section?.properties?.building || 'N/A'} {selectedClass?.section?.properties?.room || 'N/A'}</div>
+              <div><strong>Days:</strong> {selectedClass ? getDaysString(selectedClass.section.properties) : 'N/A'}</div>
+              <div><strong>Time:</strong> {selectedClass && `${formatTime(selectedClass?.section?.properties?.beginTime?.low)} - ${formatTime(selectedClass?.section?.properties?.endTime?.low)}` || 'N/A'}</div>
+              <div><strong>Class Type:</strong> {selectedClass?.section?.properties?.scheduleTypeDescription || 'N/A'}</div>
+              <div><strong>Credits:</strong> {selectedClass?.section?.properties?.creditHourLow?.low || 'N/A'}</div>
             </div>
           </DialogContent>
         </Dialog>
