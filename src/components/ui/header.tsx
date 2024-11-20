@@ -19,6 +19,20 @@ export default function Header({ showShoppingCart = true, title = "" }: HeaderPr
   
   const [ cart, setCart ] = useState<any[]>([])
 
+  useEffect(() => {
+    // Function to run on each interval
+    const pollCart = async () => {
+      queryData()
+    }
+    pollCart()
+    // Set up the interval
+    const intervalId = setInterval(pollCart, 1000)
+
+    // Clean up function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId)
+  }, []) // Empty dependency array means this effect runs once on mount
+
+
   React.useEffect(() => {
     queryData()
   }, [])
