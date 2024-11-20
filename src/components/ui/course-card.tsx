@@ -5,6 +5,7 @@ import { Card, CardHeader } from "@/components/ui/card"
 import { Class, Course, Section } from "@/components/ui/data"
 import { useUser } from "@/components/meta/context"
 import { toast } from 'react-toastify'
+import { ModalRef } from '../meta/modal'
 import { read, write } from '@/lib/neo4j'
 
 interface CourseCardProps {
@@ -12,6 +13,7 @@ interface CourseCardProps {
     status: string
     onTouch: (code : string) => void
     modal: (callback: () => void) => void
+    modal2: (string: string) => void
     showHeader?: boolean
 }
 
@@ -40,13 +42,12 @@ const buttonColors = {
     blue: "bg-blue-500 hover:bg-blue-600",
 }
 
-export default function CourseCard({section, status, onTouch, modal, showHeader = false}: CourseCardProps) {
+export default function CourseCard({section, status, onTouch, modal, showHeader = false, modal2}: CourseCardProps) {
     const code = `${section.subject} ${section.courseNumber}`
     const location = `${section.building} ${section.room}`
     const instructor = section.instructor ? section.instructor : "Instructor Not Yet Assigned"
     const time = section.room ? getTime(section.beginTime.low, section.endTime.low) : ""
     const days = getDays()
-
     const { user } = useUser()
     const [ added, setAdded ] = useState(status !== null)
     const [ full, setFull ] = useState(section.seatsAvailable < 1)
@@ -148,6 +149,78 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         setButtonColor(buttonColors.red)
     }
 
+    var missingPrereqs: { Prereq: string; Course: string }[] = []
+
+    const checkPrereq = async () => {
+        let string = ""
+        const query = `MATCH (p:Profile {CWID: $cwid})-[:Taken]-(c:Course) WITH c.Course_Code AS code RETURN code;`
+        const neo4jData = await read(query, {"cwid" : "32480132"})
+        console.log(neo4jData)
+        
+        const query2 = `MATCH (c:Course {Course_Code: $code}) WITH c.Prerequisites AS prereq RETURN prereq;`
+        let prereq = await read(query2, {"code" : code})
+        const prereqStr :string = prereq[0].prereq
+        //console.log(prereqStr)
+
+        if(prereqStr != null) {
+            let preReqBooleaLogic = prereqStr
+            
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/with a grade of \S+ or better/gm, "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("or permission of the department", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("or permission of the instructor", "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("or higher math", "")
+
+
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(/\s/gm, "")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(".", "")
+
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("or", "||")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("/", "||")
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll(",and", ",")
+            let andSplit = preReqBooleaLogic.split(",")
+            preReqBooleaLogic = "("
+            andSplit.forEach((data) => {preReqBooleaLogic += (data + ")&&(")})
+            preReqBooleaLogic = preReqBooleaLogic.substring(0, preReqBooleaLogic.length-3)
+            preReqBooleaLogic = preReqBooleaLogic.replaceAll("and", "&&")
+            console.log(preReqBooleaLogic)
+
+            neo4jData.forEach((data)=>{
+                preReqBooleaLogic = preReqBooleaLogic.replaceAll(data['code'].replaceAll(" ", ""), "true")
+            })
+            let preReqBooleaLogicFinal = preReqBooleaLogic.replaceAll(/\w\w\w\w\d\d\d/gm, "false")
+            console.log(preReqBooleaLogicFinal)
+            console.log(eval(preReqBooleaLogicFinal))
+            if(eval(preReqBooleaLogicFinal) == false) {
+                string = "Missing " + prereqStr
+                console.log("Prereq: " +  string)
+                return string;
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+        // course.prereqs.forEach((prereq: any)=>{
+        //     let preReqMet = false
+        //     neo4jData.forEach((data)=>{
+        //     if (data['code'] == prereq) {
+        //         preReqMet = true
+        //     }
+        //     })
+        //     if(!preReqMet) {
+        //     console.log("Yay")
+        //     missingPrereqs.push({"Prereq" : prereq, "Course" : course.id})
+        //     }
+        // })
+        // console.log(missingPrereqs)
+        // missingPrereqs.forEach((preReq)=>{string += ("Missing " + preReq['Prereq'] + " for " + preReq['Course'] + "\n")})
+        // console.log("Prereq: " +  string)
+        // return string;
+    }
+
+
+
+
     const removeSection = () => {
         let query = `MATCH (p:Profile {CWID: "${user}"}) -[r]-> (s:Section {id: ${section.id.low}}) DELETE r`
         write(query)
@@ -156,24 +229,22 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
         setButtonColor(full ? buttonColors.orange : buttonColors.blue)
     }
 
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
-
+        const preReqString = await checkPrereq()
         if (added) {
             removeSection()
             removeFromCartNotif()
-        }
-        
-        else {
-            if (timeConflict) {
-                timeConflictNotif()
+        } else {
+            if(preReqString != "") {
+                modal2(preReqString)
             }
-
-            else if (full) {
+            else if(full) {
                 modal(toggleByWaitlist)
-            }
-
+            } else if (timeConflict) {
+                timeConflictNotif()
+            } 
             else {
                 addSection()
                 addToCartNotif()

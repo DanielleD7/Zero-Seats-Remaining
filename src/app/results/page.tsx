@@ -55,6 +55,17 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
   }
   const modalRef = React.useRef<ModalRef>(null)
 
+  const prereqModalRef = React.useRef<ModalRef>(null)
+  let [preReqString, updatePreReqString] = useState("")
+
+  const openPrereqModal = (string: string) => {
+    updatePreReqString(string)
+    prereqModalRef.current?.open()
+  }
+  const closePrereqModal = () => {
+    prereqModalRef.current?.close()
+  }
+
   return (
     <div>
       <Modal ref={modalRef} variant="waitlist" title="This section is full!">
@@ -72,6 +83,20 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
           </Button>
         </div>
       </Modal>
+
+      <Modal
+          title="MISSING PREREQUISITES"
+          variant = "destructive"
+          ref={prereqModalRef}>
+          <div className = "pb-5 pl-5 pr-5" style={{textAlign: "left"}}>
+            <p>{preReqString}</p>
+          </div>
+          <div className=" pl-5 pr-5 pb-5 flex flex-row justify-between space-x-2">
+            <Button variant="outline" onClick={closePrereqModal} className="font-bold flex-1 border-2 text-white border-primary hover:text-white hover:bg-red-700 focus:ring-2 focus:ring-primary active:bg-red-800 focus:ring-offset-2  ml-20 mr-20 hover:ml-25 bg-red-600">
+              OK
+            </Button>
+          </div>
+      </Modal>
       
       <Card  className="mb-4 bg-white">
         <CardHeader onClick={() => setIsExpanded(!isExpanded)} className="p-4 flex flex-row items-center justify-between">
@@ -88,7 +113,7 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
         <CardContent className="px-2 pb-2">
           {isExpanded && (
             <div className="mt-4 space-y-4 mb-1">
-              {sections.map((sectionData: any) => (<CourseCard section={sectionData.section.properties} status={sectionData.status} onTouch={DisplayClassInfo} modal={openModal}/>))}
+              {sections.map((sectionData: any) => (<CourseCard section={sectionData.section.properties} status={sectionData.status} onTouch={DisplayClassInfo} modal={openModal} modal2={openPrereqModal}/>))}
             </div>
           )}
         </CardContent>

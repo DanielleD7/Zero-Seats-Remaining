@@ -1,14 +1,18 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
+
 import { useRouter } from 'next/navigation'
 import { Class } from "@/components/ui/data"
+
 import { useUser } from "@/components/meta/context"
 import CourseCard from "@/components/ui/course-card"
 import Header from '@/components/ui/header'
 import PageTransition from '@/components/meta/page-transition'
 import React, { useState } from "react";
 import { TransitionLink } from "@/components/meta/transition-link"
+import Modal, { ModalRef } from "@/components/meta/modal"
+import { List } from "lucide-react"
 import { read, write } from '@/lib/neo4j'
 
 export default function Cart() {
@@ -35,7 +39,7 @@ export default function Cart() {
     await write(enroll)
     await write(waitlist)
   }
-
+  
   return (
     <div className="max-h-screen overflow-scroll">
       <div className="mx-auto bg-gray-100 min-h-screen">
@@ -43,9 +47,8 @@ export default function Cart() {
 
         <main className="p-4">
           {cart.map((section: any) => (
-            <CourseCard section={section.s.properties} status={"Cart"} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
+            <CourseCard section={section.s.properties} status={"Cart"} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}} modal2={() => {throw new Error('Function not implemented.')}}/>
           ))}
-
           {!cart.length && 
             <div className = "justify-center items-center flex-col flex">
               <p className="mb-5">Your Course Cart is empty!</p>

@@ -202,7 +202,7 @@ export const Courses: Course[] = [
         number: "614",
         title: "Advanced Operating Systems",
         description: "This course covers a broad range of advanced operating systems concepts.",
-        prereqs: [],
+        prereqs: ["CSIS 604"],
         coreqs: [],
         sections: [{
             id: "01",
