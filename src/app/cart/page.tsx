@@ -47,7 +47,7 @@ export default function Cart() {
 
         <main className="p-4">
           {cart.map((section: any) => (
-            <CourseCard section={section.s.properties} status={"Cart"} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}}/>
+            <CourseCard section={section.s.properties} status={"Cart"} onTouch={() => {}} showHeader={true} modal={() => {throw new Error('Function not implemented.')}} modal2={() => {throw new Error('Function not implemented.')}}/>
           ))}
           {!cart.length && 
             <div className = "justify-center items-center flex-col flex">

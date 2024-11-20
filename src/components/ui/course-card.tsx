@@ -9,7 +9,6 @@ import { ModalRef } from '../meta/modal'
 import { read, write } from '@/lib/neo4j'
 
 interface CourseCardProps {
-    course: any
     section: any
     status: string
     onTouch: (code : string) => void
