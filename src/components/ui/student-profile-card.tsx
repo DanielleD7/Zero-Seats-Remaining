@@ -27,7 +27,7 @@ export default class StudentProfileCard extends React.Component<StudentProfilePr
   }
   render() {
     return (
-      <Card className="bg-white text-gray-800">
+      <Card className="bg-white text-gray-800 pt-4 mt-4">
             {/* <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xl font-bold">Student Profile</CardTitle>
             </CardHeader> */}

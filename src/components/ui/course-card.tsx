@@ -266,7 +266,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
             )}
       
       
-            <div className={`${colors.background} flex items-stretch gap-4 p-4 border-l-8 ${colors.border}`}>
+            <div className={`${colors.background} flex items-stretch gap-4 p-3 border-l-8 ${colors.border}`}>
                 {/* <div className="bg-blue-400 text-white flex items-center justify-center p-1"></div> */}
                 <div className="text-2xl font-bold min-w-[3rem] flex items-center justify-center pr-4 border-r border-gray-200"> {`${section.sequenceNumber.low}`.padStart(2, '0')} </div>
                 
@@ -284,7 +284,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
                 </div>
 
                 <div className="flex flex-col justify-between pl-4 border-l border-gray-200">
-                    <div className="bg-white rounded-lg px-2 py-1 text-xs text-center mb-2"> Seats <br /> <p className='text-lg font-black pt-2'>{section.seatsAvailable.low}/{section.maximumEnrollment.low}</p> </div>
+                    <div className="bg-white rounded-lg px-2 pt-3 text-[0.7rem]/[0px] text-center mb-1"> <p className=''>Seats</p> <p className='text-lg font-black pt-2'>{section.seatsAvailable.low}/{section.maximumEnrollment.low}</p> </div>
                     
 
                     <div className="justify-center flex">
