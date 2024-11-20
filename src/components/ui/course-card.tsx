@@ -54,6 +54,7 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     const [ full, setFull ] = useState(section.seatsAvailable < 1)
     const [ colors, setColors ] = useState<ColorProps>(getColors())
     const [ buttonColor, setButtonColor ] = useState(getButton())
+    const [loadingProgress, setLoadingProgress] = useState(0)
 
     function getTime(beginTime: number, endTime: number) {
         let start = new Date(0, 0, 0, ~~(beginTime / 100), (beginTime % 100))
@@ -149,6 +150,11 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     });
     // set this based on whether the section has Zero Seats Remaining
     
+
+    const loadingNotif = (promise: Promise<string> | (() => Promise<string>)) => toast.promise(promise, {
+        pending: "Loading",
+    });
+
     const toggleByWaitlist = () => {
         addSection()
         addToWaitlistNotif()
@@ -252,9 +258,12 @@ export default function CourseCard({section, status, onTouch, modal, showHeader 
     }
 
     const onButtonClick = async () => {
+        setLoadingProgress(0)
+        let preReqPromise = loadingNotif(checkPrereq())
         // whoever's over this, just set this variable to whether or not a time conflict occurred
         var timeConflict = false
-        const preReqString = await checkPrereq()
+        const preReqString = await preReqPromise
+        setLoadingProgress(1)
         if (added) {
             if (!dropModal(dropSection)) {
                 console.log("Here 1")

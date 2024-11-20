@@ -10,6 +10,7 @@ import { TransitionLink } from "@/components/meta/transition-link"
 import Modal, { ModalRef } from "@/components/meta/modal"
 import { read, write } from '@/lib/neo4j'
 import { Card, CardContent } from "@/components/ui/card"
+import { ToastContainer } from "react-toastify"
 
 
 export default function Cart() {
@@ -181,7 +182,7 @@ export default function Cart() {
     
        
 
-          
+        <ToastContainer/>
         </main>
       
       </div>

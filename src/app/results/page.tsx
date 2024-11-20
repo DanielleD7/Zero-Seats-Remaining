@@ -32,6 +32,7 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   const [infoCourse, setInfoCourse] = useState({})
 
+
   const DisplayClassInfo = async (courseCode : String) => {
     setIsOverlayOpen(true)
   }
@@ -113,7 +114,7 @@ function CourseDropdown({course, sections} : {course: any, sections: any}) {
         <CardContent className="px-2 pb-2">
           {isExpanded && (
             <div className="mt-4 space-y-4 mb-1">
-              {sections.map((sectionData: any) => (<CourseCard section={sectionData.section.properties} status={sectionData.status} onTouch={DisplayClassInfo} modal={openModal} modal2={openPrereqModal} dropModal={()=>{return false}}/>))}
+              {sections.map((sectionData: any) => (<CourseCard section={sectionData.section.properties} status={sectionData.status} onTouch={() => {DisplayClassInfo}} modal={openModal} modal2={openPrereqModal} dropModal={()=>{return false}}/>))}
             </div>
           )}
         </CardContent>
@@ -134,10 +135,14 @@ export default function Results() {
 
   const { user } = useUser()
   const [courses, setCourses] = useState<any[]>([])
-
+  
   React.useEffect(() => {
-    queryData();
+    loadingNotif(queryData());
   }, []);
+
+  const loadingNotif = ((promise: Promise<unknown> | (() => Promise<unknown>)) => toast.promise(promise, {
+    pending: "Loading",
+  }))
 
   const queryData = async () => {
     let queryParams = []
