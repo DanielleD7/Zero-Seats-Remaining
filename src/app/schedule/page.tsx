@@ -218,13 +218,14 @@ export default function Component() {
                             return (
                                 <div
                                     key={cls.section.properties.id}
-                                    className="absolute left-0 right-0 border-2 rounded border-purple-800 bg-purple-300 p-1 text-[9px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
+                                    className="absolute left-0 right-0 border-2 rounded p-1 text-[9px] font-bold flex flex-col justify-center items-center cursor-pointer overflow-hidden"
                                     style={{
                                       top: `${top}px`,
                                       height: `${height}px`,
                                       // paddingTop: `${height/4}px`, // causes problems when it gets smaller
                                       borderStyle: cls.status == "Waitlisted" ? "dashed" : "solid",
-                                      background: cls.status == "Waitlisted" ? "rgba(243 232 255)" : "rgba(216 180 254)",
+                                      borderColor: cls.status == "Waitlisted" ? "rgba(249 115 22)" : "rgba(59 130 246)",
+                                      background: cls.status == "Waitlisted" ? "rgba(255 247 237)" : "rgba(239 246 255)",
                                       // background: cls.isWaitlisted ? "rgba(243 232 255)" : "rgba(216 180 254)"
                                     }}
                                     onClick={() => setSelectedClass(cls)}
