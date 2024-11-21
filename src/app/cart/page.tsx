@@ -27,7 +27,6 @@ export default function Cart() {
 
   const [course, setCourse] = useState('')
   const [coreq, setCoreq] = useState({Subject: '', Course_Name: '', Course_Code: '', Course_Number: ''})
-  const [regHold, setRegHold] = useState(false)
 
   React.useEffect(() => {
     queryData()
@@ -99,7 +98,10 @@ export default function Cart() {
   }
 
   const attemptSubmit = async () => {
-    if (regHold) {
+    let query = `MATCH (p:Profile {CWID: "${user}"}) RETURN p.holdNotification AS hold`
+    let response = await read(query)
+
+    if (response[0].hold) {
       openHold()
       return
     }
@@ -109,9 +111,6 @@ export default function Cart() {
       let query2 = `MATCH (:Profile {CWID: "${user}"}) -[:Cart]-> (:Section) -[]-> (c:Course) RETURN collect(c.Course_Code) AS cart`
       let response = await read(query)
       let response2 = await read(query2)
-
-      console.log(JSON.stringify(response, null, 4))
-      console.log(JSON.stringify(response2, null, 4))
 
       if (response.length > 0 && !response2[0].cart.includes(response[0].c.properties.Course_Code)) {
         setCourse(`${section.s.properties.courseTitle}`)
