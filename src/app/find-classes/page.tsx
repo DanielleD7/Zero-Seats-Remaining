@@ -21,7 +21,7 @@ export default function FindClasses() {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false)
 
   const semesters = [
-    "Spring 2025", "Fall 2024", "Spring 2024", "Fall 2023", "Spring 2023", "Fall 2022"
+    "Spring 2025", "Fall 2024 (Read-Only)", "Spring 2024 (Read-Only)", "Fall 2023 (Read-Only)", "Spring 2023 (Read-Only)", "Fall 2022 (Read-Only)"
   ]
 
   const toResults = () => {
