@@ -228,7 +228,7 @@ export default function Cart() {
       </div>
     </Modal>
 
-    <Modal ref={coreqModalRef} variant="destructive" title="Registration Hold">
+    <Modal ref={coreqModalRef} variant="destructive" title="Missing Corequisite">
       <div className = "pb-5 pl-5 pr-5" style={{textAlign: "left"}}>
         {course} requires {coreq.Course_Name} to be taken as a corequisite. Please add this course to your cart.
       </div>
